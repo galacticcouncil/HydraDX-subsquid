@@ -1,0 +1,46 @@
+version: '3.0'
+description: Test manifest
+repository: https://github.com/
+hydraVersion: "4"
+
+dataSource:
+  kind: substrate
+  chain: node-template
+
+entities:
+  - generated/modules/**/*.model.ts
+
+typegen:
+  metadata:
+    source: wss://archive.snakenet.hydradx.io
+  events:
+    - staking.Bonded
+    - staking.Reward
+    - staking.Slash
+    - system.NewAccount
+    - xyk.PoolCreated
+  customTypes:
+    lib: todo--define-types # since we don't use custom types in mappings, we can supply a stub here
+    typedefsLoc: types.json
+  outDir: types
+
+mappings:
+  mappingsModule: mappings
+  imports:
+    - generated/server/config # configure the processor environment (for now this is required)
+  eventHandlers:
+    - event: staking.Bonded
+      handler: handleBond
+    - event: staking.Reward
+      handler: handleReward
+    - event: staking.Slash
+      handler: handleSlash
+
+    - event: system.NewAccount
+      handler: handleNewAccount
+    - event: xyk.PoolCreated
+      handler: handleNewPool
+
+  extrinsicHandlers:
+  preBlockHooks:
+  postBlockHooks:
