@@ -36,10 +36,11 @@ mappings:
     - event: staking.Slash
       handler: handleSlash
 
-    - event: system.NewAccount
-      handler: handleNewAccount
     - event: xyk.PoolCreated
       handler: handleNewPool
+
+    - event: system.NewAccount
+      handler: handleNewAccount
 
   extrinsicHandlers:
   preBlockHooks:

@@ -1,8 +1,8 @@
 type Token @entity {
   id: ID!
-  decimal: Int
-  name: String
-  shared: Boolean
+  decimal: Int!
+  name: String!
+  shared: Boolean!
   parentPool: Pool
 }
 
@@ -17,7 +17,8 @@ type Account @entity {
 type Pool @entity {
   id: ID!
   specVersion: Int
-  sharedAsset: Token!
+  sharedAsset: Token
+  sharedAssetInitialBalance: BigInt
   token0: Token!
   token1: Token!
   swapActions: [SwapAction] @derivedFrom(field: "xykTradePool")

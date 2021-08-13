@@ -12,24 +12,20 @@ import {
   StoreContext,
 } from '@subsquid/hydra-common';
 
-import { ensureAssets } from '../hendlers/asset';
-import { createAccount } from '../hendlers/account';
+import { ensureAccount } from '../hendlers/account';
 import { createPool } from '../hendlers/pool';
+import { storeGet } from '../helpers/storeHelpers';
 
 export async function handleNewAccount(
   handlerContext: EventContext & StoreContext
 ) {
-  await ensureAssets(handlerContext);
-  /**
-   * We need check, id new account "pool" or "user"
-   */
-  await createAccount(handlerContext);
+  await ensureAccount(handlerContext);
 }
 
 export async function handleNewPool(
   handlerContext: EventContext & StoreContext
 ) {
-  await ensureAssets(handlerContext);
+  // await ensureAssets(handlerContext);
   await createPool(handlerContext);
 }
 
@@ -45,7 +41,7 @@ export async function handleBond({
 }: EventContext & StoreContext) {
   const [account, balance] = new Staking.BondedEvent(event).params;
 
-  const e = await get(store, SumReward, account.toString());
+  const e = await storeGet(store, SumReward, account.toString());
   if (e == null) {
     store.save(createSumReward(account.toString()));
   }
@@ -58,7 +54,7 @@ export async function handleReward({
 }: EventContext & StoreContext) {
   const [account, newReward] = new Staking.RewardEvent(event).params;
 
-  let sumReward = await get(store, SumReward, account.toString());
+  let sumReward = await storeGet(store, SumReward, account.toString());
   if (sumReward == null) {
     // in early stage of kusama, some validators didn't need to bond to start staking
     // to not break our code, we will create a SumReward record for them and log them in NoBondRecordAccount
@@ -90,7 +86,7 @@ export async function handleSlash({
 }: EventContext & StoreContext): Promise<void> {
   const [account, newSlash] = new Staking.SlashEvent(event).params;
 
-  let sumReward = await get(store, SumReward, account.toString());
+  let sumReward = await storeGet(store, SumReward, account.toString());
   if (sumReward == null) {
     // in early stage of kusama, some validators didn't need to bond to start staking
     // to not break our code, we will create a SumReward record for them and log them in NoBondRecordAccount
@@ -123,14 +119,3 @@ function createSumReward(accountId: string): SumReward {
   return entity;
 }
 
-type EntityType<T> = {
-  new (...args: any[]): T;
-};
-
-function get<T>(
-  store: StoreContext['store'],
-  entityType: EntityType<T>,
-  id: string
-): Promise<T | undefined> {
-  return store.get(entityType, { where: { id } });
-}
