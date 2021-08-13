@@ -27,8 +27,8 @@ export async function createPool({
   newPool.specVersion = 0;
   // newPool.sharedAsset = '0';
   newPool.sharedAssetInitialBalance = new BN(balance.toString());
-  newPool.token0 = token0Inst;
-  newPool.token1 = token1Inst;
+  newPool.tokenZero = token0Inst;
+  newPool.tokenOne = token1Inst;
   newPool.swapActions = [];
   newPool.assetsVolume = [];
 

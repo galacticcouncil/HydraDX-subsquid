@@ -19,8 +19,8 @@ type Pool @entity {
   specVersion: Int
   sharedAsset: Token
   sharedAssetInitialBalance: BigInt
-  token0: Token!
-  token1: Token!
+  tokenZero: Token!
+  tokenOne: Token!
   swapActions: [SwapAction] @derivedFrom(field: "xykTradePool")
   assetsVolume: [PoolAssetVolume] @derivedFrom(field: "pool")
 }
@@ -32,8 +32,8 @@ type SwapAction @entity {
   block: String!
   type: String!
 
-  token0: Token
-  token1: Token
+  tokenZero: Token
+  tokenOne: Token
 
   account: Account
 
@@ -53,10 +53,10 @@ type TradeTransfer @entity {
 
   type: String!
   path: String!
-  token0: String!
-  token1: String!
-  token0Input: String!
-  token1Input: String!
+  tokenZero: String!
+  tokenOne: String!
+  tokenZeroInput: String!
+  tokenOneInput: String!
   result: String!
 }
 
@@ -65,8 +65,8 @@ type PoolAssetVolume @entity {
   id: ID!
   pool: Pool!
   timestamp: BigInt!
-  token0Amount: BigInt
-  token1Amount: BigInt
+  tokenZeroAmount: BigInt
+  tokenOneAmount: BigInt
   sharedAssetAmount: BigInt
   marketCap: BigInt
   tradeAmount: BigInt
@@ -74,8 +74,8 @@ type PoolAssetVolume @entity {
 
 type AssetPrice @entity {
   id: ID!
-  token0: Token
-  token1: Token
+  tokenZero: Token
+  tokenOne: Token
   pairName: String!
   prices: AssetPriceInTime
 }
