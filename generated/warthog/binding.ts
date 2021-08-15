@@ -151,6 +151,8 @@ export type PoolOrderByInput =   'createdAt_ASC' |
   'sharedAsset_DESC' |
   'sharedAssetInitialBalance_ASC' |
   'sharedAssetInitialBalance_DESC' |
+  'createdBy_ASC' |
+  'createdBy_DESC' |
   'tokenZero_ASC' |
   'tokenZero_DESC' |
   'tokenOne_ASC' |
@@ -311,6 +313,9 @@ export interface AccountWhereInput {
   tradeTransferIn_none?: TradeTransferWhereInput | null
   tradeTransferIn_some?: TradeTransferWhereInput | null
   tradeTransferIn_every?: TradeTransferWhereInput | null
+  poolcreatedBy_none?: PoolWhereInput | null
+  poolcreatedBy_some?: PoolWhereInput | null
+  poolcreatedBy_every?: PoolWhereInput | null
   swapactionaccount_none?: SwapActionWhereInput | null
   swapactionaccount_some?: SwapActionWhereInput | null
   swapactionaccount_every?: SwapActionWhereInput | null
@@ -605,17 +610,21 @@ export interface PoolAssetVolumeWhereUniqueInput {
 }
 
 export interface PoolCreateInput {
-  specVersion?: Float | null
+  createdAt: DateTime
+  specVersion?: String | null
   sharedAsset?: ID_Input | null
   sharedAssetInitialBalance?: String | null
+  createdBy: ID_Output
   tokenZero: ID_Output
   tokenOne: ID_Output
 }
 
 export interface PoolUpdateInput {
-  specVersion?: Float | null
+  createdAt?: DateTime | null
+  specVersion?: String | null
   sharedAsset?: ID_Input | null
   sharedAssetInitialBalance?: String | null
+  createdBy?: ID_Input | null
   tokenZero?: ID_Input | null
   tokenOne?: ID_Input | null
 }
@@ -645,12 +654,11 @@ export interface PoolWhereInput {
   deletedAt_gte?: DateTime | null
   deletedById_eq?: ID_Input | null
   deletedById_in?: ID_Output[] | ID_Output | null
-  specVersion_eq?: Int | null
-  specVersion_gt?: Int | null
-  specVersion_gte?: Int | null
-  specVersion_lt?: Int | null
-  specVersion_lte?: Int | null
-  specVersion_in?: Int[] | Int | null
+  specVersion_eq?: String | null
+  specVersion_contains?: String | null
+  specVersion_startsWith?: String | null
+  specVersion_endsWith?: String | null
+  specVersion_in?: String[] | String | null
   sharedAsset_eq?: ID_Input | null
   sharedAsset_in?: ID_Output[] | ID_Output | null
   sharedAssetInitialBalance_eq?: BigInt | null
@@ -659,11 +667,14 @@ export interface PoolWhereInput {
   sharedAssetInitialBalance_lt?: BigInt | null
   sharedAssetInitialBalance_lte?: BigInt | null
   sharedAssetInitialBalance_in?: BigInt[] | BigInt | null
+  createdBy_eq?: ID_Input | null
+  createdBy_in?: ID_Output[] | ID_Output | null
   tokenZero_eq?: ID_Input | null
   tokenZero_in?: ID_Output[] | ID_Output | null
   tokenOne_eq?: ID_Input | null
   tokenOne_in?: ID_Output[] | ID_Output | null
   sharedAsset?: TokenWhereInput | null
+  createdBy?: AccountWhereInput | null
   tokenZero?: TokenWhereInput | null
   tokenOne?: TokenWhereInput | null
   swapActions_none?: SwapActionWhereInput | null
@@ -1197,6 +1208,7 @@ export interface Account extends BaseGraphQLObject {
   specVersion?: Int | null
   tradeTransferOut?: Array<TradeTransfer> | null
   tradeTransferIn?: Array<TradeTransfer> | null
+  poolcreatedBy?: Array<Pool> | null
   swapactionaccount?: Array<SwapAction> | null
 }
 
@@ -1326,10 +1338,11 @@ export interface Pool extends BaseGraphQLObject {
   deletedAt?: DateTime | null
   deletedById?: String | null
   version: Int
-  specVersion?: Int | null
+  specVersion?: String | null
   sharedAsset?: Token | null
   sharedAssetId?: String | null
   sharedAssetInitialBalance?: BigInt | null
+  createdBy: Account
   tokenZero: Token
   tokenZeroId: String
   tokenOne: Token

@@ -10,6 +10,8 @@ import { PoolWhereArgs, PoolWhereInput } from '../../warthog';
 
 import { Token } from '../token/token.model';
 import { TokenService } from '../token/token.service';
+import { Account } from '../account/account.model';
+import { AccountService } from '../account/account.service';
 import { SwapAction } from '../swap-action/swap-action.model';
 import { SwapActionService } from '../swap-action/swap-action.service';
 import { PoolAssetVolume } from '../pool-asset-volume/pool-asset-volume.model';
@@ -21,6 +23,8 @@ import _ from 'lodash';
 export class PoolService extends WarthogBaseService<Pool> {
   @Inject('TokenService')
   public readonly sharedAssetService!: TokenService;
+  @Inject('AccountService')
+  public readonly createdByService!: AccountService;
   @Inject('TokenService')
   public readonly tokenZeroService!: TokenService;
   @Inject('TokenService')
@@ -58,6 +62,10 @@ export class PoolService extends WarthogBaseService<Pool> {
     // remove relation filters to enable warthog query builders
     const { sharedAsset } = where;
     delete where.sharedAsset;
+
+    // remove relation filters to enable warthog query builders
+    const { createdBy } = where;
+    delete where.createdBy;
 
     // remove relation filters to enable warthog query builders
     const { tokenZero } = where;
@@ -114,6 +122,17 @@ export class PoolService extends WarthogBaseService<Pool> {
       mainQuery = mainQuery.andWhere(`"pool"."shared_asset_id" IN (${sharedAssetQuery.getQuery()})`);
 
       parameters = { ...parameters, ...sharedAssetQuery.getParameters() };
+    }
+
+    if (createdBy) {
+      // OTO or MTO
+      const createdByQuery = this.createdByService
+        .buildFindQueryWithParams(<any>createdBy, undefined, undefined, ['id'], 'createdBy')
+        .take(undefined); // remove the default LIMIT
+
+      mainQuery = mainQuery.andWhere(`"pool"."created_by_id" IN (${createdByQuery.getQuery()})`);
+
+      parameters = { ...parameters, ...createdByQuery.getParameters() };
     }
 
     if (tokenZero) {

@@ -10,6 +10,7 @@ type Account implements BaseGraphQLObject {
   specVersion: Int
   tradeTransferOut: [TradeTransfer!]
   tradeTransferIn: [TradeTransfer!]
+  poolcreatedBy: [Pool!]
   swapactionaccount: [SwapAction!]
 }
 
@@ -80,6 +81,9 @@ input AccountWhereInput {
   tradeTransferIn_none: TradeTransferWhereInput
   tradeTransferIn_some: TradeTransferWhereInput
   tradeTransferIn_every: TradeTransferWhereInput
+  poolcreatedBy_none: PoolWhereInput
+  poolcreatedBy_some: PoolWhereInput
+  poolcreatedBy_every: PoolWhereInput
   swapactionaccount_none: SwapActionWhereInput
   swapactionaccount_some: SwapActionWhereInput
   swapactionaccount_every: SwapActionWhereInput
@@ -460,10 +464,11 @@ type Pool implements BaseGraphQLObject {
   deletedAt: DateTime
   deletedById: String
   version: Int!
-  specVersion: Int
+  specVersion: String
   sharedAsset: Token
   sharedAssetId: String
   sharedAssetInitialBalance: BigInt
+  createdBy: Account!
   tokenZero: Token!
   tokenZeroId: String!
   tokenOne: Token!
@@ -625,9 +630,11 @@ type PoolConnection {
 }
 
 input PoolCreateInput {
-  specVersion: Float
+  createdAt: DateTime!
+  specVersion: String
   sharedAsset: ID
   sharedAssetInitialBalance: String
+  createdBy: ID!
   tokenZero: ID!
   tokenOne: ID!
 }
@@ -650,6 +657,8 @@ enum PoolOrderByInput {
   sharedAsset_DESC
   sharedAssetInitialBalance_ASC
   sharedAssetInitialBalance_DESC
+  createdBy_ASC
+  createdBy_DESC
   tokenZero_ASC
   tokenZero_DESC
   tokenOne_ASC
@@ -657,9 +666,11 @@ enum PoolOrderByInput {
 }
 
 input PoolUpdateInput {
-  specVersion: Float
+  createdAt: DateTime
+  specVersion: String
   sharedAsset: ID
   sharedAssetInitialBalance: String
+  createdBy: ID
   tokenZero: ID
   tokenOne: ID
 }
@@ -689,12 +700,11 @@ input PoolWhereInput {
   deletedAt_gte: DateTime
   deletedById_eq: ID
   deletedById_in: [ID!]
-  specVersion_eq: Int
-  specVersion_gt: Int
-  specVersion_gte: Int
-  specVersion_lt: Int
-  specVersion_lte: Int
-  specVersion_in: [Int!]
+  specVersion_eq: String
+  specVersion_contains: String
+  specVersion_startsWith: String
+  specVersion_endsWith: String
+  specVersion_in: [String!]
   sharedAsset_eq: ID
   sharedAsset_in: [ID!]
   sharedAssetInitialBalance_eq: BigInt
@@ -703,11 +713,14 @@ input PoolWhereInput {
   sharedAssetInitialBalance_lt: BigInt
   sharedAssetInitialBalance_lte: BigInt
   sharedAssetInitialBalance_in: [BigInt!]
+  createdBy_eq: ID
+  createdBy_in: [ID!]
   tokenZero_eq: ID
   tokenZero_in: [ID!]
   tokenOne_eq: ID
   tokenOne_in: [ID!]
   sharedAsset: TokenWhereInput
+  createdBy: AccountWhereInput
   tokenZero: TokenWhereInput
   tokenOne: TokenWhereInput
   swapActions_none: SwapActionWhereInput

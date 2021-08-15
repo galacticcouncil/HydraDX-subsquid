@@ -1,8 +1,9 @@
-import { BaseModel, IntField, NumericField, Model, ManyToOne, OneToMany, StringField, JSONField } from 'warthog';
+import { BaseModel, NumericField, DateTimeField, Model, ManyToOne, OneToMany, StringField, JSONField } from 'warthog';
 
 import BN from 'bn.js';
 
 import { Token } from '../token/token.model';
+import { Account } from '../account/account.model';
 import { SwapAction } from '../swap-action/swap-action.model';
 import { PoolAssetVolume } from '../pool-asset-volume/pool-asset-volume.model';
 
@@ -10,10 +11,10 @@ import * as jsonTypes from '../jsonfields/jsonfields.model';
 
 @Model({ api: {} })
 export class Pool extends BaseModel {
-  @IntField({
+  @StringField({
     nullable: true
   })
-  specVersion?: number;
+  specVersion?: string;
 
   @ManyToOne(
     () => Token,
@@ -38,6 +39,22 @@ export class Pool extends BaseModel {
     }
   })
   sharedAssetInitialBalance?: BN;
+
+  @ManyToOne(
+    () => Account,
+    (param: Account) => param.poolcreatedBy,
+    {
+      skipGraphQLField: true,
+
+      modelName: 'Pool',
+      relModelName: 'Account',
+      propertyName: 'createdBy'
+    }
+  )
+  createdBy!: Account;
+
+  @DateTimeField({})
+  createdAt!: Date;
 
   @ManyToOne(
     () => Token,

@@ -39,9 +39,6 @@ mappings:
     - event: xyk.PoolCreated
       handler: handleNewPool
 
-    - event: system.NewAccount
-      handler: handleNewAccount
-
   extrinsicHandlers:
   preBlockHooks:
   postBlockHooks:

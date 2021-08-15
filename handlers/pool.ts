@@ -1,6 +1,7 @@
 import { Pool } from '../generated/model';
 import { XYK } from '../types/index'; // import via index.ts, this is a workaround related to ts-node
 import BN from 'bn.js';
+import { v4 as uuidv4 } from 'uuid';
 import {
   ExtrinsicContext,
   EventContext,
@@ -8,6 +9,8 @@ import {
 } from '@subsquid/hydra-common';
 import { storeGet } from '../helpers/storeHelpers';
 import { getTokenById } from './token';
+import { getAccountById } from './account';
+import { getHydraDxFormattedAddress } from '../helpers/utils';
 
 export async function createPool({
   store,
@@ -18,19 +21,34 @@ export async function createPool({
     event
   ).params;
 
+  const createdByAddressFormatted = getHydraDxFormattedAddress(
+    accountId.toString()
+  );
+
   const token0Inst = await getTokenById(assetId0.toString(), store);
   const token1Inst = await getTokenById(assetId1.toString(), store);
+  const createdByAccount = await getAccountById(
+    createdByAddressFormatted,
+    store
+  );
 
   let newPool = new Pool();
 
-  newPool.id = accountId.toString();
-  newPool.specVersion = 0;
+  /**
+   * newPool.id - must be changed to real new pool address when response from
+   * "xyk.PoolCreated" event will be updated.
+   */
+  newPool.id = uuidv4();
+
+  newPool.specVersion = block.runtimeVersion.toString(); // TODO make conversion
   // newPool.sharedAsset = '0';
   newPool.sharedAssetInitialBalance = new BN(balance.toString());
   newPool.tokenZero = token0Inst;
   newPool.tokenOne = token1Inst;
   newPool.swapActions = [];
   newPool.assetsVolume = [];
+  newPool.createdBy = createdByAccount;
+  newPool.createdAt = new Date(event.blockTimestamp);
 
   await store.save(newPool);
 }

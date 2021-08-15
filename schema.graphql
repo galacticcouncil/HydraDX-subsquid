@@ -16,9 +16,11 @@ type Account @entity {
 
 type Pool @entity {
   id: ID!
-  specVersion: Int
+  specVersion: String
   sharedAsset: Token
   sharedAssetInitialBalance: BigInt
+  createdBy: Account!
+  createdAt: DateTime!
   tokenZero: Token!
   tokenOne: Token!
   swapActions: [SwapAction] @derivedFrom(field: "xykTradePool")

@@ -376,6 +376,9 @@ export enum PoolOrderByEnum {
   sharedAssetInitialBalance_ASC = "sharedAssetInitialBalance_ASC",
   sharedAssetInitialBalance_DESC = "sharedAssetInitialBalance_DESC",
 
+  createdBy_ASC = "createdBy_ASC",
+  createdBy_DESC = "createdBy_DESC",
+
   tokenZero_ASC = "tokenZero_ASC",
   tokenZero_DESC = "tokenZero_DESC",
 
@@ -396,19 +399,19 @@ export class PoolWhereInput {
   id_in?: string[];
 
   @TypeGraphQLField(() => DateTime, { nullable: true })
-  createdAt_eq?: Date;
+  createdAt_eq?: DateTimeString;
 
   @TypeGraphQLField(() => DateTime, { nullable: true })
-  createdAt_lt?: Date;
+  createdAt_lt?: DateTimeString;
 
   @TypeGraphQLField(() => DateTime, { nullable: true })
-  createdAt_lte?: Date;
+  createdAt_lte?: DateTimeString;
 
   @TypeGraphQLField(() => DateTime, { nullable: true })
-  createdAt_gt?: Date;
+  createdAt_gt?: DateTimeString;
 
   @TypeGraphQLField(() => DateTime, { nullable: true })
-  createdAt_gte?: Date;
+  createdAt_gte?: DateTimeString;
 
   @TypeGraphQLField(() => ID, { nullable: true })
   createdById_eq?: string;
@@ -461,23 +464,20 @@ export class PoolWhereInput {
   @TypeGraphQLField(() => [ID], { nullable: true })
   deletedById_in?: string[];
 
-  @TypeGraphQLField(() => Int, { nullable: true })
-  specVersion_eq?: number;
+  @TypeGraphQLField({ nullable: true })
+  specVersion_eq?: string;
 
-  @TypeGraphQLField(() => Int, { nullable: true })
-  specVersion_gt?: number;
+  @TypeGraphQLField({ nullable: true })
+  specVersion_contains?: string;
 
-  @TypeGraphQLField(() => Int, { nullable: true })
-  specVersion_gte?: number;
+  @TypeGraphQLField({ nullable: true })
+  specVersion_startsWith?: string;
 
-  @TypeGraphQLField(() => Int, { nullable: true })
-  specVersion_lt?: number;
+  @TypeGraphQLField({ nullable: true })
+  specVersion_endsWith?: string;
 
-  @TypeGraphQLField(() => Int, { nullable: true })
-  specVersion_lte?: number;
-
-  @TypeGraphQLField(() => [Int], { nullable: true })
-  specVersion_in?: number[];
+  @TypeGraphQLField(() => [String], { nullable: true })
+  specVersion_in?: string[];
 
   @TypeGraphQLField(() => ID, { nullable: true })
   sharedAsset_eq?: string;
@@ -504,6 +504,12 @@ export class PoolWhereInput {
   sharedAssetInitialBalance_in?: string[];
 
   @TypeGraphQLField(() => ID, { nullable: true })
+  createdBy_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  createdBy_in?: string[];
+
+  @TypeGraphQLField(() => ID, { nullable: true })
   tokenZero_eq?: string;
 
   @TypeGraphQLField(() => [ID], { nullable: true })
@@ -517,6 +523,9 @@ export class PoolWhereInput {
 
   @TypeGraphQLField(() => TokenWhereInput, { nullable: true })
   sharedAsset?: TokenWhereInput;
+
+  @TypeGraphQLField(() => AccountWhereInput, { nullable: true })
+  createdBy?: AccountWhereInput;
 
   @TypeGraphQLField(() => TokenWhereInput, { nullable: true })
   tokenZero?: TokenWhereInput;
@@ -566,14 +575,20 @@ export class PoolWhereUniqueInput {
 
 @TypeGraphQLInputType()
 export class PoolCreateInput {
+  @TypeGraphQLField(() => DateTime)
+  createdAt!: DateTimeString;
+
   @TypeGraphQLField({ nullable: true })
-  specVersion?: number;
+  specVersion?: string;
 
   @TypeGraphQLField(() => ID, { nullable: true })
   sharedAsset?: string;
 
   @TypeGraphQLField({ nullable: true })
   sharedAssetInitialBalance?: string;
+
+  @TypeGraphQLField(() => ID)
+  createdBy!: string;
 
   @TypeGraphQLField(() => ID)
   tokenZero!: string;
@@ -584,14 +599,20 @@ export class PoolCreateInput {
 
 @TypeGraphQLInputType()
 export class PoolUpdateInput {
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  createdAt?: DateTimeString;
+
   @TypeGraphQLField({ nullable: true })
-  specVersion?: number;
+  specVersion?: string;
 
   @TypeGraphQLField(() => ID, { nullable: true })
   sharedAsset?: string;
 
   @TypeGraphQLField({ nullable: true })
   sharedAssetInitialBalance?: string;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  createdBy?: string;
 
   @TypeGraphQLField(() => ID, { nullable: true })
   tokenZero?: string;
@@ -2164,6 +2185,15 @@ export class AccountWhereInput {
 
   @TypeGraphQLField(() => TradeTransferWhereInput, { nullable: true })
   tradeTransferIn_every?: TradeTransferWhereInput;
+
+  @TypeGraphQLField(() => PoolWhereInput, { nullable: true })
+  poolcreatedBy_none?: PoolWhereInput;
+
+  @TypeGraphQLField(() => PoolWhereInput, { nullable: true })
+  poolcreatedBy_some?: PoolWhereInput;
+
+  @TypeGraphQLField(() => PoolWhereInput, { nullable: true })
+  poolcreatedBy_every?: PoolWhereInput;
 
   @TypeGraphQLField(() => SwapActionWhereInput, { nullable: true })
   swapactionaccount_none?: SwapActionWhereInput;

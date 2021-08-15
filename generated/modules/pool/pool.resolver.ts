@@ -33,6 +33,8 @@ import { PoolService } from './pool.service';
 
 import { Token } from '../token/token.model';
 import { TokenService } from '../token/token.service';
+import { Account } from '../account/account.model';
+import { AccountService } from '../account/account.service';
 import { SwapAction } from '../swap-action/swap-action.model';
 import { SwapActionService } from '../swap-action/swap-action.service';
 import { PoolAssetVolume } from '../pool-asset-volume/pool-asset-volume.model';
@@ -133,6 +135,11 @@ export class PoolResolver {
   @FieldResolver(() => Token)
   async sharedAsset(@Root() r: Pool, @Ctx() ctx: BaseContext): Promise<Token | null> {
     return ctx.dataLoader.loaders.Pool.sharedAsset.load(r);
+  }
+
+  @FieldResolver(() => Account)
+  async createdBy(@Root() r: Pool, @Ctx() ctx: BaseContext): Promise<Account | null> {
+    return ctx.dataLoader.loaders.Pool.createdBy.load(r);
   }
 
   @FieldResolver(() => Token)

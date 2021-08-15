@@ -1,6 +1,7 @@
 import { BaseModel, IntField, Model, OneToMany, StringField, JSONField } from 'warthog';
 
 import { TradeTransfer } from '../trade-transfer/trade-transfer.model';
+import { Pool } from '../pool/pool.model';
 import { SwapAction } from '../swap-action/swap-action.model';
 
 import * as jsonTypes from '../jsonfields/jsonfields.model';
@@ -35,6 +36,18 @@ export class Account extends BaseModel {
     }
   )
   tradeTransferIn?: TradeTransfer[];
+
+  @OneToMany(
+    () => Pool,
+    (param: Pool) => param.createdBy,
+    {
+      nullable: true,
+      modelName: 'Account',
+      relModelName: 'Pool',
+      propertyName: 'poolcreatedBy'
+    }
+  )
+  poolcreatedBy?: Pool[];
 
   @OneToMany(
     () => SwapAction,

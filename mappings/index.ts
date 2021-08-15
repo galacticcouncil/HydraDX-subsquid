@@ -16,11 +16,11 @@ import { ensureAccount } from '../handlers/account';
 import { createPool } from '../handlers/pool';
 import { storeGet } from '../helpers/storeHelpers';
 
-export async function handleNewAccount(
-  handlerContext: EventContext & StoreContext
-) {
-  await ensureAccount(handlerContext);
-}
+// export async function handleNewAccount(
+//   handlerContext: EventContext & StoreContext
+// ) {
+//   await ensureAccount(handlerContext);
+// }
 
 export async function handleNewPool(
   handlerContext: EventContext & StoreContext

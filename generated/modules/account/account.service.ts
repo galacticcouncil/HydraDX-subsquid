@@ -10,6 +10,8 @@ import { AccountWhereArgs, AccountWhereInput } from '../../warthog';
 
 import { TradeTransfer } from '../trade-transfer/trade-transfer.model';
 import { TradeTransferService } from '../trade-transfer/trade-transfer.service';
+import { Pool } from '../pool/pool.model';
+import { PoolService } from '../pool/pool.service';
 import { SwapAction } from '../swap-action/swap-action.model';
 import { SwapActionService } from '../swap-action/swap-action.service';
 import { getConnection, getRepository, In, Not } from 'typeorm';
@@ -21,6 +23,8 @@ export class AccountService extends WarthogBaseService<Account> {
   public readonly tradeTransferOutService!: TradeTransferService;
   @Inject('TradeTransferService')
   public readonly tradeTransferInService!: TradeTransferService;
+  @Inject('PoolService')
+  public readonly poolcreatedByService!: PoolService;
   @Inject('SwapActionService')
   public readonly swapactionaccountService!: SwapActionService;
 
@@ -69,6 +73,17 @@ export class AccountService extends WarthogBaseService<Account> {
     delete where.tradeTransferIn_some;
     delete where.tradeTransferIn_none;
     delete where.tradeTransferIn_every;
+    // remove relation filters to enable warthog query builders
+
+    const { poolcreatedBy_some, poolcreatedBy_none, poolcreatedBy_every } = where;
+
+    if (+!!poolcreatedBy_some + +!!poolcreatedBy_none + +!!poolcreatedBy_every > 1) {
+      throw new Error(`A query can have at most one of none, some, every clauses on a relation field`);
+    }
+
+    delete where.poolcreatedBy_some;
+    delete where.poolcreatedBy_none;
+    delete where.poolcreatedBy_every;
     // remove relation filters to enable warthog query builders
 
     const { swapactionaccount_some, swapactionaccount_none, swapactionaccount_every } = where;
@@ -221,6 +236,76 @@ export class AccountService extends WarthogBaseService<Account> {
                 WHERE
                     tradeTransferIn_subq.cnt_filtered > 0
                     AND tradeTransferIn_subq.cnt_filtered = tradeTransferIn_subq.cnt_total
+                )`);
+      }
+    }
+
+    const poolcreatedByFilter = poolcreatedBy_some || poolcreatedBy_none || poolcreatedBy_every;
+
+    if (poolcreatedByFilter) {
+      const poolcreatedByQuery = this.poolcreatedByService
+        .buildFindQueryWithParams(<any>poolcreatedByFilter, undefined, undefined, ['id'], 'poolcreatedBy')
+        .take(undefined); //remove the default LIMIT
+
+      parameters = { ...parameters, ...poolcreatedByQuery.getParameters() };
+
+      const subQueryFiltered = this.getQueryBuilder()
+        .select([])
+        .leftJoin(
+          'account.poolcreatedBy',
+          'poolcreatedBy_filtered',
+          `poolcreatedBy_filtered.id IN (${poolcreatedByQuery.getQuery()})`
+        )
+        .groupBy('account_id')
+        .addSelect('count(poolcreatedBy_filtered.id)', 'cnt_filtered')
+        .addSelect('account.id', 'account_id');
+
+      const subQueryTotal = this.getQueryBuilder()
+        .select([])
+        .leftJoin('account.poolcreatedBy', 'poolcreatedBy_total')
+        .groupBy('account_id')
+        .addSelect('count(poolcreatedBy_total.id)', 'cnt_total')
+        .addSelect('account.id', 'account_id');
+
+      const subQuery = `
+                SELECT
+                    f.account_id account_id, f.cnt_filtered cnt_filtered, t.cnt_total cnt_total
+                FROM
+                    (${subQueryTotal.getQuery()}) t, (${subQueryFiltered.getQuery()}) f
+                WHERE
+                    t.account_id = f.account_id`;
+
+      if (poolcreatedBy_none) {
+        mainQuery = mainQuery.andWhere(`account.id IN
+                (SELECT
+                    poolcreatedBy_subq.account_id
+                FROM
+                    (${subQuery}) poolcreatedBy_subq
+                WHERE
+                    poolcreatedBy_subq.cnt_filtered = 0
+                )`);
+      }
+
+      if (poolcreatedBy_some) {
+        mainQuery = mainQuery.andWhere(`account.id IN
+                (SELECT
+                    poolcreatedBy_subq.account_id
+                FROM
+                    (${subQuery}) poolcreatedBy_subq
+                WHERE
+                    poolcreatedBy_subq.cnt_filtered > 0
+                )`);
+      }
+
+      if (poolcreatedBy_every) {
+        mainQuery = mainQuery.andWhere(`account.id IN
+                (SELECT
+                    poolcreatedBy_subq.account_id
+                FROM
+                    (${subQuery}) poolcreatedBy_subq
+                WHERE
+                    poolcreatedBy_subq.cnt_filtered > 0
+                    AND poolcreatedBy_subq.cnt_filtered = poolcreatedBy_subq.cnt_total
                 )`);
       }
     }
