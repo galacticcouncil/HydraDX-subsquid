@@ -12,8 +12,8 @@ import {
   StoreContext,
 } from '@subsquid/hydra-common';
 
-import { ensureAccount } from '../hendlers/account';
-import { createPool } from '../hendlers/pool';
+import { ensureAccount } from '../handlers/account';
+import { createPool } from '../handlers/pool';
 import { storeGet } from '../helpers/storeHelpers';
 
 export async function handleNewAccount(
@@ -118,4 +118,3 @@ function createSumReward(accountId: string): SumReward {
   entity.accountTotal = new BN(0);
   return entity;
 }
-
