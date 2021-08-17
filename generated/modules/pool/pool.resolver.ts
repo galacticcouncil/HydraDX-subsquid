@@ -138,8 +138,8 @@ export class PoolResolver {
   }
 
   @FieldResolver(() => Account)
-  async createdBy(@Root() r: Pool, @Ctx() ctx: BaseContext): Promise<Account | null> {
-    return ctx.dataLoader.loaders.Pool.createdBy.load(r);
+  async ownerAccount(@Root() r: Pool, @Ctx() ctx: BaseContext): Promise<Account | null> {
+    return ctx.dataLoader.loaders.Pool.ownerAccount.load(r);
   }
 
   @FieldResolver(() => Token)

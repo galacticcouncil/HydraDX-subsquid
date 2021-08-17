@@ -31,10 +31,10 @@ import {
 import { Account } from './account.model';
 import { AccountService } from './account.service';
 
-import { TradeTransfer } from '../trade-transfer/trade-transfer.model';
-import { TradeTransferService } from '../trade-transfer/trade-transfer.service';
 import { Pool } from '../pool/pool.model';
 import { PoolService } from '../pool/pool.service';
+import { TradeTransfer } from '../trade-transfer/trade-transfer.model';
+import { TradeTransferService } from '../trade-transfer/trade-transfer.service';
 import { SwapAction } from '../swap-action/swap-action.model';
 import { SwapActionService } from '../swap-action/swap-action.service';
 import { getConnection, getRepository, In, Not } from 'typeorm';
@@ -136,6 +136,11 @@ export class AccountResolver {
     return result as Promise<AccountConnection>;
   }
 
+  @FieldResolver(() => Pool)
+  async createdPools(@Root() r: Account, @Ctx() ctx: BaseContext): Promise<Pool[] | null> {
+    return ctx.dataLoader.loaders.Account.createdPools.load(r);
+  }
+
   @FieldResolver(() => TradeTransfer)
   async tradeTransferOut(@Root() r: Account, @Ctx() ctx: BaseContext): Promise<TradeTransfer[] | null> {
     return ctx.dataLoader.loaders.Account.tradeTransferOut.load(r);
@@ -144,11 +149,6 @@ export class AccountResolver {
   @FieldResolver(() => TradeTransfer)
   async tradeTransferIn(@Root() r: Account, @Ctx() ctx: BaseContext): Promise<TradeTransfer[] | null> {
     return ctx.dataLoader.loaders.Account.tradeTransferIn.load(r);
-  }
-
-  @FieldResolver(() => Pool)
-  async poolcreatedBy(@Root() r: Account, @Ctx() ctx: BaseContext): Promise<Pool[] | null> {
-    return ctx.dataLoader.loaders.Account.poolcreatedBy.load(r);
   }
 
   @FieldResolver(() => SwapAction)

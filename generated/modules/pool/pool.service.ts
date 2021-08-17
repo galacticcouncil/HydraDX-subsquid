@@ -24,7 +24,7 @@ export class PoolService extends WarthogBaseService<Pool> {
   @Inject('TokenService')
   public readonly sharedAssetService!: TokenService;
   @Inject('AccountService')
-  public readonly createdByService!: AccountService;
+  public readonly ownerAccountService!: AccountService;
   @Inject('TokenService')
   public readonly tokenZeroService!: TokenService;
   @Inject('TokenService')
@@ -64,8 +64,8 @@ export class PoolService extends WarthogBaseService<Pool> {
     delete where.sharedAsset;
 
     // remove relation filters to enable warthog query builders
-    const { createdBy } = where;
-    delete where.createdBy;
+    const { ownerAccount } = where;
+    delete where.ownerAccount;
 
     // remove relation filters to enable warthog query builders
     const { tokenZero } = where;
@@ -124,15 +124,15 @@ export class PoolService extends WarthogBaseService<Pool> {
       parameters = { ...parameters, ...sharedAssetQuery.getParameters() };
     }
 
-    if (createdBy) {
+    if (ownerAccount) {
       // OTO or MTO
-      const createdByQuery = this.createdByService
-        .buildFindQueryWithParams(<any>createdBy, undefined, undefined, ['id'], 'createdBy')
+      const ownerAccountQuery = this.ownerAccountService
+        .buildFindQueryWithParams(<any>ownerAccount, undefined, undefined, ['id'], 'ownerAccount')
         .take(undefined); // remove the default LIMIT
 
-      mainQuery = mainQuery.andWhere(`"pool"."created_by_id" IN (${createdByQuery.getQuery()})`);
+      mainQuery = mainQuery.andWhere(`"pool"."owner_account_id" IN (${ownerAccountQuery.getQuery()})`);
 
-      parameters = { ...parameters, ...createdByQuery.getParameters() };
+      parameters = { ...parameters, ...ownerAccountQuery.getParameters() };
     }
 
     if (tokenZero) {

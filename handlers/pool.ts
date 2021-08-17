@@ -39,6 +39,7 @@ export async function createPool({
    * "xyk.PoolCreated" event will be updated.
    */
   newPool.id = uuidv4();
+  newPool.isActive = true;
 
   newPool.specVersion = block.runtimeVersion.toString(); // TODO make conversion
   // newPool.sharedAsset = '0';
@@ -47,8 +48,18 @@ export async function createPool({
   newPool.tokenOne = token1Inst;
   newPool.swapActions = [];
   newPool.assetsVolume = [];
-  newPool.createdBy = createdByAccount;
+  newPool.ownerAccount = createdByAccount;
   newPool.createdAt = new Date(event.blockTimestamp);
 
   await store.save(newPool);
+
+  /**
+   * Add new pool to owner account.
+   */
+  const ownerAccountForUpdate = createdByAccount;
+  ownerAccountForUpdate.createdPools = [
+    ...(ownerAccountForUpdate.createdPools || []),
+    newPool,
+  ];
+  await store.save(ownerAccountForUpdate);
 }

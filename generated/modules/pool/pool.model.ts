@@ -1,4 +1,14 @@
-import { BaseModel, NumericField, DateTimeField, Model, ManyToOne, OneToMany, StringField, JSONField } from 'warthog';
+import {
+  BaseModel,
+  BooleanField,
+  NumericField,
+  DateTimeField,
+  Model,
+  ManyToOne,
+  OneToMany,
+  StringField,
+  JSONField
+} from 'warthog';
 
 import BN from 'bn.js';
 
@@ -15,6 +25,9 @@ export class Pool extends BaseModel {
     nullable: true
   })
   specVersion?: string;
+
+  @BooleanField({})
+  isActive!: boolean;
 
   @ManyToOne(
     () => Token,
@@ -42,19 +55,22 @@ export class Pool extends BaseModel {
 
   @ManyToOne(
     () => Account,
-    (param: Account) => param.poolcreatedBy,
+    (param: Account) => param.createdPools,
     {
       skipGraphQLField: true,
-
+      nullable: true,
       modelName: 'Pool',
       relModelName: 'Account',
-      propertyName: 'createdBy'
+      propertyName: 'ownerAccount'
     }
   )
-  createdBy!: Account;
+  ownerAccount?: Account;
 
   @DateTimeField({})
   createdAt!: Date;
+
+  @DateTimeField({})
+  deletedAt!: Date;
 
   @ManyToOne(
     () => Token,

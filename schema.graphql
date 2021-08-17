@@ -9,6 +9,7 @@ type Token @entity {
 type Account @entity {
   id: ID!
   specVersion: Int
+  createdPools: [Pool] @derivedFrom(field: "ownerAccount")
 
   tradeTransferOut: [TradeTransfer] @derivedFrom(field: "accountFrom")
   tradeTransferIn: [TradeTransfer] @derivedFrom(field: "accountTo")
@@ -17,10 +18,12 @@ type Account @entity {
 type Pool @entity {
   id: ID!
   specVersion: String
+  isActive: Boolean!
   sharedAsset: Token
   sharedAssetInitialBalance: BigInt
-  createdBy: Account!
+  ownerAccount: Account
   createdAt: DateTime!
+  deletedAt: DateTime!
   tokenZero: Token!
   tokenOne: Token!
   swapActions: [SwapAction] @derivedFrom(field: "xykTradePool")

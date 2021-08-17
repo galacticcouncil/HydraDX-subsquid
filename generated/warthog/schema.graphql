@@ -8,9 +8,9 @@ type Account implements BaseGraphQLObject {
   deletedById: String
   version: Int!
   specVersion: Int
+  createdPools: [Pool!]
   tradeTransferOut: [TradeTransfer!]
   tradeTransferIn: [TradeTransfer!]
-  poolcreatedBy: [Pool!]
   swapactionaccount: [SwapAction!]
 }
 
@@ -75,15 +75,15 @@ input AccountWhereInput {
   specVersion_lt: Int
   specVersion_lte: Int
   specVersion_in: [Int!]
+  createdPools_none: PoolWhereInput
+  createdPools_some: PoolWhereInput
+  createdPools_every: PoolWhereInput
   tradeTransferOut_none: TradeTransferWhereInput
   tradeTransferOut_some: TradeTransferWhereInput
   tradeTransferOut_every: TradeTransferWhereInput
   tradeTransferIn_none: TradeTransferWhereInput
   tradeTransferIn_some: TradeTransferWhereInput
   tradeTransferIn_every: TradeTransferWhereInput
-  poolcreatedBy_none: PoolWhereInput
-  poolcreatedBy_some: PoolWhereInput
-  poolcreatedBy_every: PoolWhereInput
   swapactionaccount_none: SwapActionWhereInput
   swapactionaccount_some: SwapActionWhereInput
   swapactionaccount_every: SwapActionWhereInput
@@ -461,14 +461,16 @@ type Pool implements BaseGraphQLObject {
   createdById: String!
   updatedAt: DateTime
   updatedById: String
-  deletedAt: DateTime
+  deletedAt: DateTime!
   deletedById: String
   version: Int!
   specVersion: String
+  isActive: Boolean!
   sharedAsset: Token
   sharedAssetId: String
   sharedAssetInitialBalance: BigInt
-  createdBy: Account!
+  ownerAccount: Account
+  ownerAccountId: String
   tokenZero: Token!
   tokenZeroId: String!
   tokenOne: Token!
@@ -631,10 +633,12 @@ type PoolConnection {
 
 input PoolCreateInput {
   createdAt: DateTime!
+  deletedAt: DateTime!
   specVersion: String
+  isActive: Boolean!
   sharedAsset: ID
   sharedAssetInitialBalance: String
-  createdBy: ID!
+  ownerAccount: ID
   tokenZero: ID!
   tokenOne: ID!
 }
@@ -653,12 +657,14 @@ enum PoolOrderByInput {
   deletedAt_DESC
   specVersion_ASC
   specVersion_DESC
+  isActive_ASC
+  isActive_DESC
   sharedAsset_ASC
   sharedAsset_DESC
   sharedAssetInitialBalance_ASC
   sharedAssetInitialBalance_DESC
-  createdBy_ASC
-  createdBy_DESC
+  ownerAccount_ASC
+  ownerAccount_DESC
   tokenZero_ASC
   tokenZero_DESC
   tokenOne_ASC
@@ -667,10 +673,12 @@ enum PoolOrderByInput {
 
 input PoolUpdateInput {
   createdAt: DateTime
+  deletedAt: DateTime
   specVersion: String
+  isActive: Boolean
   sharedAsset: ID
   sharedAssetInitialBalance: String
-  createdBy: ID
+  ownerAccount: ID
   tokenZero: ID
   tokenOne: ID
 }
@@ -705,6 +713,8 @@ input PoolWhereInput {
   specVersion_startsWith: String
   specVersion_endsWith: String
   specVersion_in: [String!]
+  isActive_eq: Boolean
+  isActive_in: [Boolean!]
   sharedAsset_eq: ID
   sharedAsset_in: [ID!]
   sharedAssetInitialBalance_eq: BigInt
@@ -713,14 +723,14 @@ input PoolWhereInput {
   sharedAssetInitialBalance_lt: BigInt
   sharedAssetInitialBalance_lte: BigInt
   sharedAssetInitialBalance_in: [BigInt!]
-  createdBy_eq: ID
-  createdBy_in: [ID!]
+  ownerAccount_eq: ID
+  ownerAccount_in: [ID!]
   tokenZero_eq: ID
   tokenZero_in: [ID!]
   tokenOne_eq: ID
   tokenOne_in: [ID!]
   sharedAsset: TokenWhereInput
-  createdBy: AccountWhereInput
+  ownerAccount: AccountWhereInput
   tokenZero: TokenWhereInput
   tokenOne: TokenWhereInput
   swapActions_none: SwapActionWhereInput

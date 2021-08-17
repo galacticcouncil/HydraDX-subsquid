@@ -1,4 +1,4 @@
-import { Account } from '../generated/model';
+import { Account, Pool } from '../generated/model';
 import BN from 'bn.js';
 
 import { System } from '../types/index'; // import via index.ts, this is a workaround related to ts-node
@@ -15,6 +15,7 @@ function generateAccount(accountId: string) {
   const entity = new Account();
   entity.id = accountId;
   entity.specVersion = 0;
+  entity.createdPools = [];
   entity.tradeTransferOut = [];
   entity.tradeTransferIn = [];
 

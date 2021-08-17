@@ -147,12 +147,14 @@ export type PoolOrderByInput =   'createdAt_ASC' |
   'deletedAt_DESC' |
   'specVersion_ASC' |
   'specVersion_DESC' |
+  'isActive_ASC' |
+  'isActive_DESC' |
   'sharedAsset_ASC' |
   'sharedAsset_DESC' |
   'sharedAssetInitialBalance_ASC' |
   'sharedAssetInitialBalance_DESC' |
-  'createdBy_ASC' |
-  'createdBy_DESC' |
+  'ownerAccount_ASC' |
+  'ownerAccount_DESC' |
   'tokenZero_ASC' |
   'tokenZero_DESC' |
   'tokenOne_ASC' |
@@ -307,15 +309,15 @@ export interface AccountWhereInput {
   specVersion_lt?: Int | null
   specVersion_lte?: Int | null
   specVersion_in?: Int[] | Int | null
+  createdPools_none?: PoolWhereInput | null
+  createdPools_some?: PoolWhereInput | null
+  createdPools_every?: PoolWhereInput | null
   tradeTransferOut_none?: TradeTransferWhereInput | null
   tradeTransferOut_some?: TradeTransferWhereInput | null
   tradeTransferOut_every?: TradeTransferWhereInput | null
   tradeTransferIn_none?: TradeTransferWhereInput | null
   tradeTransferIn_some?: TradeTransferWhereInput | null
   tradeTransferIn_every?: TradeTransferWhereInput | null
-  poolcreatedBy_none?: PoolWhereInput | null
-  poolcreatedBy_some?: PoolWhereInput | null
-  poolcreatedBy_every?: PoolWhereInput | null
   swapactionaccount_none?: SwapActionWhereInput | null
   swapactionaccount_some?: SwapActionWhereInput | null
   swapactionaccount_every?: SwapActionWhereInput | null
@@ -611,20 +613,24 @@ export interface PoolAssetVolumeWhereUniqueInput {
 
 export interface PoolCreateInput {
   createdAt: DateTime
+  deletedAt: DateTime
   specVersion?: String | null
+  isActive: Boolean
   sharedAsset?: ID_Input | null
   sharedAssetInitialBalance?: String | null
-  createdBy: ID_Output
+  ownerAccount?: ID_Input | null
   tokenZero: ID_Output
   tokenOne: ID_Output
 }
 
 export interface PoolUpdateInput {
   createdAt?: DateTime | null
+  deletedAt?: DateTime | null
   specVersion?: String | null
+  isActive?: Boolean | null
   sharedAsset?: ID_Input | null
   sharedAssetInitialBalance?: String | null
-  createdBy?: ID_Input | null
+  ownerAccount?: ID_Input | null
   tokenZero?: ID_Input | null
   tokenOne?: ID_Input | null
 }
@@ -659,6 +665,8 @@ export interface PoolWhereInput {
   specVersion_startsWith?: String | null
   specVersion_endsWith?: String | null
   specVersion_in?: String[] | String | null
+  isActive_eq?: Boolean | null
+  isActive_in?: Boolean[] | Boolean | null
   sharedAsset_eq?: ID_Input | null
   sharedAsset_in?: ID_Output[] | ID_Output | null
   sharedAssetInitialBalance_eq?: BigInt | null
@@ -667,14 +675,14 @@ export interface PoolWhereInput {
   sharedAssetInitialBalance_lt?: BigInt | null
   sharedAssetInitialBalance_lte?: BigInt | null
   sharedAssetInitialBalance_in?: BigInt[] | BigInt | null
-  createdBy_eq?: ID_Input | null
-  createdBy_in?: ID_Output[] | ID_Output | null
+  ownerAccount_eq?: ID_Input | null
+  ownerAccount_in?: ID_Output[] | ID_Output | null
   tokenZero_eq?: ID_Input | null
   tokenZero_in?: ID_Output[] | ID_Output | null
   tokenOne_eq?: ID_Input | null
   tokenOne_in?: ID_Output[] | ID_Output | null
   sharedAsset?: TokenWhereInput | null
-  createdBy?: AccountWhereInput | null
+  ownerAccount?: AccountWhereInput | null
   tokenZero?: TokenWhereInput | null
   tokenOne?: TokenWhereInput | null
   swapActions_none?: SwapActionWhereInput | null
@@ -1206,9 +1214,9 @@ export interface Account extends BaseGraphQLObject {
   deletedById?: String | null
   version: Int
   specVersion?: Int | null
+  createdPools?: Array<Pool> | null
   tradeTransferOut?: Array<TradeTransfer> | null
   tradeTransferIn?: Array<TradeTransfer> | null
-  poolcreatedBy?: Array<Pool> | null
   swapactionaccount?: Array<SwapAction> | null
 }
 
@@ -1335,14 +1343,16 @@ export interface Pool extends BaseGraphQLObject {
   createdById: String
   updatedAt?: DateTime | null
   updatedById?: String | null
-  deletedAt?: DateTime | null
+  deletedAt: DateTime
   deletedById?: String | null
   version: Int
   specVersion?: String | null
+  isActive: Boolean
   sharedAsset?: Token | null
   sharedAssetId?: String | null
   sharedAssetInitialBalance?: BigInt | null
-  createdBy: Account
+  ownerAccount?: Account | null
+  ownerAccountId?: String | null
   tokenZero: Token
   tokenZeroId: String
   tokenOne: Token
