@@ -25,7 +25,8 @@
     "tslib": "^2.0.0",
     "typescript": "^3.9.7",
     "uuid": "^8.3.2",
-    "warthog": "https://eldargab.s3.eu-central-1.amazonaws.com/warthog-2.32.0.tgz"
+    "warthog": "https://eldargab.s3.eu-central-1.amazonaws.com/warthog-2.32.0.tgz",
+    "hydradx-js": "git+https://github.com/galacticcouncil/HydraDX-js"
   },
   "devDependencies": {
     "@subsquid/hydra-cli": "4.1.0-alpha.0",

@@ -15,6 +15,9 @@ import {
 import { ensureAccount } from '../handlers/account';
 import { createPool } from '../handlers/pool';
 import { storeGet } from '../helpers/storeHelpers';
+import { initHydraDxApi } from '../helpers/hydradxApi';
+
+initHydraDxApi();
 
 // export async function handleNewAccount(
 //   handlerContext: EventContext & StoreContext
