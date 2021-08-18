@@ -8,7 +8,7 @@ import {
   StoreContext,
 } from '@subsquid/hydra-common';
 import { storeGet } from '../helpers/storeHelpers';
-import { getTokenById } from './token';
+import { getTokenById, fetchOnChainTokensDetails } from './token';
 import { getAccountById } from './account';
 import { getHydraDxFormattedAddress } from '../helpers/utils';
 
@@ -24,6 +24,9 @@ export async function createPool({
   const createdByAddressFormatted = getHydraDxFormattedAddress(
     accountId.toString()
   );
+
+  // TODO Should be removed after merge https://github.com/galacticcouncil/Basilisk-node/pull/124
+  await fetchOnChainTokensDetails(store);
 
   const token0Inst = await getTokenById(assetId0.toString(), store);
   const token1Inst = await getTokenById(assetId1.toString(), store);
