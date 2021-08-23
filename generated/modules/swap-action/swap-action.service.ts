@@ -1,8 +1,7 @@
 import { Service, Inject } from 'typedi';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import { WhereInput } from 'warthog';
-import { WarthogBaseService } from '../../server/WarthogBaseService';
+import { WhereInput, HydraBaseService } from '@subsquid/warthog';
 
 import { SwapAction } from './swap-action.model';
 
@@ -20,7 +19,7 @@ import { getConnection, getRepository, In, Not } from 'typeorm';
 import _ from 'lodash';
 
 @Service('SwapActionService')
-export class SwapActionService extends WarthogBaseService<SwapAction> {
+export class SwapActionService extends HydraBaseService<SwapAction> {
   @Inject('TokenService')
   public readonly tokenZeroService!: TokenService;
   @Inject('TokenService')

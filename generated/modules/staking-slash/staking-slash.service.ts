@@ -1,15 +1,14 @@
 import { Service, Inject } from 'typedi';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import { WhereInput } from 'warthog';
-import { WarthogBaseService } from '../../server/WarthogBaseService';
+import { WhereInput, HydraBaseService } from '@subsquid/warthog';
 
 import { StakingSlash } from './staking-slash.model';
 
 import { StakingSlashWhereArgs, StakingSlashWhereInput } from '../../warthog';
 
 @Service('StakingSlashService')
-export class StakingSlashService extends WarthogBaseService<StakingSlash> {
+export class StakingSlashService extends HydraBaseService<StakingSlash> {
   constructor(@InjectRepository(StakingSlash) protected readonly repository: Repository<StakingSlash>) {
     super(StakingSlash, repository);
   }

@@ -1,8 +1,7 @@
 import { Service, Inject } from 'typedi';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import { WhereInput } from 'warthog';
-import { WarthogBaseService } from '../../server/WarthogBaseService';
+import { WhereInput, HydraBaseService } from '@subsquid/warthog';
 
 import { AssetPriceInTime } from './asset-price-in-time.model';
 
@@ -14,7 +13,7 @@ import { getConnection, getRepository, In, Not } from 'typeorm';
 import _ from 'lodash';
 
 @Service('AssetPriceInTimeService')
-export class AssetPriceInTimeService extends WarthogBaseService<AssetPriceInTime> {
+export class AssetPriceInTimeService extends HydraBaseService<AssetPriceInTime> {
   @Inject('AssetPriceService')
   public readonly assetpricepricesService!: AssetPriceService;
 

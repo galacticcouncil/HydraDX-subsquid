@@ -11,12 +11,20 @@ import {
   Int,
   ArgsType,
   Info,
-  Ctx
+  Ctx,
 } from 'type-graphql';
 import graphqlFields from 'graphql-fields';
 import { Inject } from 'typedi';
 import { Min } from 'class-validator';
-import { Fields, StandardDeleteResponse, UserId, PageInfo, RawFields, NestedFields, BaseContext } from 'warthog';
+import {
+  Fields,
+  StandardDeleteResponse,
+  UserId,
+  PageInfo,
+  RawFields,
+  NestedFields,
+  BaseContext,
+} from '@subsquid/warthog';
 
 import {
   SumRewardCreateInput,
@@ -25,7 +33,7 @@ import {
   SumRewardWhereArgs,
   SumRewardWhereInput,
   SumRewardWhereUniqueInput,
-  SumRewardOrderByEnum
+  SumRewardOrderByEnum,
 } from '../../warthog';
 
 import { SumReward } from './sum-reward.model';
@@ -111,8 +119,8 @@ export class SumRewardResolver {
       edges: [],
       pageInfo: {
         hasNextPage: false,
-        hasPreviousPage: false
-      }
+        hasPreviousPage: false,
+      },
     };
     // If the related database table does not have any records then an error is thrown to the client
     // by warthog

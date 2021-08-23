@@ -21,7 +21,7 @@ import * as BN from "bn.js";
 const { GraphQLJSONObject } = require('graphql-type-json');
 // prettier-ignore
 // @ts-ignore
-import { BaseWhereInput, JsonObject, PaginationArgs, DateOnlyString, DateTimeString, BigInt, Bytes } from 'warthog';
+import { BaseWhereInput, JsonObject, PaginationArgs, DateOnlyString, DateTimeString, BigInt, Bytes } from '@subsquid/warthog';
 
 // @ts-ignore
 import { AssetPriceInTime } from "../modules/asset-price-in-time/asset-price-in-time.model";
@@ -62,11 +62,11 @@ export enum AssetPriceInTimeOrderByEnum {
   timestamp_DESC = "timestamp_DESC",
 
   price_ASC = "price_ASC",
-  price_DESC = "price_DESC"
+  price_DESC = "price_DESC",
 }
 
 registerEnumType(AssetPriceInTimeOrderByEnum, {
-  name: "AssetPriceInTimeOrderByInput"
+  name: "AssetPriceInTimeOrderByInput",
 });
 
 @TypeGraphQLInputType()
@@ -260,11 +260,11 @@ export enum AssetPriceOrderByEnum {
   pairName_DESC = "pairName_DESC",
 
   prices_ASC = "prices_ASC",
-  prices_DESC = "prices_DESC"
+  prices_DESC = "prices_DESC",
 }
 
 registerEnumType(AssetPriceOrderByEnum, {
-  name: "AssetPriceOrderByInput"
+  name: "AssetPriceOrderByInput",
 });
 
 @TypeGraphQLInputType()
@@ -341,18 +341,6 @@ export class AssetPriceWhereInput {
   @TypeGraphQLField(() => [ID], { nullable: true })
   deletedById_in?: string[];
 
-  @TypeGraphQLField(() => ID, { nullable: true })
-  tokenZero_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  tokenZero_in?: string[];
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  tokenOne_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  tokenOne_in?: string[];
-
   @TypeGraphQLField({ nullable: true })
   pairName_eq?: string;
 
@@ -367,12 +355,6 @@ export class AssetPriceWhereInput {
 
   @TypeGraphQLField(() => [String], { nullable: true })
   pairName_in?: string[];
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  prices_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  prices_in?: string[];
 
   @TypeGraphQLField(() => TokenWhereInput, { nullable: true })
   tokenZero?: TokenWhereInput;
@@ -494,11 +476,11 @@ export enum TradeTransferOrderByEnum {
   tokenOneInput_DESC = "tokenOneInput_DESC",
 
   result_ASC = "result_ASC",
-  result_DESC = "result_DESC"
+  result_DESC = "result_DESC",
 }
 
 registerEnumType(TradeTransferOrderByEnum, {
-  name: "TradeTransferOrderByInput"
+  name: "TradeTransferOrderByInput",
 });
 
 @TypeGraphQLInputType()
@@ -625,24 +607,6 @@ export class TradeTransferWhereInput {
 
   @TypeGraphQLField(() => [String], { nullable: true })
   block_in?: string[];
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  swapAction_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  swapAction_in?: string[];
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  accountTo_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  accountTo_in?: string[];
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  accountFrom_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  accountFrom_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
   type_eq?: string;
@@ -908,11 +872,11 @@ export enum SwapActionOrderByEnum {
   account_DESC = "account_DESC",
 
   xykTradePool_ASC = "xykTradePool_ASC",
-  xykTradePool_DESC = "xykTradePool_DESC"
+  xykTradePool_DESC = "xykTradePool_DESC",
 }
 
 registerEnumType(SwapActionOrderByEnum, {
-  name: "SwapActionOrderByInput"
+  name: "SwapActionOrderByInput",
 });
 
 @TypeGraphQLInputType()
@@ -1055,30 +1019,6 @@ export class SwapActionWhereInput {
   @TypeGraphQLField(() => [String], { nullable: true })
   type_in?: string[];
 
-  @TypeGraphQLField(() => ID, { nullable: true })
-  tokenZero_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  tokenZero_in?: string[];
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  tokenOne_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  tokenOne_in?: string[];
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  account_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  account_in?: string[];
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  xykTradePool_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  xykTradePool_in?: string[];
-
   @TypeGraphQLField(() => TokenWhereInput, { nullable: true })
   tokenZero?: TokenWhereInput;
 
@@ -1208,11 +1148,11 @@ export enum TokenOrderByEnum {
   shared_DESC = "shared_DESC",
 
   parentPool_ASC = "parentPool_ASC",
-  parentPool_DESC = "parentPool_DESC"
+  parentPool_DESC = "parentPool_DESC",
 }
 
 registerEnumType(TokenOrderByEnum, {
-  name: "TokenOrderByInput"
+  name: "TokenOrderByInput",
 });
 
 @TypeGraphQLInputType()
@@ -1327,12 +1267,6 @@ export class TokenWhereInput {
 
   @TypeGraphQLField(() => [Boolean], { nullable: true })
   shared_in?: Boolean[];
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  parentPool_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  parentPool_in?: string[];
 
   @TypeGraphQLField(() => PoolWhereInput, { nullable: true })
   parentPool?: PoolWhereInput;
@@ -1493,11 +1427,11 @@ export enum PoolAssetVolumeOrderByEnum {
   marketCap_DESC = "marketCap_DESC",
 
   tradeAmount_ASC = "tradeAmount_ASC",
-  tradeAmount_DESC = "tradeAmount_DESC"
+  tradeAmount_DESC = "tradeAmount_DESC",
 }
 
 registerEnumType(PoolAssetVolumeOrderByEnum, {
-  name: "PoolAssetVolumeOrderByInput"
+  name: "PoolAssetVolumeOrderByInput",
 });
 
 @TypeGraphQLInputType()
@@ -1573,12 +1507,6 @@ export class PoolAssetVolumeWhereInput {
 
   @TypeGraphQLField(() => [ID], { nullable: true })
   deletedById_in?: string[];
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  pool_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  pool_in?: string[];
 
   @TypeGraphQLField(() => BigInt, { nullable: true })
   timestamp_eq?: string;
@@ -1802,11 +1730,11 @@ export enum PoolOrderByEnum {
   tokenZero_DESC = "tokenZero_DESC",
 
   tokenOne_ASC = "tokenOne_ASC",
-  tokenOne_DESC = "tokenOne_DESC"
+  tokenOne_DESC = "tokenOne_DESC",
 }
 
 registerEnumType(PoolOrderByEnum, {
-  name: "PoolOrderByInput"
+  name: "PoolOrderByInput",
 });
 
 @TypeGraphQLInputType()
@@ -1904,12 +1832,6 @@ export class PoolWhereInput {
   @TypeGraphQLField(() => [Boolean], { nullable: true })
   isActive_in?: Boolean[];
 
-  @TypeGraphQLField(() => ID, { nullable: true })
-  sharedAsset_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  sharedAsset_in?: string[];
-
   @TypeGraphQLField(() => BigInt, { nullable: true })
   sharedAssetInitialBalance_eq?: string;
 
@@ -1927,24 +1849,6 @@ export class PoolWhereInput {
 
   @TypeGraphQLField(() => [BigInt], { nullable: true })
   sharedAssetInitialBalance_in?: string[];
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  ownerAccount_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  ownerAccount_in?: string[];
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  tokenZero_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  tokenZero_in?: string[];
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  tokenOne_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  tokenOne_in?: string[];
 
   @TypeGraphQLField(() => TokenWhereInput, { nullable: true })
   sharedAsset?: TokenWhereInput;
@@ -2090,11 +1994,11 @@ export enum AccountOrderByEnum {
   deletedAt_DESC = "deletedAt_DESC",
 
   specVersion_ASC = "specVersion_ASC",
-  specVersion_DESC = "specVersion_DESC"
+  specVersion_DESC = "specVersion_DESC",
 }
 
 registerEnumType(AccountOrderByEnum, {
-  name: "AccountOrderByInput"
+  name: "AccountOrderByInput",
 });
 
 @TypeGraphQLInputType()
@@ -2282,11 +2186,11 @@ export enum NoBondRecordAccountOrderByEnum {
   deletedAt_DESC = "deletedAt_DESC",
 
   firstRewardAt_ASC = "firstRewardAt_ASC",
-  firstRewardAt_DESC = "firstRewardAt_DESC"
+  firstRewardAt_DESC = "firstRewardAt_DESC",
 }
 
 registerEnumType(NoBondRecordAccountOrderByEnum, {
-  name: "NoBondRecordAccountOrderByInput"
+  name: "NoBondRecordAccountOrderByInput",
 });
 
 @TypeGraphQLInputType()
@@ -2444,11 +2348,11 @@ export enum StakingRewardOrderByEnum {
   balance_DESC = "balance_DESC",
 
   date_ASC = "date_ASC",
-  date_DESC = "date_DESC"
+  date_DESC = "date_DESC",
 }
 
 registerEnumType(StakingRewardOrderByEnum, {
-  name: "StakingRewardOrderByInput"
+  name: "StakingRewardOrderByInput",
 });
 
 @TypeGraphQLInputType()
@@ -2648,11 +2552,11 @@ export enum StakingSlashOrderByEnum {
   balance_DESC = "balance_DESC",
 
   date_ASC = "date_ASC",
-  date_DESC = "date_DESC"
+  date_DESC = "date_DESC",
 }
 
 registerEnumType(StakingSlashOrderByEnum, {
-  name: "StakingSlashOrderByInput"
+  name: "StakingSlashOrderByInput",
 });
 
 @TypeGraphQLInputType()
@@ -2852,11 +2756,11 @@ export enum SumRewardOrderByEnum {
   accountSlash_DESC = "accountSlash_DESC",
 
   accountTotal_ASC = "accountTotal_ASC",
-  accountTotal_DESC = "accountTotal_DESC"
+  accountTotal_DESC = "accountTotal_DESC",
 }
 
 registerEnumType(SumRewardOrderByEnum, {
-  name: "SumRewardOrderByInput"
+  name: "SumRewardOrderByInput",
 });
 
 @TypeGraphQLInputType()
