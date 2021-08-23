@@ -11,8 +11,8 @@ type Account @entity {
   specVersion: Int
   createdPools: [Pool] @derivedFrom(field: "ownerAccount")
 
-  tradeTransferOut: [TradeTransfer] @derivedFrom(field: "accountFrom")
-  tradeTransferIn: [TradeTransfer] @derivedFrom(field: "accountTo")
+  tradeTransferOut: [TradeTransfer] @derivedFrom(field: "accountSent")
+  tradeTransferIn: [TradeTransfer] @derivedFrom(field: "accountReceived")
 }
 
 type Pool @entity {
@@ -30,40 +30,115 @@ type Pool @entity {
   assetsVolume: [PoolAssetVolume] @derivedFrom(field: "pool")
 }
 
+
+#  id: string | null;
+#+  slippage?: BigNumber;
+#+  fees?: DirectTradeFee[];
+#+  totalFeeFinal?: BigNumber;
+#+  match?: BigNumber;
+#+  totalDirectTradeExchanged?: BigNumber;
+#+  saved?: BigNumber;
+#+ intentionType?: string;
+#+  account?: string;
+#+  asset1?: string;
+#+  asset2?: string;
+#+  amount?: BigNumber;
+#+  amountXykTrade?: BigNumber;
+#+  amountOutXykTrade?: BigNumber;
+#+  amountSoldBought?: BigNumber;
+#+  totalAmountFinal?: BigNumber;
+#  errorDetails?: string | { section: string; name: string; documentation: string };
+#+  assetsPair?: string;
+#  directTrades?: {
+  #  amountSent: BigNumber;
+  #  amountReceived: BigNumber;
+  #  account1: string;
+  #  account2: string;
+  #  pairedIntention: string;
+#  }[];
+
+type DirectTradeFee @jsonField {
+  account1: String
+  account2: String
+  asset: String
+  amount: BigInt
+}
+
 type SwapAction @entity {
   id: ID!
-  isSuccess: Int!
   timestamp: BigInt!
   block: String!
-  type: String!
+
+  intentionType: String!
+  slippage: BigInt
+  fees: [DirectTradeFee]
+  totalFeeFinal: BigInt
+  match: BigInt
+  totalDirectTradeExchanged: BigInt
+  saved: BigInt
+  account: Account
 
   tokenZero: Token
   tokenOne: Token
-
-  account: Account
+  amount: BigInt
+  amountXykTrade: BigInt
+  amountOutXykTrade: BigInt
+  amountSoldBought: BigInt
+  totalAmountFinal: BigInt
+  assetsPair: String
+  xykTradePool: Pool
 
   directTrades: [TradeTransfer] @derivedFrom(field: "swapAction")
-  xykTradePool: Pool
 }
 
 type TradeTransfer @entity {
   id: ID!
-  isSuccess: Int!
   timestamp: BigInt!
   block: String!
+  #  pairedIntention >>>
   swapAction: SwapAction!
 
-  accountTo: Account!
-  accountFrom: Account!
+  accountReceived: Account!
+  accountSent: Account!
 
-  type: String!
-  path: String!
-  tokenZero: String!
-  tokenOne: String!
-  tokenZeroInput: String!
-  tokenOneInput: String!
-  result: String!
+  amountReceived: BigInt
+  amountSent: BigInt
 }
+
+#type SwapAction @entity {
+#  id: ID!
+#  isSuccess: Int!
+#  timestamp: BigInt!
+#  block: String!
+#  type: String!
+#
+#  tokenZero: Token
+#  tokenOne: Token
+#
+#  account: Account
+#
+#  directTrades: [TradeTransfer] @derivedFrom(field: "swapAction")
+#  xykTradePool: Pool
+#}
+
+#type TradeTransfer @entity {
+#  id: ID!
+#  isSuccess: Int!
+#  timestamp: BigInt!
+#  block: String!
+#  swapAction: SwapAction!
+#
+#  accountTo: Account!
+#  accountFrom: Account!
+#
+#  type: String!
+#  path: String!
+#  tokenZero: String!
+#  tokenOne: String!
+#  tokenZeroInput: String!
+#  tokenOneInput: String!
+#  result: String!
+#}
 
 
 type PoolAssetVolume @entity {

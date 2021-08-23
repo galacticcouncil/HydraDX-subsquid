@@ -7,29 +7,29 @@ import { SwapAction } from './swap-action.model';
 
 import { SwapActionWhereArgs, SwapActionWhereInput } from '../../warthog';
 
-import { Token } from '../token/token.model';
-import { TokenService } from '../token/token.service';
 import { Account } from '../account/account.model';
 import { AccountService } from '../account/account.service';
-import { TradeTransfer } from '../trade-transfer/trade-transfer.model';
-import { TradeTransferService } from '../trade-transfer/trade-transfer.service';
+import { Token } from '../token/token.model';
+import { TokenService } from '../token/token.service';
 import { Pool } from '../pool/pool.model';
 import { PoolService } from '../pool/pool.service';
+import { TradeTransfer } from '../trade-transfer/trade-transfer.model';
+import { TradeTransferService } from '../trade-transfer/trade-transfer.service';
 import { getConnection, getRepository, In, Not } from 'typeorm';
 import _ from 'lodash';
 
 @Service('SwapActionService')
 export class SwapActionService extends HydraBaseService<SwapAction> {
+  @Inject('AccountService')
+  public readonly accountService!: AccountService;
   @Inject('TokenService')
   public readonly tokenZeroService!: TokenService;
   @Inject('TokenService')
   public readonly tokenOneService!: TokenService;
-  @Inject('AccountService')
-  public readonly accountService!: AccountService;
-  @Inject('TradeTransferService')
-  public readonly directTradesService!: TradeTransferService;
   @Inject('PoolService')
   public readonly xykTradePoolService!: PoolService;
+  @Inject('TradeTransferService')
+  public readonly directTradesService!: TradeTransferService;
 
   constructor(@InjectRepository(SwapAction) protected readonly repository: Repository<SwapAction>) {
     super(SwapAction, repository);
@@ -55,6 +55,10 @@ export class SwapActionService extends HydraBaseService<SwapAction> {
     const where = <SwapActionWhereInput>(_where || {});
 
     // remove relation filters to enable warthog query builders
+    const { account } = where;
+    delete where.account;
+
+    // remove relation filters to enable warthog query builders
     const { tokenZero } = where;
     delete where.tokenZero;
 
@@ -63,8 +67,8 @@ export class SwapActionService extends HydraBaseService<SwapAction> {
     delete where.tokenOne;
 
     // remove relation filters to enable warthog query builders
-    const { account } = where;
-    delete where.account;
+    const { xykTradePool } = where;
+    delete where.xykTradePool;
 
     // remove relation filters to enable warthog query builders
 
@@ -77,13 +81,21 @@ export class SwapActionService extends HydraBaseService<SwapAction> {
     delete where.directTrades_some;
     delete where.directTrades_none;
     delete where.directTrades_every;
-    // remove relation filters to enable warthog query builders
-    const { xykTradePool } = where;
-    delete where.xykTradePool;
 
     let mainQuery = this.buildFindQueryWithParams(<any>where, orderBy, undefined, fields, 'main').take(undefined); // remove LIMIT
 
     let parameters = mainQuery.getParameters();
+
+    if (account) {
+      // OTO or MTO
+      const accountQuery = this.accountService
+        .buildFindQueryWithParams(<any>account, undefined, undefined, ['id'], 'account')
+        .take(undefined); // remove the default LIMIT
+
+      mainQuery = mainQuery.andWhere(`"swapaction"."account_id" IN (${accountQuery.getQuery()})`);
+
+      parameters = { ...parameters, ...accountQuery.getParameters() };
+    }
 
     if (tokenZero) {
       // OTO or MTO
@@ -107,15 +119,15 @@ export class SwapActionService extends HydraBaseService<SwapAction> {
       parameters = { ...parameters, ...tokenOneQuery.getParameters() };
     }
 
-    if (account) {
+    if (xykTradePool) {
       // OTO or MTO
-      const accountQuery = this.accountService
-        .buildFindQueryWithParams(<any>account, undefined, undefined, ['id'], 'account')
+      const xykTradePoolQuery = this.xykTradePoolService
+        .buildFindQueryWithParams(<any>xykTradePool, undefined, undefined, ['id'], 'xykTradePool')
         .take(undefined); // remove the default LIMIT
 
-      mainQuery = mainQuery.andWhere(`"swapaction"."account_id" IN (${accountQuery.getQuery()})`);
+      mainQuery = mainQuery.andWhere(`"swapaction"."xyk_trade_pool_id" IN (${xykTradePoolQuery.getQuery()})`);
 
-      parameters = { ...parameters, ...accountQuery.getParameters() };
+      parameters = { ...parameters, ...xykTradePoolQuery.getParameters() };
     }
 
     const directTradesFilter = directTrades_some || directTrades_none || directTrades_every;
@@ -186,17 +198,6 @@ export class SwapActionService extends HydraBaseService<SwapAction> {
                     AND directTrades_subq.cnt_filtered = directTrades_subq.cnt_total
                 )`);
       }
-    }
-
-    if (xykTradePool) {
-      // OTO or MTO
-      const xykTradePoolQuery = this.xykTradePoolService
-        .buildFindQueryWithParams(<any>xykTradePool, undefined, undefined, ['id'], 'xykTradePool')
-        .take(undefined); // remove the default LIMIT
-
-      mainQuery = mainQuery.andWhere(`"swapaction"."xyk_trade_pool_id" IN (${xykTradePoolQuery.getQuery()})`);
-
-      parameters = { ...parameters, ...xykTradePoolQuery.getParameters() };
     }
 
     mainQuery = mainQuery.setParameters(parameters);

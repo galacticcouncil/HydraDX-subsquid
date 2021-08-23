@@ -361,6 +361,93 @@ interface DeleteResponse {
   id: ID!
 }
 
+type DirectTradeFee {
+  account1: String
+  account2: String
+  asset: String
+  amount: BigInt
+}
+
+input DirectTradeFeeCreateInput {
+  account1: String
+  account2: String
+  asset: String
+  amount: String
+}
+
+input DirectTradeFeeInput {
+  account1: String
+  account2: String
+  asset: String
+  amount: BigInt
+}
+
+input DirectTradeFeeUpdateInput {
+  account1: String
+  account2: String
+  asset: String
+  amount: String
+}
+
+input DirectTradeFeeWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  account1_eq: String
+  account1_contains: String
+  account1_startsWith: String
+  account1_endsWith: String
+  account1_in: [String!]
+  account2_eq: String
+  account2_contains: String
+  account2_startsWith: String
+  account2_endsWith: String
+  account2_in: [String!]
+  asset_eq: String
+  asset_contains: String
+  asset_startsWith: String
+  asset_endsWith: String
+  asset_in: [String!]
+  amount_eq: BigInt
+  amount_gt: BigInt
+  amount_gte: BigInt
+  amount_lt: BigInt
+  amount_lte: BigInt
+  amount_in: [BigInt!]
+  AND: [DirectTradeFeeWhereInput!]
+  OR: [DirectTradeFeeWhereInput!]
+}
+
+input DirectTradeFeeWhereUniqueInput {
+  id: ID!
+}
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+
 type NoBondRecordAccount implements BaseGraphQLObject {
   id: ID!
   createdAt: DateTime!
@@ -1102,19 +1189,30 @@ type SwapAction implements BaseGraphQLObject {
   deletedAt: DateTime
   deletedById: String
   version: Int!
-  isSuccess: Int!
   timestamp: BigInt!
   block: String!
-  type: String!
+  intentionType: String!
+  slippage: BigInt
+  fees: DirectTradeFee
+  totalFeeFinal: BigInt
+  match: BigInt
+  totalDirectTradeExchanged: BigInt
+  saved: BigInt
+  account: Account
+  accountId: String
   tokenZero: Token
   tokenZeroId: String
   tokenOne: Token
   tokenOneId: String
-  account: Account
-  accountId: String
-  directTrades: [TradeTransfer!]
+  amount: BigInt
+  amountXykTrade: BigInt
+  amountOutXykTrade: BigInt
+  amountSoldBought: BigInt
+  totalAmountFinal: BigInt
+  assetsPair: String
   xykTradePool: Pool
   xykTradePoolId: String
+  directTrades: [TradeTransfer!]
 }
 
 type SwapActionConnection {
@@ -1124,13 +1222,24 @@ type SwapActionConnection {
 }
 
 input SwapActionCreateInput {
-  isSuccess: Float!
   timestamp: String!
   block: String!
-  type: String!
+  intentionType: String!
+  slippage: String
+  fees: DirectTradeFeeInput
+  totalFeeFinal: String
+  match: String
+  totalDirectTradeExchanged: String
+  saved: String
+  account: ID
   tokenZero: ID
   tokenOne: ID
-  account: ID
+  amount: String
+  amountXykTrade: String
+  amountOutXykTrade: String
+  amountSoldBought: String
+  totalAmountFinal: String
+  assetsPair: String
   xykTradePool: ID
 }
 
@@ -1146,32 +1255,63 @@ enum SwapActionOrderByInput {
   updatedAt_DESC
   deletedAt_ASC
   deletedAt_DESC
-  isSuccess_ASC
-  isSuccess_DESC
   timestamp_ASC
   timestamp_DESC
   block_ASC
   block_DESC
-  type_ASC
-  type_DESC
+  intentionType_ASC
+  intentionType_DESC
+  slippage_ASC
+  slippage_DESC
+  totalFeeFinal_ASC
+  totalFeeFinal_DESC
+  match_ASC
+  match_DESC
+  totalDirectTradeExchanged_ASC
+  totalDirectTradeExchanged_DESC
+  saved_ASC
+  saved_DESC
+  account_ASC
+  account_DESC
   tokenZero_ASC
   tokenZero_DESC
   tokenOne_ASC
   tokenOne_DESC
-  account_ASC
-  account_DESC
+  amount_ASC
+  amount_DESC
+  amountXykTrade_ASC
+  amountXykTrade_DESC
+  amountOutXykTrade_ASC
+  amountOutXykTrade_DESC
+  amountSoldBought_ASC
+  amountSoldBought_DESC
+  totalAmountFinal_ASC
+  totalAmountFinal_DESC
+  assetsPair_ASC
+  assetsPair_DESC
   xykTradePool_ASC
   xykTradePool_DESC
 }
 
 input SwapActionUpdateInput {
-  isSuccess: Float
   timestamp: String
   block: String
-  type: String
+  intentionType: String
+  slippage: String
+  fees: DirectTradeFeeInput
+  totalFeeFinal: String
+  match: String
+  totalDirectTradeExchanged: String
+  saved: String
+  account: ID
   tokenZero: ID
   tokenOne: ID
-  account: ID
+  amount: String
+  amountXykTrade: String
+  amountOutXykTrade: String
+  amountSoldBought: String
+  totalAmountFinal: String
+  assetsPair: String
   xykTradePool: ID
 }
 
@@ -1200,12 +1340,6 @@ input SwapActionWhereInput {
   deletedAt_gte: DateTime
   deletedById_eq: ID
   deletedById_in: [ID!]
-  isSuccess_eq: Int
-  isSuccess_gt: Int
-  isSuccess_gte: Int
-  isSuccess_lt: Int
-  isSuccess_lte: Int
-  isSuccess_in: [Int!]
   timestamp_eq: BigInt
   timestamp_gt: BigInt
   timestamp_gte: BigInt
@@ -1217,18 +1351,84 @@ input SwapActionWhereInput {
   block_startsWith: String
   block_endsWith: String
   block_in: [String!]
-  type_eq: String
-  type_contains: String
-  type_startsWith: String
-  type_endsWith: String
-  type_in: [String!]
+  intentionType_eq: String
+  intentionType_contains: String
+  intentionType_startsWith: String
+  intentionType_endsWith: String
+  intentionType_in: [String!]
+  slippage_eq: BigInt
+  slippage_gt: BigInt
+  slippage_gte: BigInt
+  slippage_lt: BigInt
+  slippage_lte: BigInt
+  slippage_in: [BigInt!]
+  fees_json: JSONObject
+  totalFeeFinal_eq: BigInt
+  totalFeeFinal_gt: BigInt
+  totalFeeFinal_gte: BigInt
+  totalFeeFinal_lt: BigInt
+  totalFeeFinal_lte: BigInt
+  totalFeeFinal_in: [BigInt!]
+  match_eq: BigInt
+  match_gt: BigInt
+  match_gte: BigInt
+  match_lt: BigInt
+  match_lte: BigInt
+  match_in: [BigInt!]
+  totalDirectTradeExchanged_eq: BigInt
+  totalDirectTradeExchanged_gt: BigInt
+  totalDirectTradeExchanged_gte: BigInt
+  totalDirectTradeExchanged_lt: BigInt
+  totalDirectTradeExchanged_lte: BigInt
+  totalDirectTradeExchanged_in: [BigInt!]
+  saved_eq: BigInt
+  saved_gt: BigInt
+  saved_gte: BigInt
+  saved_lt: BigInt
+  saved_lte: BigInt
+  saved_in: [BigInt!]
+  amount_eq: BigInt
+  amount_gt: BigInt
+  amount_gte: BigInt
+  amount_lt: BigInt
+  amount_lte: BigInt
+  amount_in: [BigInt!]
+  amountXykTrade_eq: BigInt
+  amountXykTrade_gt: BigInt
+  amountXykTrade_gte: BigInt
+  amountXykTrade_lt: BigInt
+  amountXykTrade_lte: BigInt
+  amountXykTrade_in: [BigInt!]
+  amountOutXykTrade_eq: BigInt
+  amountOutXykTrade_gt: BigInt
+  amountOutXykTrade_gte: BigInt
+  amountOutXykTrade_lt: BigInt
+  amountOutXykTrade_lte: BigInt
+  amountOutXykTrade_in: [BigInt!]
+  amountSoldBought_eq: BigInt
+  amountSoldBought_gt: BigInt
+  amountSoldBought_gte: BigInt
+  amountSoldBought_lt: BigInt
+  amountSoldBought_lte: BigInt
+  amountSoldBought_in: [BigInt!]
+  totalAmountFinal_eq: BigInt
+  totalAmountFinal_gt: BigInt
+  totalAmountFinal_gte: BigInt
+  totalAmountFinal_lt: BigInt
+  totalAmountFinal_lte: BigInt
+  totalAmountFinal_in: [BigInt!]
+  assetsPair_eq: String
+  assetsPair_contains: String
+  assetsPair_startsWith: String
+  assetsPair_endsWith: String
+  assetsPair_in: [String!]
+  account: AccountWhereInput
   tokenZero: TokenWhereInput
   tokenOne: TokenWhereInput
-  account: AccountWhereInput
+  xykTradePool: PoolWhereInput
   directTrades_none: TradeTransferWhereInput
   directTrades_some: TradeTransferWhereInput
   directTrades_every: TradeTransferWhereInput
-  xykTradePool: PoolWhereInput
   AND: [SwapActionWhereInput!]
   OR: [SwapActionWhereInput!]
 }
@@ -1379,22 +1579,16 @@ type TradeTransfer implements BaseGraphQLObject {
   deletedAt: DateTime
   deletedById: String
   version: Int!
-  isSuccess: Int!
   timestamp: BigInt!
   block: String!
   swapAction: SwapAction!
   swapActionId: String!
-  accountTo: Account!
-  accountToId: String!
-  accountFrom: Account!
-  accountFromId: String!
-  type: String!
-  path: String!
-  tokenZero: String!
-  tokenOne: String!
-  tokenZeroInput: String!
-  tokenOneInput: String!
-  result: String!
+  accountReceived: Account!
+  accountReceivedId: String!
+  accountSent: Account!
+  accountSentId: String!
+  amountReceived: BigInt
+  amountSent: BigInt
 }
 
 type TradeTransferConnection {
@@ -1404,19 +1598,13 @@ type TradeTransferConnection {
 }
 
 input TradeTransferCreateInput {
-  isSuccess: Float!
   timestamp: String!
   block: String!
   swapAction: ID!
-  accountTo: ID!
-  accountFrom: ID!
-  type: String!
-  path: String!
-  tokenZero: String!
-  tokenOne: String!
-  tokenZeroInput: String!
-  tokenOneInput: String!
-  result: String!
+  accountReceived: ID!
+  accountSent: ID!
+  amountReceived: String
+  amountSent: String
 }
 
 type TradeTransferEdge {
@@ -1431,48 +1619,30 @@ enum TradeTransferOrderByInput {
   updatedAt_DESC
   deletedAt_ASC
   deletedAt_DESC
-  isSuccess_ASC
-  isSuccess_DESC
   timestamp_ASC
   timestamp_DESC
   block_ASC
   block_DESC
   swapAction_ASC
   swapAction_DESC
-  accountTo_ASC
-  accountTo_DESC
-  accountFrom_ASC
-  accountFrom_DESC
-  type_ASC
-  type_DESC
-  path_ASC
-  path_DESC
-  tokenZero_ASC
-  tokenZero_DESC
-  tokenOne_ASC
-  tokenOne_DESC
-  tokenZeroInput_ASC
-  tokenZeroInput_DESC
-  tokenOneInput_ASC
-  tokenOneInput_DESC
-  result_ASC
-  result_DESC
+  accountReceived_ASC
+  accountReceived_DESC
+  accountSent_ASC
+  accountSent_DESC
+  amountReceived_ASC
+  amountReceived_DESC
+  amountSent_ASC
+  amountSent_DESC
 }
 
 input TradeTransferUpdateInput {
-  isSuccess: Float
   timestamp: String
   block: String
   swapAction: ID
-  accountTo: ID
-  accountFrom: ID
-  type: String
-  path: String
-  tokenZero: String
-  tokenOne: String
-  tokenZeroInput: String
-  tokenOneInput: String
-  result: String
+  accountReceived: ID
+  accountSent: ID
+  amountReceived: String
+  amountSent: String
 }
 
 input TradeTransferWhereInput {
@@ -1500,12 +1670,6 @@ input TradeTransferWhereInput {
   deletedAt_gte: DateTime
   deletedById_eq: ID
   deletedById_in: [ID!]
-  isSuccess_eq: Int
-  isSuccess_gt: Int
-  isSuccess_gte: Int
-  isSuccess_lt: Int
-  isSuccess_lte: Int
-  isSuccess_in: [Int!]
   timestamp_eq: BigInt
   timestamp_gt: BigInt
   timestamp_gte: BigInt
@@ -1517,44 +1681,21 @@ input TradeTransferWhereInput {
   block_startsWith: String
   block_endsWith: String
   block_in: [String!]
-  type_eq: String
-  type_contains: String
-  type_startsWith: String
-  type_endsWith: String
-  type_in: [String!]
-  path_eq: String
-  path_contains: String
-  path_startsWith: String
-  path_endsWith: String
-  path_in: [String!]
-  tokenZero_eq: String
-  tokenZero_contains: String
-  tokenZero_startsWith: String
-  tokenZero_endsWith: String
-  tokenZero_in: [String!]
-  tokenOne_eq: String
-  tokenOne_contains: String
-  tokenOne_startsWith: String
-  tokenOne_endsWith: String
-  tokenOne_in: [String!]
-  tokenZeroInput_eq: String
-  tokenZeroInput_contains: String
-  tokenZeroInput_startsWith: String
-  tokenZeroInput_endsWith: String
-  tokenZeroInput_in: [String!]
-  tokenOneInput_eq: String
-  tokenOneInput_contains: String
-  tokenOneInput_startsWith: String
-  tokenOneInput_endsWith: String
-  tokenOneInput_in: [String!]
-  result_eq: String
-  result_contains: String
-  result_startsWith: String
-  result_endsWith: String
-  result_in: [String!]
+  amountReceived_eq: BigInt
+  amountReceived_gt: BigInt
+  amountReceived_gte: BigInt
+  amountReceived_lt: BigInt
+  amountReceived_lte: BigInt
+  amountReceived_in: [BigInt!]
+  amountSent_eq: BigInt
+  amountSent_gt: BigInt
+  amountSent_gte: BigInt
+  amountSent_lt: BigInt
+  amountSent_lte: BigInt
+  amountSent_in: [BigInt!]
   swapAction: SwapActionWhereInput
-  accountTo: AccountWhereInput
-  accountFrom: AccountWhereInput
+  accountReceived: AccountWhereInput
+  accountSent: AccountWhereInput
   AND: [TradeTransferWhereInput!]
   OR: [TradeTransferWhereInput!]
 }

@@ -39,6 +39,8 @@ mappings:
 
     - event: xyk.PoolCreated
       handler: handleNewPool
+    - event: exchange.IntentionRegistered
+      handler: handleIntentionRegistered
 
     - event: exchange.IntentionRegistered
       handler: handleIntentionRegistered

@@ -205,20 +205,40 @@ export type SwapActionOrderByInput =   'createdAt_ASC' |
   'updatedAt_DESC' |
   'deletedAt_ASC' |
   'deletedAt_DESC' |
-  'isSuccess_ASC' |
-  'isSuccess_DESC' |
   'timestamp_ASC' |
   'timestamp_DESC' |
   'block_ASC' |
   'block_DESC' |
-  'type_ASC' |
-  'type_DESC' |
+  'intentionType_ASC' |
+  'intentionType_DESC' |
+  'slippage_ASC' |
+  'slippage_DESC' |
+  'totalFeeFinal_ASC' |
+  'totalFeeFinal_DESC' |
+  'match_ASC' |
+  'match_DESC' |
+  'totalDirectTradeExchanged_ASC' |
+  'totalDirectTradeExchanged_DESC' |
+  'saved_ASC' |
+  'saved_DESC' |
+  'account_ASC' |
+  'account_DESC' |
   'tokenZero_ASC' |
   'tokenZero_DESC' |
   'tokenOne_ASC' |
   'tokenOne_DESC' |
-  'account_ASC' |
-  'account_DESC' |
+  'amount_ASC' |
+  'amount_DESC' |
+  'amountXykTrade_ASC' |
+  'amountXykTrade_DESC' |
+  'amountOutXykTrade_ASC' |
+  'amountOutXykTrade_DESC' |
+  'amountSoldBought_ASC' |
+  'amountSoldBought_DESC' |
+  'totalAmountFinal_ASC' |
+  'totalAmountFinal_DESC' |
+  'assetsPair_ASC' |
+  'assetsPair_DESC' |
   'xykTradePool_ASC' |
   'xykTradePool_DESC'
 
@@ -243,32 +263,20 @@ export type TradeTransferOrderByInput =   'createdAt_ASC' |
   'updatedAt_DESC' |
   'deletedAt_ASC' |
   'deletedAt_DESC' |
-  'isSuccess_ASC' |
-  'isSuccess_DESC' |
   'timestamp_ASC' |
   'timestamp_DESC' |
   'block_ASC' |
   'block_DESC' |
   'swapAction_ASC' |
   'swapAction_DESC' |
-  'accountTo_ASC' |
-  'accountTo_DESC' |
-  'accountFrom_ASC' |
-  'accountFrom_DESC' |
-  'type_ASC' |
-  'type_DESC' |
-  'path_ASC' |
-  'path_DESC' |
-  'tokenZero_ASC' |
-  'tokenZero_DESC' |
-  'tokenOne_ASC' |
-  'tokenOne_DESC' |
-  'tokenZeroInput_ASC' |
-  'tokenZeroInput_DESC' |
-  'tokenOneInput_ASC' |
-  'tokenOneInput_DESC' |
-  'result_ASC' |
-  'result_DESC'
+  'accountReceived_ASC' |
+  'accountReceived_DESC' |
+  'accountSent_ASC' |
+  'accountSent_DESC' |
+  'amountReceived_ASC' |
+  'amountReceived_DESC' |
+  'amountSent_ASC' |
+  'amountSent_DESC'
 
 export interface AccountCreateInput {
   specVersion?: Float | null
@@ -464,6 +472,81 @@ export interface BaseWhereInput {
   deletedAt_gt?: String | null
   deletedAt_gte?: String | null
   deletedById_eq?: String | null
+}
+
+export interface DirectTradeFeeCreateInput {
+  account1?: String | null
+  account2?: String | null
+  asset?: String | null
+  amount?: String | null
+}
+
+export interface DirectTradeFeeInput {
+  account1?: String | null
+  account2?: String | null
+  asset?: String | null
+  amount?: BigInt | null
+}
+
+export interface DirectTradeFeeUpdateInput {
+  account1?: String | null
+  account2?: String | null
+  asset?: String | null
+  amount?: String | null
+}
+
+export interface DirectTradeFeeWhereInput {
+  id_eq?: ID_Input | null
+  id_in?: ID_Output[] | ID_Output | null
+  createdAt_eq?: DateTime | null
+  createdAt_lt?: DateTime | null
+  createdAt_lte?: DateTime | null
+  createdAt_gt?: DateTime | null
+  createdAt_gte?: DateTime | null
+  createdById_eq?: ID_Input | null
+  createdById_in?: ID_Output[] | ID_Output | null
+  updatedAt_eq?: DateTime | null
+  updatedAt_lt?: DateTime | null
+  updatedAt_lte?: DateTime | null
+  updatedAt_gt?: DateTime | null
+  updatedAt_gte?: DateTime | null
+  updatedById_eq?: ID_Input | null
+  updatedById_in?: ID_Output[] | ID_Output | null
+  deletedAt_all?: Boolean | null
+  deletedAt_eq?: DateTime | null
+  deletedAt_lt?: DateTime | null
+  deletedAt_lte?: DateTime | null
+  deletedAt_gt?: DateTime | null
+  deletedAt_gte?: DateTime | null
+  deletedById_eq?: ID_Input | null
+  deletedById_in?: ID_Output[] | ID_Output | null
+  account1_eq?: String | null
+  account1_contains?: String | null
+  account1_startsWith?: String | null
+  account1_endsWith?: String | null
+  account1_in?: String[] | String | null
+  account2_eq?: String | null
+  account2_contains?: String | null
+  account2_startsWith?: String | null
+  account2_endsWith?: String | null
+  account2_in?: String[] | String | null
+  asset_eq?: String | null
+  asset_contains?: String | null
+  asset_startsWith?: String | null
+  asset_endsWith?: String | null
+  asset_in?: String[] | String | null
+  amount_eq?: BigInt | null
+  amount_gt?: BigInt | null
+  amount_gte?: BigInt | null
+  amount_lt?: BigInt | null
+  amount_lte?: BigInt | null
+  amount_in?: BigInt[] | BigInt | null
+  AND?: DirectTradeFeeWhereInput[] | DirectTradeFeeWhereInput | null
+  OR?: DirectTradeFeeWhereInput[] | DirectTradeFeeWhereInput | null
+}
+
+export interface DirectTradeFeeWhereUniqueInput {
+  id: ID_Output
 }
 
 export interface NoBondRecordAccountCreateInput {
@@ -872,24 +955,46 @@ export interface SumRewardWhereUniqueInput {
 }
 
 export interface SwapActionCreateInput {
-  isSuccess: Float
   timestamp: String
   block: String
-  type: String
+  intentionType: String
+  slippage?: String | null
+  fees?: DirectTradeFeeInput | null
+  totalFeeFinal?: String | null
+  match?: String | null
+  totalDirectTradeExchanged?: String | null
+  saved?: String | null
+  account?: ID_Input | null
   tokenZero?: ID_Input | null
   tokenOne?: ID_Input | null
-  account?: ID_Input | null
+  amount?: String | null
+  amountXykTrade?: String | null
+  amountOutXykTrade?: String | null
+  amountSoldBought?: String | null
+  totalAmountFinal?: String | null
+  assetsPair?: String | null
   xykTradePool?: ID_Input | null
 }
 
 export interface SwapActionUpdateInput {
-  isSuccess?: Float | null
   timestamp?: String | null
   block?: String | null
-  type?: String | null
+  intentionType?: String | null
+  slippage?: String | null
+  fees?: DirectTradeFeeInput | null
+  totalFeeFinal?: String | null
+  match?: String | null
+  totalDirectTradeExchanged?: String | null
+  saved?: String | null
+  account?: ID_Input | null
   tokenZero?: ID_Input | null
   tokenOne?: ID_Input | null
-  account?: ID_Input | null
+  amount?: String | null
+  amountXykTrade?: String | null
+  amountOutXykTrade?: String | null
+  amountSoldBought?: String | null
+  totalAmountFinal?: String | null
+  assetsPair?: String | null
   xykTradePool?: ID_Input | null
 }
 
@@ -918,12 +1023,6 @@ export interface SwapActionWhereInput {
   deletedAt_gte?: DateTime | null
   deletedById_eq?: ID_Input | null
   deletedById_in?: ID_Output[] | ID_Output | null
-  isSuccess_eq?: Int | null
-  isSuccess_gt?: Int | null
-  isSuccess_gte?: Int | null
-  isSuccess_lt?: Int | null
-  isSuccess_lte?: Int | null
-  isSuccess_in?: Int[] | Int | null
   timestamp_eq?: BigInt | null
   timestamp_gt?: BigInt | null
   timestamp_gte?: BigInt | null
@@ -935,18 +1034,84 @@ export interface SwapActionWhereInput {
   block_startsWith?: String | null
   block_endsWith?: String | null
   block_in?: String[] | String | null
-  type_eq?: String | null
-  type_contains?: String | null
-  type_startsWith?: String | null
-  type_endsWith?: String | null
-  type_in?: String[] | String | null
+  intentionType_eq?: String | null
+  intentionType_contains?: String | null
+  intentionType_startsWith?: String | null
+  intentionType_endsWith?: String | null
+  intentionType_in?: String[] | String | null
+  slippage_eq?: BigInt | null
+  slippage_gt?: BigInt | null
+  slippage_gte?: BigInt | null
+  slippage_lt?: BigInt | null
+  slippage_lte?: BigInt | null
+  slippage_in?: BigInt[] | BigInt | null
+  fees_json?: JSONObject | null
+  totalFeeFinal_eq?: BigInt | null
+  totalFeeFinal_gt?: BigInt | null
+  totalFeeFinal_gte?: BigInt | null
+  totalFeeFinal_lt?: BigInt | null
+  totalFeeFinal_lte?: BigInt | null
+  totalFeeFinal_in?: BigInt[] | BigInt | null
+  match_eq?: BigInt | null
+  match_gt?: BigInt | null
+  match_gte?: BigInt | null
+  match_lt?: BigInt | null
+  match_lte?: BigInt | null
+  match_in?: BigInt[] | BigInt | null
+  totalDirectTradeExchanged_eq?: BigInt | null
+  totalDirectTradeExchanged_gt?: BigInt | null
+  totalDirectTradeExchanged_gte?: BigInt | null
+  totalDirectTradeExchanged_lt?: BigInt | null
+  totalDirectTradeExchanged_lte?: BigInt | null
+  totalDirectTradeExchanged_in?: BigInt[] | BigInt | null
+  saved_eq?: BigInt | null
+  saved_gt?: BigInt | null
+  saved_gte?: BigInt | null
+  saved_lt?: BigInt | null
+  saved_lte?: BigInt | null
+  saved_in?: BigInt[] | BigInt | null
+  amount_eq?: BigInt | null
+  amount_gt?: BigInt | null
+  amount_gte?: BigInt | null
+  amount_lt?: BigInt | null
+  amount_lte?: BigInt | null
+  amount_in?: BigInt[] | BigInt | null
+  amountXykTrade_eq?: BigInt | null
+  amountXykTrade_gt?: BigInt | null
+  amountXykTrade_gte?: BigInt | null
+  amountXykTrade_lt?: BigInt | null
+  amountXykTrade_lte?: BigInt | null
+  amountXykTrade_in?: BigInt[] | BigInt | null
+  amountOutXykTrade_eq?: BigInt | null
+  amountOutXykTrade_gt?: BigInt | null
+  amountOutXykTrade_gte?: BigInt | null
+  amountOutXykTrade_lt?: BigInt | null
+  amountOutXykTrade_lte?: BigInt | null
+  amountOutXykTrade_in?: BigInt[] | BigInt | null
+  amountSoldBought_eq?: BigInt | null
+  amountSoldBought_gt?: BigInt | null
+  amountSoldBought_gte?: BigInt | null
+  amountSoldBought_lt?: BigInt | null
+  amountSoldBought_lte?: BigInt | null
+  amountSoldBought_in?: BigInt[] | BigInt | null
+  totalAmountFinal_eq?: BigInt | null
+  totalAmountFinal_gt?: BigInt | null
+  totalAmountFinal_gte?: BigInt | null
+  totalAmountFinal_lt?: BigInt | null
+  totalAmountFinal_lte?: BigInt | null
+  totalAmountFinal_in?: BigInt[] | BigInt | null
+  assetsPair_eq?: String | null
+  assetsPair_contains?: String | null
+  assetsPair_startsWith?: String | null
+  assetsPair_endsWith?: String | null
+  assetsPair_in?: String[] | String | null
+  account?: AccountWhereInput | null
   tokenZero?: TokenWhereInput | null
   tokenOne?: TokenWhereInput | null
-  account?: AccountWhereInput | null
+  xykTradePool?: PoolWhereInput | null
   directTrades_none?: TradeTransferWhereInput | null
   directTrades_some?: TradeTransferWhereInput | null
   directTrades_every?: TradeTransferWhereInput | null
-  xykTradePool?: PoolWhereInput | null
   AND?: SwapActionWhereInput[] | SwapActionWhereInput | null
   OR?: SwapActionWhereInput[] | SwapActionWhereInput | null
 }
@@ -1038,35 +1203,23 @@ export interface TokenWhereUniqueInput {
 }
 
 export interface TradeTransferCreateInput {
-  isSuccess: Float
   timestamp: String
   block: String
   swapAction: ID_Output
-  accountTo: ID_Output
-  accountFrom: ID_Output
-  type: String
-  path: String
-  tokenZero: String
-  tokenOne: String
-  tokenZeroInput: String
-  tokenOneInput: String
-  result: String
+  accountReceived: ID_Output
+  accountSent: ID_Output
+  amountReceived?: String | null
+  amountSent?: String | null
 }
 
 export interface TradeTransferUpdateInput {
-  isSuccess?: Float | null
   timestamp?: String | null
   block?: String | null
   swapAction?: ID_Input | null
-  accountTo?: ID_Input | null
-  accountFrom?: ID_Input | null
-  type?: String | null
-  path?: String | null
-  tokenZero?: String | null
-  tokenOne?: String | null
-  tokenZeroInput?: String | null
-  tokenOneInput?: String | null
-  result?: String | null
+  accountReceived?: ID_Input | null
+  accountSent?: ID_Input | null
+  amountReceived?: String | null
+  amountSent?: String | null
 }
 
 export interface TradeTransferWhereInput {
@@ -1094,12 +1247,6 @@ export interface TradeTransferWhereInput {
   deletedAt_gte?: DateTime | null
   deletedById_eq?: ID_Input | null
   deletedById_in?: ID_Output[] | ID_Output | null
-  isSuccess_eq?: Int | null
-  isSuccess_gt?: Int | null
-  isSuccess_gte?: Int | null
-  isSuccess_lt?: Int | null
-  isSuccess_lte?: Int | null
-  isSuccess_in?: Int[] | Int | null
   timestamp_eq?: BigInt | null
   timestamp_gt?: BigInt | null
   timestamp_gte?: BigInt | null
@@ -1111,44 +1258,21 @@ export interface TradeTransferWhereInput {
   block_startsWith?: String | null
   block_endsWith?: String | null
   block_in?: String[] | String | null
-  type_eq?: String | null
-  type_contains?: String | null
-  type_startsWith?: String | null
-  type_endsWith?: String | null
-  type_in?: String[] | String | null
-  path_eq?: String | null
-  path_contains?: String | null
-  path_startsWith?: String | null
-  path_endsWith?: String | null
-  path_in?: String[] | String | null
-  tokenZero_eq?: String | null
-  tokenZero_contains?: String | null
-  tokenZero_startsWith?: String | null
-  tokenZero_endsWith?: String | null
-  tokenZero_in?: String[] | String | null
-  tokenOne_eq?: String | null
-  tokenOne_contains?: String | null
-  tokenOne_startsWith?: String | null
-  tokenOne_endsWith?: String | null
-  tokenOne_in?: String[] | String | null
-  tokenZeroInput_eq?: String | null
-  tokenZeroInput_contains?: String | null
-  tokenZeroInput_startsWith?: String | null
-  tokenZeroInput_endsWith?: String | null
-  tokenZeroInput_in?: String[] | String | null
-  tokenOneInput_eq?: String | null
-  tokenOneInput_contains?: String | null
-  tokenOneInput_startsWith?: String | null
-  tokenOneInput_endsWith?: String | null
-  tokenOneInput_in?: String[] | String | null
-  result_eq?: String | null
-  result_contains?: String | null
-  result_startsWith?: String | null
-  result_endsWith?: String | null
-  result_in?: String[] | String | null
+  amountReceived_eq?: BigInt | null
+  amountReceived_gt?: BigInt | null
+  amountReceived_gte?: BigInt | null
+  amountReceived_lt?: BigInt | null
+  amountReceived_lte?: BigInt | null
+  amountReceived_in?: BigInt[] | BigInt | null
+  amountSent_eq?: BigInt | null
+  amountSent_gt?: BigInt | null
+  amountSent_gte?: BigInt | null
+  amountSent_lt?: BigInt | null
+  amountSent_lte?: BigInt | null
+  amountSent_in?: BigInt[] | BigInt | null
   swapAction?: SwapActionWhereInput | null
-  accountTo?: AccountWhereInput | null
-  accountFrom?: AccountWhereInput | null
+  accountReceived?: AccountWhereInput | null
+  accountSent?: AccountWhereInput | null
   AND?: TradeTransferWhereInput[] | TradeTransferWhereInput | null
   OR?: TradeTransferWhereInput[] | TradeTransferWhereInput | null
 }
@@ -1273,6 +1397,13 @@ export interface BaseModelUUID extends BaseGraphQLObject {
   deletedAt?: DateTime | null
   deletedById?: String | null
   version: Int
+}
+
+export interface DirectTradeFee {
+  account1?: String | null
+  account2?: String | null
+  asset?: String | null
+  amount?: BigInt | null
 }
 
 export interface NoBondRecordAccount extends BaseGraphQLObject {
@@ -1466,19 +1597,30 @@ export interface SwapAction extends BaseGraphQLObject {
   deletedAt?: DateTime | null
   deletedById?: String | null
   version: Int
-  isSuccess: Int
   timestamp: BigInt
   block: String
-  type: String
+  intentionType: String
+  slippage?: BigInt | null
+  fees?: DirectTradeFee | null
+  totalFeeFinal?: BigInt | null
+  match?: BigInt | null
+  totalDirectTradeExchanged?: BigInt | null
+  saved?: BigInt | null
+  account?: Account | null
+  accountId?: String | null
   tokenZero?: Token | null
   tokenZeroId?: String | null
   tokenOne?: Token | null
   tokenOneId?: String | null
-  account?: Account | null
-  accountId?: String | null
-  directTrades?: Array<TradeTransfer> | null
+  amount?: BigInt | null
+  amountXykTrade?: BigInt | null
+  amountOutXykTrade?: BigInt | null
+  amountSoldBought?: BigInt | null
+  totalAmountFinal?: BigInt | null
+  assetsPair?: String | null
   xykTradePool?: Pool | null
   xykTradePoolId?: String | null
+  directTrades?: Array<TradeTransfer> | null
 }
 
 export interface SwapActionConnection {
@@ -1535,22 +1677,16 @@ export interface TradeTransfer extends BaseGraphQLObject {
   deletedAt?: DateTime | null
   deletedById?: String | null
   version: Int
-  isSuccess: Int
   timestamp: BigInt
   block: String
   swapAction: SwapAction
   swapActionId: String
-  accountTo: Account
-  accountToId: String
-  accountFrom: Account
-  accountFromId: String
-  type: String
-  path: String
-  tokenZero: String
-  tokenOne: String
-  tokenZeroInput: String
-  tokenOneInput: String
-  result: String
+  accountReceived: Account
+  accountReceivedId: String
+  accountSent: Account
+  accountSentId: String
+  amountReceived?: BigInt | null
+  amountSent?: BigInt | null
 }
 
 export interface TradeTransferConnection {
@@ -1594,6 +1730,22 @@ export type ID_Output = string
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
 */
 export type Int = number
+
+/*
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+*/
+
+    export type JsonValue = JsonPrimitive | JsonObject | JsonArray;
+
+    export type JsonPrimitive = string | number | boolean | null | {};
+    
+        // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    export interface JsonArray extends Array<JsonValue> {}
+    
+    export type JsonObject = { [member: string]: JsonValue };
+
+    export type JSONObject = JsonObject;
+  
 
 /*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.

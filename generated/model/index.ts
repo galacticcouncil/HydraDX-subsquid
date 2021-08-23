@@ -22,3 +22,6 @@ import { Token } from '../modules/token/token.model';
 export { Token };
 import { TradeTransfer } from '../modules/trade-transfer/trade-transfer.model';
 export { TradeTransfer };
+
+import { DirectTradeFee } from '../modules/jsonfields/jsonfields.model';
+export { DirectTradeFee };

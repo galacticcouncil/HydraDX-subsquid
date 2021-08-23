@@ -19,9 +19,9 @@ export class TradeTransferService extends HydraBaseService<TradeTransfer> {
   @Inject('SwapActionService')
   public readonly swapActionService!: SwapActionService;
   @Inject('AccountService')
-  public readonly accountToService!: AccountService;
+  public readonly accountReceivedService!: AccountService;
   @Inject('AccountService')
-  public readonly accountFromService!: AccountService;
+  public readonly accountSentService!: AccountService;
 
   constructor(@InjectRepository(TradeTransfer) protected readonly repository: Repository<TradeTransfer>) {
     super(TradeTransfer, repository);
@@ -51,12 +51,12 @@ export class TradeTransferService extends HydraBaseService<TradeTransfer> {
     delete where.swapAction;
 
     // remove relation filters to enable warthog query builders
-    const { accountTo } = where;
-    delete where.accountTo;
+    const { accountReceived } = where;
+    delete where.accountReceived;
 
     // remove relation filters to enable warthog query builders
-    const { accountFrom } = where;
-    delete where.accountFrom;
+    const { accountSent } = where;
+    delete where.accountSent;
 
     let mainQuery = this.buildFindQueryWithParams(<any>where, orderBy, undefined, fields, 'main').take(undefined); // remove LIMIT
 
@@ -73,26 +73,26 @@ export class TradeTransferService extends HydraBaseService<TradeTransfer> {
       parameters = { ...parameters, ...swapActionQuery.getParameters() };
     }
 
-    if (accountTo) {
+    if (accountReceived) {
       // OTO or MTO
-      const accountToQuery = this.accountToService
-        .buildFindQueryWithParams(<any>accountTo, undefined, undefined, ['id'], 'accountTo')
+      const accountReceivedQuery = this.accountReceivedService
+        .buildFindQueryWithParams(<any>accountReceived, undefined, undefined, ['id'], 'accountReceived')
         .take(undefined); // remove the default LIMIT
 
-      mainQuery = mainQuery.andWhere(`"tradetransfer"."account_to_id" IN (${accountToQuery.getQuery()})`);
+      mainQuery = mainQuery.andWhere(`"tradetransfer"."account_received_id" IN (${accountReceivedQuery.getQuery()})`);
 
-      parameters = { ...parameters, ...accountToQuery.getParameters() };
+      parameters = { ...parameters, ...accountReceivedQuery.getParameters() };
     }
 
-    if (accountFrom) {
+    if (accountSent) {
       // OTO or MTO
-      const accountFromQuery = this.accountFromService
-        .buildFindQueryWithParams(<any>accountFrom, undefined, undefined, ['id'], 'accountFrom')
+      const accountSentQuery = this.accountSentService
+        .buildFindQueryWithParams(<any>accountSent, undefined, undefined, ['id'], 'accountSent')
         .take(undefined); // remove the default LIMIT
 
-      mainQuery = mainQuery.andWhere(`"tradetransfer"."account_from_id" IN (${accountFromQuery.getQuery()})`);
+      mainQuery = mainQuery.andWhere(`"tradetransfer"."account_sent_id" IN (${accountSentQuery.getQuery()})`);
 
-      parameters = { ...parameters, ...accountFromQuery.getParameters() };
+      parameters = { ...parameters, ...accountSentQuery.getParameters() };
     }
 
     mainQuery = mainQuery.setParameters(parameters);

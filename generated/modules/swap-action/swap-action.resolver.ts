@@ -39,14 +39,14 @@ import {
 import { SwapAction } from './swap-action.model';
 import { SwapActionService } from './swap-action.service';
 
-import { Token } from '../token/token.model';
-import { TokenService } from '../token/token.service';
 import { Account } from '../account/account.model';
 import { AccountService } from '../account/account.service';
-import { TradeTransfer } from '../trade-transfer/trade-transfer.model';
-import { TradeTransferService } from '../trade-transfer/trade-transfer.service';
+import { Token } from '../token/token.model';
+import { TokenService } from '../token/token.service';
 import { Pool } from '../pool/pool.model';
 import { PoolService } from '../pool/pool.service';
+import { TradeTransfer } from '../trade-transfer/trade-transfer.model';
+import { TradeTransferService } from '../trade-transfer/trade-transfer.service';
 import { getConnection, getRepository, In, Not } from 'typeorm';
 import _ from 'lodash';
 
@@ -146,6 +146,11 @@ export class SwapActionResolver {
     return result as Promise<SwapActionConnection>;
   }
 
+  @FieldResolver(() => Account)
+  async account(@Root() r: SwapAction, @Ctx() ctx: BaseContext): Promise<Account | null> {
+    return ctx.dataLoader.loaders.SwapAction.account.load(r);
+  }
+
   @FieldResolver(() => Token)
   async tokenZero(@Root() r: SwapAction, @Ctx() ctx: BaseContext): Promise<Token | null> {
     return ctx.dataLoader.loaders.SwapAction.tokenZero.load(r);
@@ -156,18 +161,13 @@ export class SwapActionResolver {
     return ctx.dataLoader.loaders.SwapAction.tokenOne.load(r);
   }
 
-  @FieldResolver(() => Account)
-  async account(@Root() r: SwapAction, @Ctx() ctx: BaseContext): Promise<Account | null> {
-    return ctx.dataLoader.loaders.SwapAction.account.load(r);
+  @FieldResolver(() => Pool)
+  async xykTradePool(@Root() r: SwapAction, @Ctx() ctx: BaseContext): Promise<Pool | null> {
+    return ctx.dataLoader.loaders.SwapAction.xykTradePool.load(r);
   }
 
   @FieldResolver(() => TradeTransfer)
   async directTrades(@Root() r: SwapAction, @Ctx() ctx: BaseContext): Promise<TradeTransfer[] | null> {
     return ctx.dataLoader.loaders.SwapAction.directTrades.load(r);
-  }
-
-  @FieldResolver(() => Pool)
-  async xykTradePool(@Root() r: SwapAction, @Ctx() ctx: BaseContext): Promise<Pool | null> {
-    return ctx.dataLoader.loaders.SwapAction.xykTradePool.load(r);
   }
 }

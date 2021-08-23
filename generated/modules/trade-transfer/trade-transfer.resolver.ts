@@ -148,12 +148,12 @@ export class TradeTransferResolver {
   }
 
   @FieldResolver(() => Account)
-  async accountTo(@Root() r: TradeTransfer, @Ctx() ctx: BaseContext): Promise<Account | null> {
-    return ctx.dataLoader.loaders.TradeTransfer.accountTo.load(r);
+  async accountReceived(@Root() r: TradeTransfer, @Ctx() ctx: BaseContext): Promise<Account | null> {
+    return ctx.dataLoader.loaders.TradeTransfer.accountReceived.load(r);
   }
 
   @FieldResolver(() => Account)
-  async accountFrom(@Root() r: TradeTransfer, @Ctx() ctx: BaseContext): Promise<Account | null> {
-    return ctx.dataLoader.loaders.TradeTransfer.accountFrom.load(r);
+  async accountSent(@Root() r: TradeTransfer, @Ctx() ctx: BaseContext): Promise<Account | null> {
+    return ctx.dataLoader.loaders.TradeTransfer.accountSent.load(r);
   }
 }

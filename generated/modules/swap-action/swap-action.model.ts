@@ -1,28 +1,16 @@
-import {
-  BaseModel,
-  IntField,
-  NumericField,
-  Model,
-  ManyToOne,
-  OneToMany,
-  StringField,
-  JSONField,
-} from '@subsquid/warthog';
+import { BaseModel, NumericField, Model, ManyToOne, OneToMany, StringField, JSONField } from '@subsquid/warthog';
 
 import BN from 'bn.js';
 
-import { Token } from '../token/token.model';
 import { Account } from '../account/account.model';
-import { TradeTransfer } from '../trade-transfer/trade-transfer.model';
+import { Token } from '../token/token.model';
 import { Pool } from '../pool/pool.model';
+import { TradeTransfer } from '../trade-transfer/trade-transfer.model';
 
 import * as jsonTypes from '../jsonfields/jsonfields.model';
 
 @Model({ api: {} })
 export class SwapAction extends BaseModel {
-  @IntField({})
-  isSuccess!: number;
-
   @NumericField({
     transformer: {
       to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
@@ -36,7 +24,74 @@ export class SwapAction extends BaseModel {
   block!: string;
 
   @StringField({})
-  type!: string;
+  intentionType!: string;
+
+  @NumericField({
+    nullable: true,
+
+    transformer: {
+      to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
+      from: (dbValue: string) =>
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
+  })
+  slippage?: BN;
+
+  @JSONField({ filter: true, gqlFieldType: jsonTypes.DirectTradeFee, nullable: true })
+  fees?: jsonTypes.DirectTradeFee;
+
+  @NumericField({
+    nullable: true,
+
+    transformer: {
+      to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
+      from: (dbValue: string) =>
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
+  })
+  totalFeeFinal?: BN;
+
+  @NumericField({
+    nullable: true,
+
+    transformer: {
+      to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
+      from: (dbValue: string) =>
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
+  })
+  match?: BN;
+
+  @NumericField({
+    nullable: true,
+
+    transformer: {
+      to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
+      from: (dbValue: string) =>
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
+  })
+  totalDirectTradeExchanged?: BN;
+
+  @NumericField({
+    nullable: true,
+
+    transformer: {
+      to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
+      from: (dbValue: string) =>
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
+  })
+  saved?: BN;
+
+  @ManyToOne(() => Account, (param: Account) => param.swapactionaccount, {
+    skipGraphQLField: true,
+    nullable: true,
+    modelName: 'SwapAction',
+    relModelName: 'Account',
+    propertyName: 'account',
+  })
+  account?: Account;
 
   @ManyToOne(() => Token, (param: Token) => param.swapactiontokenZero, {
     skipGraphQLField: true,
@@ -56,22 +111,65 @@ export class SwapAction extends BaseModel {
   })
   tokenOne?: Token;
 
-  @ManyToOne(() => Account, (param: Account) => param.swapactionaccount, {
-    skipGraphQLField: true,
+  @NumericField({
     nullable: true,
-    modelName: 'SwapAction',
-    relModelName: 'Account',
-    propertyName: 'account',
-  })
-  account?: Account;
 
-  @OneToMany(() => TradeTransfer, (param: TradeTransfer) => param.swapAction, {
-    nullable: true,
-    modelName: 'SwapAction',
-    relModelName: 'TradeTransfer',
-    propertyName: 'directTrades',
+    transformer: {
+      to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
+      from: (dbValue: string) =>
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
   })
-  directTrades?: TradeTransfer[];
+  amount?: BN;
+
+  @NumericField({
+    nullable: true,
+
+    transformer: {
+      to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
+      from: (dbValue: string) =>
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
+  })
+  amountXykTrade?: BN;
+
+  @NumericField({
+    nullable: true,
+
+    transformer: {
+      to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
+      from: (dbValue: string) =>
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
+  })
+  amountOutXykTrade?: BN;
+
+  @NumericField({
+    nullable: true,
+
+    transformer: {
+      to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
+      from: (dbValue: string) =>
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
+  })
+  amountSoldBought?: BN;
+
+  @NumericField({
+    nullable: true,
+
+    transformer: {
+      to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
+      from: (dbValue: string) =>
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
+  })
+  totalAmountFinal?: BN;
+
+  @StringField({
+    nullable: true,
+  })
+  assetsPair?: string;
 
   @ManyToOne(() => Pool, (param: Pool) => param.swapActions, {
     skipGraphQLField: true,
@@ -81,6 +179,14 @@ export class SwapAction extends BaseModel {
     propertyName: 'xykTradePool',
   })
   xykTradePool?: Pool;
+
+  @OneToMany(() => TradeTransfer, (param: TradeTransfer) => param.swapAction, {
+    nullable: true,
+    modelName: 'SwapAction',
+    relModelName: 'TradeTransfer',
+    propertyName: 'directTrades',
+  })
+  directTrades?: TradeTransfer[];
 
   constructor(init?: Partial<SwapAction>) {
     super();

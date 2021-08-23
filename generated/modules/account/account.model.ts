@@ -21,7 +21,7 @@ export class Account extends BaseModel {
   })
   createdPools?: Pool[];
 
-  @OneToMany(() => TradeTransfer, (param: TradeTransfer) => param.accountFrom, {
+  @OneToMany(() => TradeTransfer, (param: TradeTransfer) => param.accountSent, {
     nullable: true,
     modelName: 'Account',
     relModelName: 'TradeTransfer',
@@ -29,7 +29,7 @@ export class Account extends BaseModel {
   })
   tradeTransferOut?: TradeTransfer[];
 
-  @OneToMany(() => TradeTransfer, (param: TradeTransfer) => param.accountTo, {
+  @OneToMany(() => TradeTransfer, (param: TradeTransfer) => param.accountReceived, {
     nullable: true,
     modelName: 'Account',
     relModelName: 'TradeTransfer',

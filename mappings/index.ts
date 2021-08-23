@@ -13,6 +13,7 @@ import {
 } from '@subsquid/hydra-common';
 
 import { ensureAccount } from '../handlers/account';
+import { registerSwapAction } from '../handlers/swapAction';
 import { createPool } from '../handlers/pool';
 import { storeGet } from '../helpers/storeHelpers';
 import hydraDxApi from '../helpers/hydradxApi';
@@ -33,6 +34,11 @@ export async function handleNewPool(
 ) {
   // await ensureAssets(handlerContext);
   await createPool(handlerContext);
+}
+export async function handleIntentionRegistered(
+  handlerContext: EventContext & StoreContext
+) {
+  await registerSwapAction(handlerContext);
 }
 
 /**

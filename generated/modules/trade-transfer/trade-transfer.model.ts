@@ -1,4 +1,4 @@
-import { BaseModel, IntField, NumericField, Model, ManyToOne, StringField, JSONField } from '@subsquid/warthog';
+import { BaseModel, NumericField, Model, ManyToOne, StringField, JSONField } from '@subsquid/warthog';
 
 import BN from 'bn.js';
 
@@ -9,9 +9,6 @@ import * as jsonTypes from '../jsonfields/jsonfields.model';
 
 @Model({ api: {} })
 export class TradeTransfer extends BaseModel {
-  @IntField({})
-  isSuccess!: number;
-
   @NumericField({
     transformer: {
       to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
@@ -38,39 +35,40 @@ export class TradeTransfer extends BaseModel {
 
     modelName: 'TradeTransfer',
     relModelName: 'Account',
-    propertyName: 'accountTo',
+    propertyName: 'accountReceived',
   })
-  accountTo!: Account;
+  accountReceived!: Account;
 
   @ManyToOne(() => Account, (param: Account) => param.tradeTransferOut, {
     skipGraphQLField: true,
 
     modelName: 'TradeTransfer',
     relModelName: 'Account',
-    propertyName: 'accountFrom',
+    propertyName: 'accountSent',
   })
-  accountFrom!: Account;
+  accountSent!: Account;
 
-  @StringField({})
-  type!: string;
+  @NumericField({
+    nullable: true,
 
-  @StringField({})
-  path!: string;
+    transformer: {
+      to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
+      from: (dbValue: string) =>
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
+  })
+  amountReceived?: BN;
 
-  @StringField({})
-  tokenZero!: string;
+  @NumericField({
+    nullable: true,
 
-  @StringField({})
-  tokenOne!: string;
-
-  @StringField({})
-  tokenZeroInput!: string;
-
-  @StringField({})
-  tokenOneInput!: string;
-
-  @StringField({})
-  result!: string;
+    transformer: {
+      to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
+      from: (dbValue: string) =>
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
+  })
+  amountSent?: BN;
 
   constructor(init?: Partial<TradeTransfer>) {
     super();
