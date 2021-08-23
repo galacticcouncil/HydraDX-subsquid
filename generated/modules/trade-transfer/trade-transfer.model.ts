@@ -1,4 +1,4 @@
-import { BaseModel, IntField, NumericField, Model, ManyToOne, StringField, JSONField } from 'warthog';
+import { BaseModel, IntField, NumericField, Model, ManyToOne, StringField, JSONField } from '@subsquid/warthog';
 
 import BN from 'bn.js';
 
@@ -16,51 +16,39 @@ export class TradeTransfer extends BaseModel {
     transformer: {
       to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
       from: (dbValue: string) =>
-        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined
-    }
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
   })
   timestamp!: BN;
 
   @StringField({})
   block!: string;
 
-  @ManyToOne(
-    () => SwapAction,
-    (param: SwapAction) => param.directTrades,
-    {
-      skipGraphQLField: true,
+  @ManyToOne(() => SwapAction, (param: SwapAction) => param.directTrades, {
+    skipGraphQLField: true,
 
-      modelName: 'TradeTransfer',
-      relModelName: 'SwapAction',
-      propertyName: 'swapAction'
-    }
-  )
+    modelName: 'TradeTransfer',
+    relModelName: 'SwapAction',
+    propertyName: 'swapAction',
+  })
   swapAction!: SwapAction;
 
-  @ManyToOne(
-    () => Account,
-    (param: Account) => param.tradeTransferIn,
-    {
-      skipGraphQLField: true,
+  @ManyToOne(() => Account, (param: Account) => param.tradeTransferIn, {
+    skipGraphQLField: true,
 
-      modelName: 'TradeTransfer',
-      relModelName: 'Account',
-      propertyName: 'accountTo'
-    }
-  )
+    modelName: 'TradeTransfer',
+    relModelName: 'Account',
+    propertyName: 'accountTo',
+  })
   accountTo!: Account;
 
-  @ManyToOne(
-    () => Account,
-    (param: Account) => param.tradeTransferOut,
-    {
-      skipGraphQLField: true,
+  @ManyToOne(() => Account, (param: Account) => param.tradeTransferOut, {
+    skipGraphQLField: true,
 
-      modelName: 'TradeTransfer',
-      relModelName: 'Account',
-      propertyName: 'accountFrom'
-    }
-  )
+    modelName: 'TradeTransfer',
+    relModelName: 'Account',
+    propertyName: 'accountFrom',
+  })
   accountFrom!: Account;
 
   @StringField({})

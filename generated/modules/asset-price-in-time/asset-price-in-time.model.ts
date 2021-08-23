@@ -1,4 +1,4 @@
-import { BaseModel, NumericField, Model, OneToMany, StringField, JSONField } from 'warthog';
+import { BaseModel, NumericField, Model, OneToMany, StringField, JSONField } from '@subsquid/warthog';
 
 import BN from 'bn.js';
 
@@ -12,8 +12,8 @@ export class AssetPriceInTime extends BaseModel {
     transformer: {
       to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
       from: (dbValue: string) =>
-        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined
-    }
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
   })
   timestamp!: BN;
 
@@ -23,21 +23,17 @@ export class AssetPriceInTime extends BaseModel {
     transformer: {
       to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
       from: (dbValue: string) =>
-        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined
-    }
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
   })
   price?: BN;
 
-  @OneToMany(
-    () => AssetPrice,
-    (param: AssetPrice) => param.prices,
-    {
-      nullable: true,
-      modelName: 'AssetPriceInTime',
-      relModelName: 'AssetPrice',
-      propertyName: 'assetpriceprices'
-    }
-  )
+  @OneToMany(() => AssetPrice, (param: AssetPrice) => param.prices, {
+    nullable: true,
+    modelName: 'AssetPriceInTime',
+    relModelName: 'AssetPrice',
+    propertyName: 'assetpriceprices',
+  })
   assetpriceprices?: AssetPrice[];
 
   constructor(init?: Partial<AssetPriceInTime>) {

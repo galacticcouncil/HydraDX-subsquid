@@ -1,4 +1,4 @@
-import { BaseModel, NumericField, Model, ManyToOne, StringField, JSONField } from 'warthog';
+import { BaseModel, NumericField, Model, ManyToOne, StringField, JSONField } from '@subsquid/warthog';
 
 import BN from 'bn.js';
 
@@ -8,25 +8,21 @@ import * as jsonTypes from '../jsonfields/jsonfields.model';
 
 @Model({ api: {} })
 export class PoolAssetVolume extends BaseModel {
-  @ManyToOne(
-    () => Pool,
-    (param: Pool) => param.assetsVolume,
-    {
-      skipGraphQLField: true,
+  @ManyToOne(() => Pool, (param: Pool) => param.assetsVolume, {
+    skipGraphQLField: true,
 
-      modelName: 'PoolAssetVolume',
-      relModelName: 'Pool',
-      propertyName: 'pool'
-    }
-  )
+    modelName: 'PoolAssetVolume',
+    relModelName: 'Pool',
+    propertyName: 'pool',
+  })
   pool!: Pool;
 
   @NumericField({
     transformer: {
       to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
       from: (dbValue: string) =>
-        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined
-    }
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
   })
   timestamp!: BN;
 
@@ -36,8 +32,8 @@ export class PoolAssetVolume extends BaseModel {
     transformer: {
       to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
       from: (dbValue: string) =>
-        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined
-    }
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
   })
   tokenZeroAmount?: BN;
 
@@ -47,8 +43,8 @@ export class PoolAssetVolume extends BaseModel {
     transformer: {
       to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
       from: (dbValue: string) =>
-        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined
-    }
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
   })
   tokenOneAmount?: BN;
 
@@ -58,8 +54,8 @@ export class PoolAssetVolume extends BaseModel {
     transformer: {
       to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
       from: (dbValue: string) =>
-        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined
-    }
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
   })
   sharedAssetAmount?: BN;
 
@@ -69,8 +65,8 @@ export class PoolAssetVolume extends BaseModel {
     transformer: {
       to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
       from: (dbValue: string) =>
-        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined
-    }
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
   })
   marketCap?: BN;
 
@@ -80,8 +76,8 @@ export class PoolAssetVolume extends BaseModel {
     transformer: {
       to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
       from: (dbValue: string) =>
-        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined
-    }
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
   })
   tradeAmount?: BN;
 

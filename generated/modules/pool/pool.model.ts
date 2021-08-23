@@ -7,8 +7,8 @@ import {
   ManyToOne,
   OneToMany,
   StringField,
-  JSONField
-} from 'warthog';
+  JSONField,
+} from '@subsquid/warthog';
 
 import BN from 'bn.js';
 
@@ -22,24 +22,20 @@ import * as jsonTypes from '../jsonfields/jsonfields.model';
 @Model({ api: {} })
 export class Pool extends BaseModel {
   @StringField({
-    nullable: true
+    nullable: true,
   })
   specVersion?: string;
 
   @BooleanField({})
   isActive!: boolean;
 
-  @ManyToOne(
-    () => Token,
-    (param: Token) => param.poolsharedAsset,
-    {
-      skipGraphQLField: true,
-      nullable: true,
-      modelName: 'Pool',
-      relModelName: 'Token',
-      propertyName: 'sharedAsset'
-    }
-  )
+  @ManyToOne(() => Token, (param: Token) => param.poolsharedAsset, {
+    skipGraphQLField: true,
+    nullable: true,
+    modelName: 'Pool',
+    relModelName: 'Token',
+    propertyName: 'sharedAsset',
+  })
   sharedAsset?: Token;
 
   @NumericField({
@@ -48,22 +44,18 @@ export class Pool extends BaseModel {
     transformer: {
       to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
       from: (dbValue: string) =>
-        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined
-    }
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
   })
   sharedAssetInitialBalance?: BN;
 
-  @ManyToOne(
-    () => Account,
-    (param: Account) => param.createdPools,
-    {
-      skipGraphQLField: true,
-      nullable: true,
-      modelName: 'Pool',
-      relModelName: 'Account',
-      propertyName: 'ownerAccount'
-    }
-  )
+  @ManyToOne(() => Account, (param: Account) => param.createdPools, {
+    skipGraphQLField: true,
+    nullable: true,
+    modelName: 'Pool',
+    relModelName: 'Account',
+    propertyName: 'ownerAccount',
+  })
   ownerAccount?: Account;
 
   @DateTimeField({})
@@ -72,66 +64,46 @@ export class Pool extends BaseModel {
   @DateTimeField({})
   deletedAt!: Date;
 
-  @ManyToOne(
-    () => Token,
-    (param: Token) => param.pooltokenZero,
-    {
-      skipGraphQLField: true,
+  @ManyToOne(() => Token, (param: Token) => param.pooltokenZero, {
+    skipGraphQLField: true,
 
-      modelName: 'Pool',
-      relModelName: 'Token',
-      propertyName: 'tokenZero'
-    }
-  )
+    modelName: 'Pool',
+    relModelName: 'Token',
+    propertyName: 'tokenZero',
+  })
   tokenZero!: Token;
 
-  @ManyToOne(
-    () => Token,
-    (param: Token) => param.pooltokenOne,
-    {
-      skipGraphQLField: true,
+  @ManyToOne(() => Token, (param: Token) => param.pooltokenOne, {
+    skipGraphQLField: true,
 
-      modelName: 'Pool',
-      relModelName: 'Token',
-      propertyName: 'tokenOne'
-    }
-  )
+    modelName: 'Pool',
+    relModelName: 'Token',
+    propertyName: 'tokenOne',
+  })
   tokenOne!: Token;
 
-  @OneToMany(
-    () => SwapAction,
-    (param: SwapAction) => param.xykTradePool,
-    {
-      nullable: true,
-      modelName: 'Pool',
-      relModelName: 'SwapAction',
-      propertyName: 'swapActions'
-    }
-  )
+  @OneToMany(() => SwapAction, (param: SwapAction) => param.xykTradePool, {
+    nullable: true,
+    modelName: 'Pool',
+    relModelName: 'SwapAction',
+    propertyName: 'swapActions',
+  })
   swapActions?: SwapAction[];
 
-  @OneToMany(
-    () => PoolAssetVolume,
-    (param: PoolAssetVolume) => param.pool,
-    {
-      nullable: true,
-      modelName: 'Pool',
-      relModelName: 'PoolAssetVolume',
-      propertyName: 'assetsVolume'
-    }
-  )
+  @OneToMany(() => PoolAssetVolume, (param: PoolAssetVolume) => param.pool, {
+    nullable: true,
+    modelName: 'Pool',
+    relModelName: 'PoolAssetVolume',
+    propertyName: 'assetsVolume',
+  })
   assetsVolume?: PoolAssetVolume[];
 
-  @OneToMany(
-    () => Token,
-    (param: Token) => param.parentPool,
-    {
-      nullable: true,
-      modelName: 'Pool',
-      relModelName: 'Token',
-      propertyName: 'tokenparentPool'
-    }
-  )
+  @OneToMany(() => Token, (param: Token) => param.parentPool, {
+    nullable: true,
+    modelName: 'Pool',
+    relModelName: 'Token',
+    propertyName: 'tokenparentPool',
+  })
   tokenparentPool?: Token[];
 
   constructor(init?: Partial<Pool>) {

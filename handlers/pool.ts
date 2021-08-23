@@ -59,10 +59,5 @@ export async function createPool({
   /**
    * Add new pool to owner account.
    */
-  const ownerAccountForUpdate = createdByAccount;
-  ownerAccountForUpdate.createdPools = [
-    ...(ownerAccountForUpdate.createdPools || []),
-    newPool,
-  ];
-  await store.save(ownerAccountForUpdate);
+  await store.save(createdByAccount);
 }

@@ -6,11 +6,6 @@ import { typeRegistry } from ".";
 import { AccountId } from "@polkadot/types/interfaces";
 
 export namespace System {
-  /**
-   *  A new \[account\] was created.
-   *
-   *  Event parameters: [AccountId, ]
-   */
   export class NewAccountEvent {
     public readonly expectedParamTypes = ["AccountId"];
 
@@ -19,8 +14,8 @@ export namespace System {
     get params(): [AccountId] {
       return [
         createTypeUnsafe<AccountId & Codec>(typeRegistry, "AccountId", [
-          this.ctx.params[0].value
-        ])
+          this.ctx.params[0].value,
+        ]),
       ];
     }
 

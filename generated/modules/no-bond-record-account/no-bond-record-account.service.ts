@@ -1,15 +1,14 @@
 import { Service, Inject } from 'typedi';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import { WhereInput } from 'warthog';
-import { WarthogBaseService } from '../../server/WarthogBaseService';
+import { WhereInput, HydraBaseService } from '@subsquid/warthog';
 
 import { NoBondRecordAccount } from './no-bond-record-account.model';
 
 import { NoBondRecordAccountWhereArgs, NoBondRecordAccountWhereInput } from '../../warthog';
 
 @Service('NoBondRecordAccountService')
-export class NoBondRecordAccountService extends WarthogBaseService<NoBondRecordAccount> {
+export class NoBondRecordAccountService extends HydraBaseService<NoBondRecordAccount> {
   constructor(@InjectRepository(NoBondRecordAccount) protected readonly repository: Repository<NoBondRecordAccount>) {
     super(NoBondRecordAccount, repository);
   }
