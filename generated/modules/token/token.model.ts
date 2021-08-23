@@ -1,4 +1,13 @@
-import { BaseModel, BooleanField, IntField, Model, ManyToOne, OneToMany, StringField, JSONField } from 'warthog';
+import {
+  BaseModel,
+  BooleanField,
+  IntField,
+  Model,
+  ManyToOne,
+  OneToMany,
+  StringField,
+  JSONField,
+} from '@subsquid/warthog';
 
 import { Pool } from '../pool/pool.model';
 import { AssetPrice } from '../asset-price/asset-price.model';
@@ -17,101 +26,69 @@ export class Token extends BaseModel {
   @BooleanField({})
   shared!: boolean;
 
-  @ManyToOne(
-    () => Pool,
-    (param: Pool) => param.tokenparentPool,
-    {
-      skipGraphQLField: true,
-      nullable: true,
-      modelName: 'Token',
-      relModelName: 'Pool',
-      propertyName: 'parentPool'
-    }
-  )
+  @ManyToOne(() => Pool, (param: Pool) => param.tokenparentPool, {
+    skipGraphQLField: true,
+    nullable: true,
+    modelName: 'Token',
+    relModelName: 'Pool',
+    propertyName: 'parentPool',
+  })
   parentPool?: Pool;
 
-  @OneToMany(
-    () => AssetPrice,
-    (param: AssetPrice) => param.tokenZero,
-    {
-      nullable: true,
-      modelName: 'Token',
-      relModelName: 'AssetPrice',
-      propertyName: 'assetpricetokenZero'
-    }
-  )
+  @OneToMany(() => AssetPrice, (param: AssetPrice) => param.tokenZero, {
+    nullable: true,
+    modelName: 'Token',
+    relModelName: 'AssetPrice',
+    propertyName: 'assetpricetokenZero',
+  })
   assetpricetokenZero?: AssetPrice[];
 
-  @OneToMany(
-    () => AssetPrice,
-    (param: AssetPrice) => param.tokenOne,
-    {
-      nullable: true,
-      modelName: 'Token',
-      relModelName: 'AssetPrice',
-      propertyName: 'assetpricetokenOne'
-    }
-  )
+  @OneToMany(() => AssetPrice, (param: AssetPrice) => param.tokenOne, {
+    nullable: true,
+    modelName: 'Token',
+    relModelName: 'AssetPrice',
+    propertyName: 'assetpricetokenOne',
+  })
   assetpricetokenOne?: AssetPrice[];
 
-  @OneToMany(
-    () => Pool,
-    (param: Pool) => param.sharedAsset,
-    {
-      nullable: true,
-      modelName: 'Token',
-      relModelName: 'Pool',
-      propertyName: 'poolsharedAsset'
-    }
-  )
+  @OneToMany(() => Pool, (param: Pool) => param.sharedAsset, {
+    nullable: true,
+    modelName: 'Token',
+    relModelName: 'Pool',
+    propertyName: 'poolsharedAsset',
+  })
   poolsharedAsset?: Pool[];
 
-  @OneToMany(
-    () => Pool,
-    (param: Pool) => param.tokenZero,
-    {
-      nullable: true,
-      modelName: 'Token',
-      relModelName: 'Pool',
-      propertyName: 'pooltokenZero'
-    }
-  )
+  @OneToMany(() => Pool, (param: Pool) => param.tokenZero, {
+    nullable: true,
+    modelName: 'Token',
+    relModelName: 'Pool',
+    propertyName: 'pooltokenZero',
+  })
   pooltokenZero?: Pool[];
 
-  @OneToMany(
-    () => Pool,
-    (param: Pool) => param.tokenOne,
-    {
-      nullable: true,
-      modelName: 'Token',
-      relModelName: 'Pool',
-      propertyName: 'pooltokenOne'
-    }
-  )
+  @OneToMany(() => Pool, (param: Pool) => param.tokenOne, {
+    nullable: true,
+    modelName: 'Token',
+    relModelName: 'Pool',
+    propertyName: 'pooltokenOne',
+  })
   pooltokenOne?: Pool[];
 
-  @OneToMany(
-    () => SwapAction,
-    (param: SwapAction) => param.tokenZero,
-    {
-      nullable: true,
-      modelName: 'Token',
-      relModelName: 'SwapAction',
-      propertyName: 'swapactiontokenZero'
-    }
-  )
+  @OneToMany(() => SwapAction, (param: SwapAction) => param.tokenZero, {
+    nullable: true,
+    modelName: 'Token',
+    relModelName: 'SwapAction',
+    propertyName: 'swapactiontokenZero',
+  })
   swapactiontokenZero?: SwapAction[];
 
-  @OneToMany(
-    () => SwapAction,
-    (param: SwapAction) => param.tokenOne,
-    {
-      nullable: true,
-      modelName: 'Token',
-      relModelName: 'SwapAction',
-      propertyName: 'swapactiontokenOne'
-    }
-  )
+  @OneToMany(() => SwapAction, (param: SwapAction) => param.tokenOne, {
+    nullable: true,
+    modelName: 'Token',
+    relModelName: 'SwapAction',
+    propertyName: 'swapactiontokenOne',
+  })
   swapactiontokenOne?: SwapAction[];
 
   constructor(init?: Partial<Token>) {

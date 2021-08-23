@@ -18,9 +18,10 @@ typegen:
     - staking.Reward
     - staking.Slash
     - system.NewAccount
+    - exchange.IntentionRegistered
     - xyk.PoolCreated
   customTypes:
-    lib: todo--define-types # since we don't use custom types in mappings, we can supply a stub here
+    lib: ../chain
     typedefsLoc: types.json
   outDir: types
 
@@ -38,6 +39,9 @@ mappings:
 
     - event: xyk.PoolCreated
       handler: handleNewPool
+
+    - event: exchange.IntentionRegistered
+      handler: handleIntentionRegistered
 
   extrinsicHandlers:
   preBlockHooks:

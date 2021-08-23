@@ -11,4 +11,5 @@ export { typeRegistry };
 
 export * from "./staking";
 export * from "./system";
+export * from "./exchange";
 export * from "./xyk";

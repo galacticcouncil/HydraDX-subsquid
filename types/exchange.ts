@@ -4,19 +4,29 @@ import { Codec } from "@polkadot/types/types";
 import { typeRegistry } from ".";
 
 import { AccountId, AssetId, Balance } from "@polkadot/types/interfaces";
+import { IntentionId, IntentionType } from "../chain";
 
-export namespace XYK {
-  export class PoolCreatedEvent {
+export namespace Exchange {
+  export class IntentionRegisteredEvent {
     public readonly expectedParamTypes = [
       "T::AccountId",
       "AssetId",
       "AssetId",
       "Balance",
+      "IntentionType",
+      "IntentionId<T>",
     ];
 
     constructor(public readonly ctx: SubstrateEvent) {}
 
-    get params(): [AccountId, AssetId, AssetId, Balance] {
+    get params(): [
+      AccountId,
+      AssetId,
+      AssetId,
+      Balance,
+      IntentionType,
+      IntentionId
+    ] {
       return [
         createTypeUnsafe<AccountId & Codec>(typeRegistry, "AccountId", [
           this.ctx.params[0].value,
@@ -29,6 +39,12 @@ export namespace XYK {
         ]),
         createTypeUnsafe<Balance & Codec>(typeRegistry, "Balance", [
           this.ctx.params[3].value,
+        ]),
+        createTypeUnsafe<IntentionType & Codec>(typeRegistry, "IntentionType", [
+          this.ctx.params[4].value,
+        ]),
+        createTypeUnsafe<IntentionId & Codec>(typeRegistry, "IntentionId", [
+          this.ctx.params[5].value,
         ]),
       ];
     }

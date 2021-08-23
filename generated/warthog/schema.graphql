@@ -276,17 +276,11 @@ input AssetPriceWhereInput {
   deletedAt_gte: DateTime
   deletedById_eq: ID
   deletedById_in: [ID!]
-  tokenZero_eq: ID
-  tokenZero_in: [ID!]
-  tokenOne_eq: ID
-  tokenOne_in: [ID!]
   pairName_eq: String
   pairName_contains: String
   pairName_startsWith: String
   pairName_endsWith: String
   pairName_in: [String!]
-  prices_eq: ID
-  prices_in: [ID!]
   tokenZero: TokenWhereInput
   tokenOne: TokenWhereInput
   prices: AssetPriceInTimeWhereInput
@@ -578,8 +572,6 @@ input PoolAssetVolumeWhereInput {
   deletedAt_gte: DateTime
   deletedById_eq: ID
   deletedById_in: [ID!]
-  pool_eq: ID
-  pool_in: [ID!]
   timestamp_eq: BigInt
   timestamp_gt: BigInt
   timestamp_gte: BigInt
@@ -715,20 +707,12 @@ input PoolWhereInput {
   specVersion_in: [String!]
   isActive_eq: Boolean
   isActive_in: [Boolean!]
-  sharedAsset_eq: ID
-  sharedAsset_in: [ID!]
   sharedAssetInitialBalance_eq: BigInt
   sharedAssetInitialBalance_gt: BigInt
   sharedAssetInitialBalance_gte: BigInt
   sharedAssetInitialBalance_lt: BigInt
   sharedAssetInitialBalance_lte: BigInt
   sharedAssetInitialBalance_in: [BigInt!]
-  ownerAccount_eq: ID
-  ownerAccount_in: [ID!]
-  tokenZero_eq: ID
-  tokenZero_in: [ID!]
-  tokenOne_eq: ID
-  tokenOne_in: [ID!]
   sharedAsset: TokenWhereInput
   ownerAccount: AccountWhereInput
   tokenZero: TokenWhereInput
@@ -1238,14 +1222,6 @@ input SwapActionWhereInput {
   type_startsWith: String
   type_endsWith: String
   type_in: [String!]
-  tokenZero_eq: ID
-  tokenZero_in: [ID!]
-  tokenOne_eq: ID
-  tokenOne_in: [ID!]
-  account_eq: ID
-  account_in: [ID!]
-  xykTradePool_eq: ID
-  xykTradePool_in: [ID!]
   tokenZero: TokenWhereInput
   tokenOne: TokenWhereInput
   account: AccountWhereInput
@@ -1364,8 +1340,6 @@ input TokenWhereInput {
   name_in: [String!]
   shared_eq: Boolean
   shared_in: [Boolean!]
-  parentPool_eq: ID
-  parentPool_in: [ID!]
   parentPool: PoolWhereInput
   assetpricetokenZero_none: AssetPriceWhereInput
   assetpricetokenZero_some: AssetPriceWhereInput
@@ -1543,12 +1517,6 @@ input TradeTransferWhereInput {
   block_startsWith: String
   block_endsWith: String
   block_in: [String!]
-  swapAction_eq: ID
-  swapAction_in: [ID!]
-  accountTo_eq: ID
-  accountTo_in: [ID!]
-  accountFrom_eq: ID
-  accountFrom_in: [ID!]
   type_eq: String
   type_contains: String
   type_startsWith: String

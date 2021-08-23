@@ -426,17 +426,11 @@ export interface AssetPriceWhereInput {
   deletedAt_gte?: DateTime | null
   deletedById_eq?: ID_Input | null
   deletedById_in?: ID_Output[] | ID_Output | null
-  tokenZero_eq?: ID_Input | null
-  tokenZero_in?: ID_Output[] | ID_Output | null
-  tokenOne_eq?: ID_Input | null
-  tokenOne_in?: ID_Output[] | ID_Output | null
   pairName_eq?: String | null
   pairName_contains?: String | null
   pairName_startsWith?: String | null
   pairName_endsWith?: String | null
   pairName_in?: String[] | String | null
-  prices_eq?: ID_Input | null
-  prices_in?: ID_Output[] | ID_Output | null
   tokenZero?: TokenWhereInput | null
   tokenOne?: TokenWhereInput | null
   prices?: AssetPriceInTimeWhereInput | null
@@ -564,8 +558,6 @@ export interface PoolAssetVolumeWhereInput {
   deletedAt_gte?: DateTime | null
   deletedById_eq?: ID_Input | null
   deletedById_in?: ID_Output[] | ID_Output | null
-  pool_eq?: ID_Input | null
-  pool_in?: ID_Output[] | ID_Output | null
   timestamp_eq?: BigInt | null
   timestamp_gt?: BigInt | null
   timestamp_gte?: BigInt | null
@@ -667,20 +659,12 @@ export interface PoolWhereInput {
   specVersion_in?: String[] | String | null
   isActive_eq?: Boolean | null
   isActive_in?: Boolean[] | Boolean | null
-  sharedAsset_eq?: ID_Input | null
-  sharedAsset_in?: ID_Output[] | ID_Output | null
   sharedAssetInitialBalance_eq?: BigInt | null
   sharedAssetInitialBalance_gt?: BigInt | null
   sharedAssetInitialBalance_gte?: BigInt | null
   sharedAssetInitialBalance_lt?: BigInt | null
   sharedAssetInitialBalance_lte?: BigInt | null
   sharedAssetInitialBalance_in?: BigInt[] | BigInt | null
-  ownerAccount_eq?: ID_Input | null
-  ownerAccount_in?: ID_Output[] | ID_Output | null
-  tokenZero_eq?: ID_Input | null
-  tokenZero_in?: ID_Output[] | ID_Output | null
-  tokenOne_eq?: ID_Input | null
-  tokenOne_in?: ID_Output[] | ID_Output | null
   sharedAsset?: TokenWhereInput | null
   ownerAccount?: AccountWhereInput | null
   tokenZero?: TokenWhereInput | null
@@ -956,14 +940,6 @@ export interface SwapActionWhereInput {
   type_startsWith?: String | null
   type_endsWith?: String | null
   type_in?: String[] | String | null
-  tokenZero_eq?: ID_Input | null
-  tokenZero_in?: ID_Output[] | ID_Output | null
-  tokenOne_eq?: ID_Input | null
-  tokenOne_in?: ID_Output[] | ID_Output | null
-  account_eq?: ID_Input | null
-  account_in?: ID_Output[] | ID_Output | null
-  xykTradePool_eq?: ID_Input | null
-  xykTradePool_in?: ID_Output[] | ID_Output | null
   tokenZero?: TokenWhereInput | null
   tokenOne?: TokenWhereInput | null
   account?: AccountWhereInput | null
@@ -1031,8 +1007,6 @@ export interface TokenWhereInput {
   name_in?: String[] | String | null
   shared_eq?: Boolean | null
   shared_in?: Boolean[] | Boolean | null
-  parentPool_eq?: ID_Input | null
-  parentPool_in?: ID_Output[] | ID_Output | null
   parentPool?: PoolWhereInput | null
   assetpricetokenZero_none?: AssetPriceWhereInput | null
   assetpricetokenZero_some?: AssetPriceWhereInput | null
@@ -1137,12 +1111,6 @@ export interface TradeTransferWhereInput {
   block_startsWith?: String | null
   block_endsWith?: String | null
   block_in?: String[] | String | null
-  swapAction_eq?: ID_Input | null
-  swapAction_in?: ID_Output[] | ID_Output | null
-  accountTo_eq?: ID_Input | null
-  accountTo_in?: ID_Output[] | ID_Output | null
-  accountFrom_eq?: ID_Input | null
-  accountFrom_in?: ID_Output[] | ID_Output | null
   type_eq?: String | null
   type_contains?: String | null
   type_startsWith?: String | null
