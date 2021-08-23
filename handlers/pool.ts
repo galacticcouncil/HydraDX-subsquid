@@ -1,11 +1,10 @@
-import { Pool } from '../generated/model';
+import { Pool, Token } from '../generated/model';
 import { XYK } from '../types/index'; // import via index.ts, this is a workaround related to ts-node
 import BN from 'bn.js';
-import { v4 as uuidv4 } from 'uuid';
 import {
-  ExtrinsicContext,
   EventContext,
   StoreContext,
+  DatabaseManager,
 } from '@subsquid/hydra-common';
 import { storeGet } from '../helpers/storeHelpers';
 import { getTokenById, fetchOnChainTokensDetails } from './token';
@@ -17,12 +16,17 @@ export async function createPool({
   event,
   block,
 }: EventContext & StoreContext) {
-  const [accountId, assetId0, assetId1, balance] = new XYK.PoolCreatedEvent(
-    event
-  ).params;
+  const [
+    ownerAccountId,
+    assetId0,
+    assetId1,
+    sharedTokenBalance,
+    sharedTokenId,
+    poolAddress,
+  ] = new XYK.PoolCreatedEvent(event).params;
 
   const createdByAddressFormatted = getHydraDxFormattedAddress(
-    accountId.toString()
+    ownerAccountId.toString()
   );
 
   // TODO Should be removed after merge https://github.com/galacticcouncil/Basilisk-node/pull/124
@@ -30,6 +34,7 @@ export async function createPool({
 
   const token0Inst = await getTokenById(assetId0.toString(), store);
   const token1Inst = await getTokenById(assetId1.toString(), store);
+  const sharedTokenInst = await getTokenById(sharedTokenId.toString(), store);
   const createdByAccount = await getAccountById(
     createdByAddressFormatted,
     store
@@ -37,16 +42,12 @@ export async function createPool({
 
   let newPool = new Pool();
 
-  /**
-   * newPool.id - must be changed to real new pool address when response from
-   * "xyk.PoolCreated" event will be updated.
-   */
-  newPool.id = uuidv4();
+  newPool.id = getHydraDxFormattedAddress(poolAddress.toString());
   newPool.isActive = true;
 
   newPool.specVersion = block.runtimeVersion.toString(); // TODO make conversion
-  // newPool.sharedAsset = '0';
-  newPool.sharedAssetInitialBalance = new BN(balance.toString());
+  newPool.sharedToken = sharedTokenInst;
+  newPool.sharedAssetInitialBalance = new BN(sharedTokenBalance.toString());
   newPool.tokenZero = token0Inst;
   newPool.tokenOne = token1Inst;
   newPool.swapActions = [];
@@ -60,4 +61,8 @@ export async function createPool({
    * Add new pool to owner account.
    */
   await store.save(createdByAccount);
+}
+
+export async function getPoolById(poolId: string, store: DatabaseManager) {
+  return storeGet(store, Pool, poolId);
 }

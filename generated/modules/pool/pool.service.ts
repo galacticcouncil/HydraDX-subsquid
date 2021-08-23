@@ -21,7 +21,7 @@ import _ from 'lodash';
 @Service('PoolService')
 export class PoolService extends HydraBaseService<Pool> {
   @Inject('TokenService')
-  public readonly sharedAssetService!: TokenService;
+  public readonly sharedTokenService!: TokenService;
   @Inject('AccountService')
   public readonly ownerAccountService!: AccountService;
   @Inject('TokenService')
@@ -59,8 +59,8 @@ export class PoolService extends HydraBaseService<Pool> {
     const where = <PoolWhereInput>(_where || {});
 
     // remove relation filters to enable warthog query builders
-    const { sharedAsset } = where;
-    delete where.sharedAsset;
+    const { sharedToken } = where;
+    delete where.sharedToken;
 
     // remove relation filters to enable warthog query builders
     const { ownerAccount } = where;
@@ -112,15 +112,15 @@ export class PoolService extends HydraBaseService<Pool> {
 
     let parameters = mainQuery.getParameters();
 
-    if (sharedAsset) {
+    if (sharedToken) {
       // OTO or MTO
-      const sharedAssetQuery = this.sharedAssetService
-        .buildFindQueryWithParams(<any>sharedAsset, undefined, undefined, ['id'], 'sharedAsset')
+      const sharedTokenQuery = this.sharedTokenService
+        .buildFindQueryWithParams(<any>sharedToken, undefined, undefined, ['id'], 'sharedToken')
         .take(undefined); // remove the default LIMIT
 
-      mainQuery = mainQuery.andWhere(`"pool"."shared_asset_id" IN (${sharedAssetQuery.getQuery()})`);
+      mainQuery = mainQuery.andWhere(`"pool"."shared_token_id" IN (${sharedTokenQuery.getQuery()})`);
 
-      parameters = { ...parameters, ...sharedAssetQuery.getParameters() };
+      parameters = { ...parameters, ...sharedTokenQuery.getParameters() };
     }
 
     if (ownerAccount) {

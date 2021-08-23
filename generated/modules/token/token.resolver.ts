@@ -160,8 +160,8 @@ export class TokenResolver {
   }
 
   @FieldResolver(() => Pool)
-  async poolsharedAsset(@Root() r: Token, @Ctx() ctx: BaseContext): Promise<Pool[] | null> {
-    return ctx.dataLoader.loaders.Token.poolsharedAsset.load(r);
+  async poolsharedToken(@Root() r: Token, @Ctx() ctx: BaseContext): Promise<Pool[] | null> {
+    return ctx.dataLoader.loaders.Token.poolsharedToken.load(r);
   }
 
   @FieldResolver(() => Pool)

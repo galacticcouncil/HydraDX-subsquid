@@ -460,8 +460,8 @@ type Pool implements BaseGraphQLObject {
   version: Int!
   specVersion: String
   isActive: Boolean!
-  sharedAsset: Token
-  sharedAssetId: String
+  sharedToken: Token
+  sharedTokenId: String
   sharedAssetInitialBalance: BigInt
   ownerAccount: Account
   ownerAccountId: String
@@ -628,7 +628,7 @@ input PoolCreateInput {
   deletedAt: DateTime!
   specVersion: String
   isActive: Boolean!
-  sharedAsset: ID
+  sharedToken: ID
   sharedAssetInitialBalance: String
   ownerAccount: ID
   tokenZero: ID!
@@ -651,8 +651,8 @@ enum PoolOrderByInput {
   specVersion_DESC
   isActive_ASC
   isActive_DESC
-  sharedAsset_ASC
-  sharedAsset_DESC
+  sharedToken_ASC
+  sharedToken_DESC
   sharedAssetInitialBalance_ASC
   sharedAssetInitialBalance_DESC
   ownerAccount_ASC
@@ -668,7 +668,7 @@ input PoolUpdateInput {
   deletedAt: DateTime
   specVersion: String
   isActive: Boolean
-  sharedAsset: ID
+  sharedToken: ID
   sharedAssetInitialBalance: String
   ownerAccount: ID
   tokenZero: ID
@@ -713,7 +713,7 @@ input PoolWhereInput {
   sharedAssetInitialBalance_lt: BigInt
   sharedAssetInitialBalance_lte: BigInt
   sharedAssetInitialBalance_in: [BigInt!]
-  sharedAsset: TokenWhereInput
+  sharedToken: TokenWhereInput
   ownerAccount: AccountWhereInput
   tokenZero: TokenWhereInput
   tokenOne: TokenWhereInput
@@ -1253,7 +1253,7 @@ type Token implements BaseGraphQLObject {
   parentPoolId: String
   assetpricetokenZero: [AssetPrice!]
   assetpricetokenOne: [AssetPrice!]
-  poolsharedAsset: [Pool!]
+  poolsharedToken: [Pool!]
   pooltokenZero: [Pool!]
   pooltokenOne: [Pool!]
   swapactiontokenZero: [SwapAction!]
@@ -1347,9 +1347,9 @@ input TokenWhereInput {
   assetpricetokenOne_none: AssetPriceWhereInput
   assetpricetokenOne_some: AssetPriceWhereInput
   assetpricetokenOne_every: AssetPriceWhereInput
-  poolsharedAsset_none: PoolWhereInput
-  poolsharedAsset_some: PoolWhereInput
-  poolsharedAsset_every: PoolWhereInput
+  poolsharedToken_none: PoolWhereInput
+  poolsharedToken_some: PoolWhereInput
+  poolsharedToken_every: PoolWhereInput
   pooltokenZero_none: PoolWhereInput
   pooltokenZero_some: PoolWhereInput
   pooltokenZero_every: PoolWhereInput

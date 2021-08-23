@@ -1290,13 +1290,13 @@ export class TokenWhereInput {
   assetpricetokenOne_every?: AssetPriceWhereInput;
 
   @TypeGraphQLField(() => PoolWhereInput, { nullable: true })
-  poolsharedAsset_none?: PoolWhereInput;
+  poolsharedToken_none?: PoolWhereInput;
 
   @TypeGraphQLField(() => PoolWhereInput, { nullable: true })
-  poolsharedAsset_some?: PoolWhereInput;
+  poolsharedToken_some?: PoolWhereInput;
 
   @TypeGraphQLField(() => PoolWhereInput, { nullable: true })
-  poolsharedAsset_every?: PoolWhereInput;
+  poolsharedToken_every?: PoolWhereInput;
 
   @TypeGraphQLField(() => PoolWhereInput, { nullable: true })
   pooltokenZero_none?: PoolWhereInput;
@@ -1717,8 +1717,8 @@ export enum PoolOrderByEnum {
   isActive_ASC = "isActive_ASC",
   isActive_DESC = "isActive_DESC",
 
-  sharedAsset_ASC = "sharedAsset_ASC",
-  sharedAsset_DESC = "sharedAsset_DESC",
+  sharedToken_ASC = "sharedToken_ASC",
+  sharedToken_DESC = "sharedToken_DESC",
 
   sharedAssetInitialBalance_ASC = "sharedAssetInitialBalance_ASC",
   sharedAssetInitialBalance_DESC = "sharedAssetInitialBalance_DESC",
@@ -1851,7 +1851,7 @@ export class PoolWhereInput {
   sharedAssetInitialBalance_in?: string[];
 
   @TypeGraphQLField(() => TokenWhereInput, { nullable: true })
-  sharedAsset?: TokenWhereInput;
+  sharedToken?: TokenWhereInput;
 
   @TypeGraphQLField(() => AccountWhereInput, { nullable: true })
   ownerAccount?: AccountWhereInput;
@@ -1917,7 +1917,7 @@ export class PoolCreateInput {
   isActive!: boolean;
 
   @TypeGraphQLField(() => ID, { nullable: true })
-  sharedAsset?: string;
+  sharedToken?: string;
 
   @TypeGraphQLField({ nullable: true })
   sharedAssetInitialBalance?: string;
@@ -1947,7 +1947,7 @@ export class PoolUpdateInput {
   isActive?: boolean;
 
   @TypeGraphQLField(() => ID, { nullable: true })
-  sharedAsset?: string;
+  sharedToken?: string;
 
   @TypeGraphQLField({ nullable: true })
   sharedAssetInitialBalance?: string;
