@@ -29,14 +29,14 @@ export class Pool extends BaseModel {
   @BooleanField({})
   isActive!: boolean;
 
-  @ManyToOne(() => Token, (param: Token) => param.poolsharedAsset, {
+  @ManyToOne(() => Token, (param: Token) => param.poolsharedToken, {
     skipGraphQLField: true,
     nullable: true,
     modelName: 'Pool',
     relModelName: 'Token',
-    propertyName: 'sharedAsset',
+    propertyName: 'sharedToken',
   })
-  sharedAsset?: Token;
+  sharedToken?: Token;
 
   @NumericField({
     nullable: true,

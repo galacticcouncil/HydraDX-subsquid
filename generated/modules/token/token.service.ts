@@ -25,7 +25,7 @@ export class TokenService extends HydraBaseService<Token> {
   @Inject('AssetPriceService')
   public readonly assetpricetokenOneService!: AssetPriceService;
   @Inject('PoolService')
-  public readonly poolsharedAssetService!: PoolService;
+  public readonly poolsharedTokenService!: PoolService;
   @Inject('PoolService')
   public readonly pooltokenZeroService!: PoolService;
   @Inject('PoolService')
@@ -86,15 +86,15 @@ export class TokenService extends HydraBaseService<Token> {
     delete where.assetpricetokenOne_every;
     // remove relation filters to enable warthog query builders
 
-    const { poolsharedAsset_some, poolsharedAsset_none, poolsharedAsset_every } = where;
+    const { poolsharedToken_some, poolsharedToken_none, poolsharedToken_every } = where;
 
-    if (+!!poolsharedAsset_some + +!!poolsharedAsset_none + +!!poolsharedAsset_every > 1) {
+    if (+!!poolsharedToken_some + +!!poolsharedToken_none + +!!poolsharedToken_every > 1) {
       throw new Error(`A query can have at most one of none, some, every clauses on a relation field`);
     }
 
-    delete where.poolsharedAsset_some;
-    delete where.poolsharedAsset_none;
-    delete where.poolsharedAsset_every;
+    delete where.poolsharedToken_some;
+    delete where.poolsharedToken_none;
+    delete where.poolsharedToken_every;
     // remove relation filters to enable warthog query builders
 
     const { pooltokenZero_some, pooltokenZero_none, pooltokenZero_every } = where;
@@ -295,31 +295,31 @@ export class TokenService extends HydraBaseService<Token> {
       }
     }
 
-    const poolsharedAssetFilter = poolsharedAsset_some || poolsharedAsset_none || poolsharedAsset_every;
+    const poolsharedTokenFilter = poolsharedToken_some || poolsharedToken_none || poolsharedToken_every;
 
-    if (poolsharedAssetFilter) {
-      const poolsharedAssetQuery = this.poolsharedAssetService
-        .buildFindQueryWithParams(<any>poolsharedAssetFilter, undefined, undefined, ['id'], 'poolsharedAsset')
+    if (poolsharedTokenFilter) {
+      const poolsharedTokenQuery = this.poolsharedTokenService
+        .buildFindQueryWithParams(<any>poolsharedTokenFilter, undefined, undefined, ['id'], 'poolsharedToken')
         .take(undefined); //remove the default LIMIT
 
-      parameters = { ...parameters, ...poolsharedAssetQuery.getParameters() };
+      parameters = { ...parameters, ...poolsharedTokenQuery.getParameters() };
 
       const subQueryFiltered = this.getQueryBuilder()
         .select([])
         .leftJoin(
-          'token.poolsharedAsset',
-          'poolsharedAsset_filtered',
-          `poolsharedAsset_filtered.id IN (${poolsharedAssetQuery.getQuery()})`
+          'token.poolsharedToken',
+          'poolsharedToken_filtered',
+          `poolsharedToken_filtered.id IN (${poolsharedTokenQuery.getQuery()})`
         )
         .groupBy('token_id')
-        .addSelect('count(poolsharedAsset_filtered.id)', 'cnt_filtered')
+        .addSelect('count(poolsharedToken_filtered.id)', 'cnt_filtered')
         .addSelect('token.id', 'token_id');
 
       const subQueryTotal = this.getQueryBuilder()
         .select([])
-        .leftJoin('token.poolsharedAsset', 'poolsharedAsset_total')
+        .leftJoin('token.poolsharedToken', 'poolsharedToken_total')
         .groupBy('token_id')
-        .addSelect('count(poolsharedAsset_total.id)', 'cnt_total')
+        .addSelect('count(poolsharedToken_total.id)', 'cnt_total')
         .addSelect('token.id', 'token_id');
 
       const subQuery = `
@@ -330,37 +330,37 @@ export class TokenService extends HydraBaseService<Token> {
                 WHERE
                     t.token_id = f.token_id`;
 
-      if (poolsharedAsset_none) {
+      if (poolsharedToken_none) {
         mainQuery = mainQuery.andWhere(`token.id IN
                 (SELECT
-                    poolsharedAsset_subq.token_id
+                    poolsharedToken_subq.token_id
                 FROM
-                    (${subQuery}) poolsharedAsset_subq
+                    (${subQuery}) poolsharedToken_subq
                 WHERE
-                    poolsharedAsset_subq.cnt_filtered = 0
+                    poolsharedToken_subq.cnt_filtered = 0
                 )`);
       }
 
-      if (poolsharedAsset_some) {
+      if (poolsharedToken_some) {
         mainQuery = mainQuery.andWhere(`token.id IN
                 (SELECT
-                    poolsharedAsset_subq.token_id
+                    poolsharedToken_subq.token_id
                 FROM
-                    (${subQuery}) poolsharedAsset_subq
+                    (${subQuery}) poolsharedToken_subq
                 WHERE
-                    poolsharedAsset_subq.cnt_filtered > 0
+                    poolsharedToken_subq.cnt_filtered > 0
                 )`);
       }
 
-      if (poolsharedAsset_every) {
+      if (poolsharedToken_every) {
         mainQuery = mainQuery.andWhere(`token.id IN
                 (SELECT
-                    poolsharedAsset_subq.token_id
+                    poolsharedToken_subq.token_id
                 FROM
-                    (${subQuery}) poolsharedAsset_subq
+                    (${subQuery}) poolsharedToken_subq
                 WHERE
-                    poolsharedAsset_subq.cnt_filtered > 0
-                    AND poolsharedAsset_subq.cnt_filtered = poolsharedAsset_subq.cnt_total
+                    poolsharedToken_subq.cnt_filtered > 0
+                    AND poolsharedToken_subq.cnt_filtered = poolsharedToken_subq.cnt_total
                 )`);
       }
     }

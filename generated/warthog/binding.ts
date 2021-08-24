@@ -149,8 +149,8 @@ export type PoolOrderByInput =   'createdAt_ASC' |
   'specVersion_DESC' |
   'isActive_ASC' |
   'isActive_DESC' |
-  'sharedAsset_ASC' |
-  'sharedAsset_DESC' |
+  'sharedToken_ASC' |
+  'sharedToken_DESC' |
   'sharedAssetInitialBalance_ASC' |
   'sharedAssetInitialBalance_DESC' |
   'ownerAccount_ASC' |
@@ -691,7 +691,7 @@ export interface PoolCreateInput {
   deletedAt: DateTime
   specVersion?: String | null
   isActive: Boolean
-  sharedAsset?: ID_Input | null
+  sharedToken?: ID_Input | null
   sharedAssetInitialBalance?: String | null
   ownerAccount?: ID_Input | null
   tokenZero: ID_Output
@@ -703,7 +703,7 @@ export interface PoolUpdateInput {
   deletedAt?: DateTime | null
   specVersion?: String | null
   isActive?: Boolean | null
-  sharedAsset?: ID_Input | null
+  sharedToken?: ID_Input | null
   sharedAssetInitialBalance?: String | null
   ownerAccount?: ID_Input | null
   tokenZero?: ID_Input | null
@@ -748,7 +748,7 @@ export interface PoolWhereInput {
   sharedAssetInitialBalance_lt?: BigInt | null
   sharedAssetInitialBalance_lte?: BigInt | null
   sharedAssetInitialBalance_in?: BigInt[] | BigInt | null
-  sharedAsset?: TokenWhereInput | null
+  sharedToken?: TokenWhereInput | null
   ownerAccount?: AccountWhereInput | null
   tokenZero?: TokenWhereInput | null
   tokenOne?: TokenWhereInput | null
@@ -1179,9 +1179,9 @@ export interface TokenWhereInput {
   assetpricetokenOne_none?: AssetPriceWhereInput | null
   assetpricetokenOne_some?: AssetPriceWhereInput | null
   assetpricetokenOne_every?: AssetPriceWhereInput | null
-  poolsharedAsset_none?: PoolWhereInput | null
-  poolsharedAsset_some?: PoolWhereInput | null
-  poolsharedAsset_every?: PoolWhereInput | null
+  poolsharedToken_none?: PoolWhereInput | null
+  poolsharedToken_some?: PoolWhereInput | null
+  poolsharedToken_every?: PoolWhereInput | null
   pooltokenZero_none?: PoolWhereInput | null
   pooltokenZero_some?: PoolWhereInput | null
   pooltokenZero_every?: PoolWhereInput | null
@@ -1447,8 +1447,8 @@ export interface Pool extends BaseGraphQLObject {
   version: Int
   specVersion?: String | null
   isActive: Boolean
-  sharedAsset?: Token | null
-  sharedAssetId?: String | null
+  sharedToken?: Token | null
+  sharedTokenId?: String | null
   sharedAssetInitialBalance?: BigInt | null
   ownerAccount?: Account | null
   ownerAccountId?: String | null
@@ -1650,7 +1650,7 @@ export interface Token extends BaseGraphQLObject {
   parentPoolId?: String | null
   assetpricetokenZero?: Array<AssetPrice> | null
   assetpricetokenOne?: Array<AssetPrice> | null
-  poolsharedAsset?: Array<Pool> | null
+  poolsharedToken?: Array<Pool> | null
   pooltokenZero?: Array<Pool> | null
   pooltokenOne?: Array<Pool> | null
   swapactiontokenZero?: Array<SwapAction> | null

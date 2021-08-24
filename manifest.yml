@@ -12,7 +12,8 @@ entities:
 
 typegen:
   metadata:
-    source: wss://archive.snakenet.hydradx.io
+#    source: wss://archive.snakenet.hydradx.io
+    source: ws://hydradx-test.ngrok.io
   events:
     - staking.Bonded
     - staking.Reward

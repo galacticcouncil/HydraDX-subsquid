@@ -12,11 +12,13 @@ export namespace XYK {
       "AssetId",
       "AssetId",
       "Balance",
+      "AssetId",
+      "T::AccountId",
     ];
 
     constructor(public readonly ctx: SubstrateEvent) {}
 
-    get params(): [AccountId, AssetId, AssetId, Balance] {
+    get params(): [AccountId, AssetId, AssetId, Balance, AssetId, AccountId] {
       return [
         createTypeUnsafe<AccountId & Codec>(typeRegistry, "AccountId", [
           this.ctx.params[0].value,
@@ -29,6 +31,12 @@ export namespace XYK {
         ]),
         createTypeUnsafe<Balance & Codec>(typeRegistry, "Balance", [
           this.ctx.params[3].value,
+        ]),
+        createTypeUnsafe<AssetId & Codec>(typeRegistry, "AssetId", [
+          this.ctx.params[4].value,
+        ]),
+        createTypeUnsafe<AccountId & Codec>(typeRegistry, "AccountId", [
+          this.ctx.params[5].value,
         ]),
       ];
     }

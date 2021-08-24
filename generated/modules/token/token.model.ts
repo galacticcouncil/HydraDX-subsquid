@@ -51,13 +51,13 @@ export class Token extends BaseModel {
   })
   assetpricetokenOne?: AssetPrice[];
 
-  @OneToMany(() => Pool, (param: Pool) => param.sharedAsset, {
+  @OneToMany(() => Pool, (param: Pool) => param.sharedToken, {
     nullable: true,
     modelName: 'Token',
     relModelName: 'Pool',
-    propertyName: 'poolsharedAsset',
+    propertyName: 'poolsharedToken',
   })
-  poolsharedAsset?: Pool[];
+  poolsharedToken?: Pool[];
 
   @OneToMany(() => Pool, (param: Pool) => param.tokenZero, {
     nullable: true,

@@ -141,8 +141,8 @@ export class PoolResolver {
   }
 
   @FieldResolver(() => Token)
-  async sharedAsset(@Root() r: Pool, @Ctx() ctx: BaseContext): Promise<Token | null> {
-    return ctx.dataLoader.loaders.Pool.sharedAsset.load(r);
+  async sharedToken(@Root() r: Pool, @Ctx() ctx: BaseContext): Promise<Token | null> {
+    return ctx.dataLoader.loaders.Pool.sharedToken.load(r);
   }
 
   @FieldResolver(() => Account)
