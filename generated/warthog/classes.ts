@@ -963,8 +963,8 @@ export enum SwapActionOrderByEnum {
   saved_ASC = "saved_ASC",
   saved_DESC = "saved_DESC",
 
-  account_ASC = "account_ASC",
-  account_DESC = "account_DESC",
+  initiatedByAccount_ASC = "initiatedByAccount_ASC",
+  initiatedByAccount_DESC = "initiatedByAccount_DESC",
 
   tokenZero_ASC = "tokenZero_ASC",
   tokenZero_DESC = "tokenZero_DESC",
@@ -1316,7 +1316,7 @@ export class SwapActionWhereInput {
   assetsPair_in?: string[];
 
   @TypeGraphQLField(() => AccountWhereInput, { nullable: true })
-  account?: AccountWhereInput;
+  initiatedByAccount?: AccountWhereInput;
 
   @TypeGraphQLField(() => TokenWhereInput, { nullable: true })
   tokenZero?: TokenWhereInput;
@@ -1378,8 +1378,8 @@ export class SwapActionCreateInput {
   @TypeGraphQLField({ nullable: true })
   saved?: string;
 
-  @TypeGraphQLField(() => ID, { nullable: true })
-  account?: string;
+  @TypeGraphQLField(() => ID)
+  initiatedByAccount!: string;
 
   @TypeGraphQLField(() => ID, { nullable: true })
   tokenZero?: string;
@@ -1439,7 +1439,7 @@ export class SwapActionUpdateInput {
   saved?: string;
 
   @TypeGraphQLField(() => ID, { nullable: true })
-  account?: string;
+  initiatedByAccount?: string;
 
   @TypeGraphQLField(() => ID, { nullable: true })
   tokenZero?: string;
@@ -2483,13 +2483,13 @@ export class AccountWhereInput {
   tradeTransferIn_every?: TradeTransferWhereInput;
 
   @TypeGraphQLField(() => SwapActionWhereInput, { nullable: true })
-  swapactionaccount_none?: SwapActionWhereInput;
+  initiatedSwapActions_none?: SwapActionWhereInput;
 
   @TypeGraphQLField(() => SwapActionWhereInput, { nullable: true })
-  swapactionaccount_some?: SwapActionWhereInput;
+  initiatedSwapActions_some?: SwapActionWhereInput;
 
   @TypeGraphQLField(() => SwapActionWhereInput, { nullable: true })
-  swapactionaccount_every?: SwapActionWhereInput;
+  initiatedSwapActions_every?: SwapActionWhereInput;
 
   @TypeGraphQLField(() => AccountWhereInput, { nullable: true })
   AND?: [AccountWhereInput];

@@ -87,14 +87,14 @@ export class SwapAction extends BaseModel {
   })
   saved?: BN;
 
-  @ManyToOne(() => Account, (param: Account) => param.swapactionaccount, {
+  @ManyToOne(() => Account, (param: Account) => param.initiatedSwapActions, {
     skipGraphQLField: true,
-    nullable: true,
+
     modelName: 'SwapAction',
     relModelName: 'Account',
-    propertyName: 'account',
+    propertyName: 'initiatedByAccount',
   })
-  account?: Account;
+  initiatedByAccount!: Account;
 
   @ManyToOne(() => Token, (param: Token) => param.swapactiontokenZero, {
     skipGraphQLField: true,

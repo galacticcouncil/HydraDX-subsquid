@@ -37,13 +37,13 @@ export class Account extends BaseModel {
   })
   tradeTransferIn?: TradeTransfer[];
 
-  @OneToMany(() => SwapAction, (param: SwapAction) => param.account, {
+  @OneToMany(() => SwapAction, (param: SwapAction) => param.initiatedByAccount, {
     nullable: true,
     modelName: 'Account',
     relModelName: 'SwapAction',
-    propertyName: 'swapactionaccount',
+    propertyName: 'initiatedSwapActions',
   })
-  swapactionaccount?: SwapAction[];
+  initiatedSwapActions?: SwapAction[];
 
   constructor(init?: Partial<Account>) {
     super();

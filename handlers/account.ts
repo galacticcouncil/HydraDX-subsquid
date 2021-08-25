@@ -18,6 +18,7 @@ function generateAccount(accountId: string) {
   entity.createdPools = [];
   entity.tradeTransferOut = [];
   entity.tradeTransferIn = [];
+  entity.initiatedSwapActions = [];
 
   return entity;
 }

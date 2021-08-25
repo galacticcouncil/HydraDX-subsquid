@@ -147,8 +147,8 @@ export class SwapActionResolver {
   }
 
   @FieldResolver(() => Account)
-  async account(@Root() r: SwapAction, @Ctx() ctx: BaseContext): Promise<Account | null> {
-    return ctx.dataLoader.loaders.SwapAction.account.load(r);
+  async initiatedByAccount(@Root() r: SwapAction, @Ctx() ctx: BaseContext): Promise<Account | null> {
+    return ctx.dataLoader.loaders.SwapAction.initiatedByAccount.load(r);
   }
 
   @FieldResolver(() => Token)

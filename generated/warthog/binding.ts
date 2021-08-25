@@ -221,8 +221,8 @@ export type SwapActionOrderByInput =   'createdAt_ASC' |
   'totalDirectTradeExchanged_DESC' |
   'saved_ASC' |
   'saved_DESC' |
-  'account_ASC' |
-  'account_DESC' |
+  'initiatedByAccount_ASC' |
+  'initiatedByAccount_DESC' |
   'tokenZero_ASC' |
   'tokenZero_DESC' |
   'tokenOne_ASC' |
@@ -326,9 +326,9 @@ export interface AccountWhereInput {
   tradeTransferIn_none?: TradeTransferWhereInput | null
   tradeTransferIn_some?: TradeTransferWhereInput | null
   tradeTransferIn_every?: TradeTransferWhereInput | null
-  swapactionaccount_none?: SwapActionWhereInput | null
-  swapactionaccount_some?: SwapActionWhereInput | null
-  swapactionaccount_every?: SwapActionWhereInput | null
+  initiatedSwapActions_none?: SwapActionWhereInput | null
+  initiatedSwapActions_some?: SwapActionWhereInput | null
+  initiatedSwapActions_every?: SwapActionWhereInput | null
   AND?: AccountWhereInput[] | AccountWhereInput | null
   OR?: AccountWhereInput[] | AccountWhereInput | null
 }
@@ -964,7 +964,7 @@ export interface SwapActionCreateInput {
   match?: String | null
   totalDirectTradeExchanged?: String | null
   saved?: String | null
-  account?: ID_Input | null
+  initiatedByAccount: ID_Output
   tokenZero?: ID_Input | null
   tokenOne?: ID_Input | null
   amount?: String | null
@@ -986,7 +986,7 @@ export interface SwapActionUpdateInput {
   match?: String | null
   totalDirectTradeExchanged?: String | null
   saved?: String | null
-  account?: ID_Input | null
+  initiatedByAccount?: ID_Input | null
   tokenZero?: ID_Input | null
   tokenOne?: ID_Input | null
   amount?: String | null
@@ -1104,7 +1104,7 @@ export interface SwapActionWhereInput {
   assetsPair_startsWith?: String | null
   assetsPair_endsWith?: String | null
   assetsPair_in?: String[] | String | null
-  account?: AccountWhereInput | null
+  initiatedByAccount?: AccountWhereInput | null
   tokenZero?: TokenWhereInput | null
   tokenOne?: TokenWhereInput | null
   xykTradePool?: PoolWhereInput | null
@@ -1308,7 +1308,7 @@ export interface Account extends BaseGraphQLObject {
   createdPools?: Array<Pool> | null
   tradeTransferOut?: Array<TradeTransfer> | null
   tradeTransferIn?: Array<TradeTransfer> | null
-  swapactionaccount?: Array<SwapAction> | null
+  initiatedSwapActions?: Array<SwapAction> | null
 }
 
 export interface AccountConnection {
@@ -1605,8 +1605,8 @@ export interface SwapAction extends BaseGraphQLObject {
   match?: BigInt | null
   totalDirectTradeExchanged?: BigInt | null
   saved?: BigInt | null
-  account?: Account | null
-  accountId?: String | null
+  initiatedByAccount: Account
+  initiatedByAccountId: String
   tokenZero?: Token | null
   tokenZeroId?: String | null
   tokenOne?: Token | null

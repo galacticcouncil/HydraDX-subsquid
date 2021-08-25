@@ -21,7 +21,7 @@ import _ from 'lodash';
 @Service('SwapActionService')
 export class SwapActionService extends HydraBaseService<SwapAction> {
   @Inject('AccountService')
-  public readonly accountService!: AccountService;
+  public readonly initiatedByAccountService!: AccountService;
   @Inject('TokenService')
   public readonly tokenZeroService!: TokenService;
   @Inject('TokenService')
@@ -55,8 +55,8 @@ export class SwapActionService extends HydraBaseService<SwapAction> {
     const where = <SwapActionWhereInput>(_where || {});
 
     // remove relation filters to enable warthog query builders
-    const { account } = where;
-    delete where.account;
+    const { initiatedByAccount } = where;
+    delete where.initiatedByAccount;
 
     // remove relation filters to enable warthog query builders
     const { tokenZero } = where;
@@ -86,15 +86,17 @@ export class SwapActionService extends HydraBaseService<SwapAction> {
 
     let parameters = mainQuery.getParameters();
 
-    if (account) {
+    if (initiatedByAccount) {
       // OTO or MTO
-      const accountQuery = this.accountService
-        .buildFindQueryWithParams(<any>account, undefined, undefined, ['id'], 'account')
+      const initiatedByAccountQuery = this.initiatedByAccountService
+        .buildFindQueryWithParams(<any>initiatedByAccount, undefined, undefined, ['id'], 'initiatedByAccount')
         .take(undefined); // remove the default LIMIT
 
-      mainQuery = mainQuery.andWhere(`"swapaction"."account_id" IN (${accountQuery.getQuery()})`);
+      mainQuery = mainQuery.andWhere(
+        `"swapaction"."initiated_by_account_id" IN (${initiatedByAccountQuery.getQuery()})`
+      );
 
-      parameters = { ...parameters, ...accountQuery.getParameters() };
+      parameters = { ...parameters, ...initiatedByAccountQuery.getParameters() };
     }
 
     if (tokenZero) {

@@ -25,7 +25,7 @@ export class AccountService extends HydraBaseService<Account> {
   @Inject('TradeTransferService')
   public readonly tradeTransferInService!: TradeTransferService;
   @Inject('SwapActionService')
-  public readonly swapactionaccountService!: SwapActionService;
+  public readonly initiatedSwapActionsService!: SwapActionService;
 
   constructor(@InjectRepository(Account) protected readonly repository: Repository<Account>) {
     super(Account, repository);
@@ -85,15 +85,15 @@ export class AccountService extends HydraBaseService<Account> {
     delete where.tradeTransferIn_every;
     // remove relation filters to enable warthog query builders
 
-    const { swapactionaccount_some, swapactionaccount_none, swapactionaccount_every } = where;
+    const { initiatedSwapActions_some, initiatedSwapActions_none, initiatedSwapActions_every } = where;
 
-    if (+!!swapactionaccount_some + +!!swapactionaccount_none + +!!swapactionaccount_every > 1) {
+    if (+!!initiatedSwapActions_some + +!!initiatedSwapActions_none + +!!initiatedSwapActions_every > 1) {
       throw new Error(`A query can have at most one of none, some, every clauses on a relation field`);
     }
 
-    delete where.swapactionaccount_some;
-    delete where.swapactionaccount_none;
-    delete where.swapactionaccount_every;
+    delete where.initiatedSwapActions_some;
+    delete where.initiatedSwapActions_none;
+    delete where.initiatedSwapActions_every;
 
     let mainQuery = this.buildFindQueryWithParams(<any>where, orderBy, undefined, fields, 'main').take(undefined); // remove LIMIT
 
@@ -309,31 +309,32 @@ export class AccountService extends HydraBaseService<Account> {
       }
     }
 
-    const swapactionaccountFilter = swapactionaccount_some || swapactionaccount_none || swapactionaccount_every;
+    const initiatedSwapActionsFilter =
+      initiatedSwapActions_some || initiatedSwapActions_none || initiatedSwapActions_every;
 
-    if (swapactionaccountFilter) {
-      const swapactionaccountQuery = this.swapactionaccountService
-        .buildFindQueryWithParams(<any>swapactionaccountFilter, undefined, undefined, ['id'], 'swapactionaccount')
+    if (initiatedSwapActionsFilter) {
+      const initiatedSwapActionsQuery = this.initiatedSwapActionsService
+        .buildFindQueryWithParams(<any>initiatedSwapActionsFilter, undefined, undefined, ['id'], 'initiatedSwapActions')
         .take(undefined); //remove the default LIMIT
 
-      parameters = { ...parameters, ...swapactionaccountQuery.getParameters() };
+      parameters = { ...parameters, ...initiatedSwapActionsQuery.getParameters() };
 
       const subQueryFiltered = this.getQueryBuilder()
         .select([])
         .leftJoin(
-          'account.swapactionaccount',
-          'swapactionaccount_filtered',
-          `swapactionaccount_filtered.id IN (${swapactionaccountQuery.getQuery()})`
+          'account.initiatedSwapActions',
+          'initiatedSwapActions_filtered',
+          `initiatedSwapActions_filtered.id IN (${initiatedSwapActionsQuery.getQuery()})`
         )
         .groupBy('account_id')
-        .addSelect('count(swapactionaccount_filtered.id)', 'cnt_filtered')
+        .addSelect('count(initiatedSwapActions_filtered.id)', 'cnt_filtered')
         .addSelect('account.id', 'account_id');
 
       const subQueryTotal = this.getQueryBuilder()
         .select([])
-        .leftJoin('account.swapactionaccount', 'swapactionaccount_total')
+        .leftJoin('account.initiatedSwapActions', 'initiatedSwapActions_total')
         .groupBy('account_id')
-        .addSelect('count(swapactionaccount_total.id)', 'cnt_total')
+        .addSelect('count(initiatedSwapActions_total.id)', 'cnt_total')
         .addSelect('account.id', 'account_id');
 
       const subQuery = `
@@ -344,37 +345,37 @@ export class AccountService extends HydraBaseService<Account> {
                 WHERE
                     t.account_id = f.account_id`;
 
-      if (swapactionaccount_none) {
+      if (initiatedSwapActions_none) {
         mainQuery = mainQuery.andWhere(`account.id IN
                 (SELECT
-                    swapactionaccount_subq.account_id
+                    initiatedSwapActions_subq.account_id
                 FROM
-                    (${subQuery}) swapactionaccount_subq
+                    (${subQuery}) initiatedSwapActions_subq
                 WHERE
-                    swapactionaccount_subq.cnt_filtered = 0
+                    initiatedSwapActions_subq.cnt_filtered = 0
                 )`);
       }
 
-      if (swapactionaccount_some) {
+      if (initiatedSwapActions_some) {
         mainQuery = mainQuery.andWhere(`account.id IN
                 (SELECT
-                    swapactionaccount_subq.account_id
+                    initiatedSwapActions_subq.account_id
                 FROM
-                    (${subQuery}) swapactionaccount_subq
+                    (${subQuery}) initiatedSwapActions_subq
                 WHERE
-                    swapactionaccount_subq.cnt_filtered > 0
+                    initiatedSwapActions_subq.cnt_filtered > 0
                 )`);
       }
 
-      if (swapactionaccount_every) {
+      if (initiatedSwapActions_every) {
         mainQuery = mainQuery.andWhere(`account.id IN
                 (SELECT
-                    swapactionaccount_subq.account_id
+                    initiatedSwapActions_subq.account_id
                 FROM
-                    (${subQuery}) swapactionaccount_subq
+                    (${subQuery}) initiatedSwapActions_subq
                 WHERE
-                    swapactionaccount_subq.cnt_filtered > 0
-                    AND swapactionaccount_subq.cnt_filtered = swapactionaccount_subq.cnt_total
+                    initiatedSwapActions_subq.cnt_filtered > 0
+                    AND initiatedSwapActions_subq.cnt_filtered = initiatedSwapActions_subq.cnt_total
                 )`);
       }
     }

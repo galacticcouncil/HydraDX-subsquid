@@ -160,7 +160,7 @@ export class AccountResolver {
   }
 
   @FieldResolver(() => SwapAction)
-  async swapactionaccount(@Root() r: Account, @Ctx() ctx: BaseContext): Promise<SwapAction[] | null> {
-    return ctx.dataLoader.loaders.Account.swapactionaccount.load(r);
+  async initiatedSwapActions(@Root() r: Account, @Ctx() ctx: BaseContext): Promise<SwapAction[] | null> {
+    return ctx.dataLoader.loaders.Account.initiatedSwapActions.load(r);
   }
 }

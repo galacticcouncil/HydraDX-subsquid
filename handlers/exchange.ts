@@ -1,5 +1,5 @@
 import { EventContext, StoreContext } from '@subsquid/hydra-common';
-import { Exchange } from '../types';
+import { Exchange } from '../types/index';
 import { SwapAction } from '../generated/model';
 import { getTokenById } from './token';
 import BN from 'bn.js';
@@ -28,7 +28,7 @@ export async function onIntentionRegistered({
   const token0Inst = await getTokenById(token0.toString(), store);
   const token1Inst = await getTokenById(token1.toString(), store);
 
-  const createdByAccount = await getAccountById(
+  const initiatedByAccount = await getAccountById(
     getHydraDxFormattedAddress(accountId.toString()),
     store
   );
@@ -40,9 +40,18 @@ export async function onIntentionRegistered({
   newSwapAction.tokenZero = token0Inst;
   newSwapAction.tokenOne = token1Inst;
   newSwapAction.amount = new BN(amount);
-  newSwapAction.account = createdByAccount;
+  newSwapAction.initiatedByAccount = initiatedByAccount;
 
   await store.save(newSwapAction);
+
+  /**
+   * Add new swapAction to initializer account.
+   */
+  initiatedByAccount.initiatedSwapActions = [
+    ...(initiatedByAccount.initiatedSwapActions || []),
+    newSwapAction,
+  ];
+  await store.save(initiatedByAccount);
 }
 
 export async function onIntentionResolvedAMMTrade({
