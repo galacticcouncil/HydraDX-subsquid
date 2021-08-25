@@ -1072,23 +1072,20 @@ export class SwapActionWhereInput {
   @TypeGraphQLField(() => [ID], { nullable: true })
   deletedById_in?: string[];
 
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  timestamp_eq?: string;
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  timestamp_eq?: DateTimeString;
 
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  timestamp_gt?: string;
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  timestamp_lt?: DateTimeString;
 
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  timestamp_gte?: string;
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  timestamp_lte?: DateTimeString;
 
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  timestamp_lt?: string;
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  timestamp_gt?: DateTimeString;
 
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  timestamp_lte?: string;
-
-  @TypeGraphQLField(() => [BigInt], { nullable: true })
-  timestamp_in?: string[];
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  timestamp_gte?: DateTimeString;
 
   @TypeGraphQLField({ nullable: true })
   block_eq?: string;
@@ -1354,8 +1351,8 @@ export class SwapActionWhereUniqueInput {
 
 @TypeGraphQLInputType()
 export class SwapActionCreateInput {
-  @TypeGraphQLField()
-  timestamp!: string;
+  @TypeGraphQLField(() => DateTime)
+  timestamp!: DateTimeString;
 
   @TypeGraphQLField()
   block!: string;
@@ -1414,8 +1411,8 @@ export class SwapActionCreateInput {
 
 @TypeGraphQLInputType()
 export class SwapActionUpdateInput {
-  @TypeGraphQLField({ nullable: true })
-  timestamp?: string;
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  timestamp?: DateTimeString;
 
   @TypeGraphQLField({ nullable: true })
   block?: string;

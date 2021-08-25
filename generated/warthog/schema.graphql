@@ -1189,7 +1189,7 @@ type SwapAction implements BaseGraphQLObject {
   deletedAt: DateTime
   deletedById: String
   version: Int!
-  timestamp: BigInt!
+  timestamp: DateTime!
   block: String!
   intentionType: String!
   slippage: BigInt
@@ -1222,7 +1222,7 @@ type SwapActionConnection {
 }
 
 input SwapActionCreateInput {
-  timestamp: String!
+  timestamp: DateTime!
   block: String!
   intentionType: String!
   slippage: String
@@ -1294,7 +1294,7 @@ enum SwapActionOrderByInput {
 }
 
 input SwapActionUpdateInput {
-  timestamp: String
+  timestamp: DateTime
   block: String
   intentionType: String
   slippage: String
@@ -1340,12 +1340,11 @@ input SwapActionWhereInput {
   deletedAt_gte: DateTime
   deletedById_eq: ID
   deletedById_in: [ID!]
-  timestamp_eq: BigInt
-  timestamp_gt: BigInt
-  timestamp_gte: BigInt
-  timestamp_lt: BigInt
-  timestamp_lte: BigInt
-  timestamp_in: [BigInt!]
+  timestamp_eq: DateTime
+  timestamp_lt: DateTime
+  timestamp_lte: DateTime
+  timestamp_gt: DateTime
+  timestamp_gte: DateTime
   block_eq: String
   block_contains: String
   block_startsWith: String

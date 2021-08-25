@@ -66,7 +66,7 @@ type DirectTradeFee @jsonField {
 
 type SwapAction @entity {
   id: ID!
-  timestamp: BigInt!
+  timestamp: DateTime!
   block: String!
 
   intentionType: String!

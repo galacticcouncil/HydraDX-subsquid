@@ -13,7 +13,14 @@ import {
 } from '@subsquid/hydra-common';
 
 import { ensureAccount } from '../handlers/account';
-import { registerSwapAction } from '../handlers/swapAction';
+// import { registerSwapAction } from '../handlers/swapAction';
+import {
+  onIntentionRegistered,
+  onIntentionResolvedAMMTrade,
+  onIntentionResolvedDirectTrade,
+  onIntentionResolvedDirectTradeFees,
+  onIntentionResolveErrorEvent,
+} from '../handlers/exchange';
 import { createPool } from '../handlers/pool';
 import { storeGet } from '../helpers/storeHelpers';
 import hydraDxApi from '../helpers/hydradxApi';
@@ -23,11 +30,11 @@ export * from '../handlers/exchange';
 hydraDxApi.initialize();
 
 
-// export async function handleNewAccount(
-//   handlerContext: EventContext & StoreContext
-// ) {
-//   await ensureAccount(handlerContext);
-// }
+/**
+ * ============================
+ * ========= P O O L ==========
+ * ============================
+ */
 
 export async function handleNewPool(
   handlerContext: EventContext & StoreContext
@@ -35,10 +42,36 @@ export async function handleNewPool(
   // await ensureAssets(handlerContext);
   await createPool(handlerContext);
 }
+
+/**
+ * ============================
+ * ====== E X C H A N G E =====
+ * ============================
+ */
 export async function handleIntentionRegistered(
   handlerContext: EventContext & StoreContext
 ) {
-  await registerSwapAction(handlerContext);
+  await onIntentionRegistered(handlerContext);
+}
+export async function handleIntentionResolvedAMMTrade(
+  handlerContext: EventContext & StoreContext
+) {
+  await onIntentionResolvedAMMTrade(handlerContext);
+}
+export async function handleIntentionResolvedDirectTrade(
+  handlerContext: EventContext & StoreContext
+) {
+  await onIntentionResolvedDirectTrade(handlerContext);
+}
+export async function handleIntentionResolvedDirectTradeFees(
+  handlerContext: EventContext & StoreContext
+) {
+  await onIntentionResolvedDirectTradeFees(handlerContext);
+}
+export async function handleIntentionResolveErrorEvent(
+  handlerContext: EventContext & StoreContext
+) {
+  await onIntentionResolveErrorEvent(handlerContext);
 }
 
 /**

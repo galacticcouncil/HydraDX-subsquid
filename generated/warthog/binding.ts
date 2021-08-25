@@ -955,7 +955,7 @@ export interface SumRewardWhereUniqueInput {
 }
 
 export interface SwapActionCreateInput {
-  timestamp: String
+  timestamp: DateTime
   block: String
   intentionType: String
   slippage?: String | null
@@ -977,7 +977,7 @@ export interface SwapActionCreateInput {
 }
 
 export interface SwapActionUpdateInput {
-  timestamp?: String | null
+  timestamp?: DateTime | null
   block?: String | null
   intentionType?: String | null
   slippage?: String | null
@@ -1023,12 +1023,11 @@ export interface SwapActionWhereInput {
   deletedAt_gte?: DateTime | null
   deletedById_eq?: ID_Input | null
   deletedById_in?: ID_Output[] | ID_Output | null
-  timestamp_eq?: BigInt | null
-  timestamp_gt?: BigInt | null
-  timestamp_gte?: BigInt | null
-  timestamp_lt?: BigInt | null
-  timestamp_lte?: BigInt | null
-  timestamp_in?: BigInt[] | BigInt | null
+  timestamp_eq?: DateTime | null
+  timestamp_lt?: DateTime | null
+  timestamp_lte?: DateTime | null
+  timestamp_gt?: DateTime | null
+  timestamp_gte?: DateTime | null
   block_eq?: String | null
   block_contains?: String | null
   block_startsWith?: String | null
@@ -1597,7 +1596,7 @@ export interface SwapAction extends BaseGraphQLObject {
   deletedAt?: DateTime | null
   deletedById?: String | null
   version: Int
-  timestamp: BigInt
+  timestamp: DateTime
   block: String
   intentionType: String
   slippage?: BigInt | null

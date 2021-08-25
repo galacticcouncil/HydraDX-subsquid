@@ -20,6 +20,10 @@ typegen:
     - staking.Slash
     - system.NewAccount
     - exchange.IntentionRegistered
+    - exchange.IntentionResolvedAMMTrade
+    - exchange.IntentionResolvedDirectTrade
+    - exchange.IntentionResolvedDirectTradeFees
+    - exchange.IntentionResolveErrorEvent
     - xyk.PoolCreated
   customTypes:
     lib: ../chain
@@ -40,11 +44,21 @@ mappings:
 
     - event: xyk.PoolCreated
       handler: handleNewPool
-    - event: exchange.IntentionRegistered
-      handler: handleIntentionRegistered
 
     - event: exchange.IntentionRegistered
       handler: handleIntentionRegistered
+
+    - event: exchange.IntentionResolvedAMMTrade
+      handler: handleIntentionResolvedAMMTrade
+
+    - event: exchange.IntentionResolvedDirectTrade
+      handler: handleIntentionResolvedDirectTrade
+
+    - event: exchange.IntentionResolvedDirectTradeFees
+      handler: handleIntentionResolvedDirectTradeFees
+
+    - event: exchange.IntentionResolveErrorEvent
+      handler: handleIntentionResolveErrorEvent
 
   extrinsicHandlers:
   preBlockHooks:
