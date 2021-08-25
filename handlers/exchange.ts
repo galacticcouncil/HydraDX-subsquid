@@ -41,6 +41,8 @@ export async function onIntentionRegistered({
   newSwapAction.tokenOne = token1Inst;
   newSwapAction.amount = new BN(amount);
   newSwapAction.account = createdByAccount;
+
+  await store.save(newSwapAction);
 }
 
 export async function onIntentionResolvedAMMTrade({
