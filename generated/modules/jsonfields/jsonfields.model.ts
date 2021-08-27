@@ -17,20 +17,14 @@ import { InputType, Field } from 'type-graphql';
 @InputType('DirectTradeFeeInput')
 @ObjectType()
 export class DirectTradeFee {
-  @StringField({
-    nullable: true,
-  })
-  account1?: string;
+  @StringField({})
+  accountIdWho!: string;
 
-  @StringField({
-    nullable: true,
-  })
-  account2?: string;
+  @StringField({})
+  accountIdTo!: string;
 
-  @StringField({
-    nullable: true,
-  })
-  asset?: string;
+  @StringField({})
+  assetId!: string;
 
   @NumericField({
     nullable: true,

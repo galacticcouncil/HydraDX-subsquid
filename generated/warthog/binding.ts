@@ -209,8 +209,18 @@ export type SwapActionOrderByInput =   'createdAt_ASC' |
   'timestamp_DESC' |
   'block_ASC' |
   'block_DESC' |
+  'initiatedByAccount_ASC' |
+  'initiatedByAccount_DESC' |
   'intentionType_ASC' |
   'intentionType_DESC' |
+  'amount_ASC' |
+  'amount_DESC' |
+  'tokenZero_ASC' |
+  'tokenZero_DESC' |
+  'tokenOne_ASC' |
+  'tokenOne_DESC' |
+  'assetsPair_ASC' |
+  'assetsPair_DESC' |
   'slippage_ASC' |
   'slippage_DESC' |
   'totalFeeFinal_ASC' |
@@ -221,14 +231,6 @@ export type SwapActionOrderByInput =   'createdAt_ASC' |
   'totalDirectTradeExchanged_DESC' |
   'saved_ASC' |
   'saved_DESC' |
-  'initiatedByAccount_ASC' |
-  'initiatedByAccount_DESC' |
-  'tokenZero_ASC' |
-  'tokenZero_DESC' |
-  'tokenOne_ASC' |
-  'tokenOne_DESC' |
-  'amount_ASC' |
-  'amount_DESC' |
   'amountXykTrade_ASC' |
   'amountXykTrade_DESC' |
   'amountOutXykTrade_ASC' |
@@ -237,8 +239,6 @@ export type SwapActionOrderByInput =   'createdAt_ASC' |
   'amountSoldBought_DESC' |
   'totalAmountFinal_ASC' |
   'totalAmountFinal_DESC' |
-  'assetsPair_ASC' |
-  'assetsPair_DESC' |
   'xykTradePool_ASC' |
   'xykTradePool_DESC'
 
@@ -475,23 +475,23 @@ export interface BaseWhereInput {
 }
 
 export interface DirectTradeFeeCreateInput {
-  account1?: String | null
-  account2?: String | null
-  asset?: String | null
+  accountIdWho: String
+  accountIdTo: String
+  assetId: String
   amount?: String | null
 }
 
 export interface DirectTradeFeeInput {
-  account1?: String | null
-  account2?: String | null
-  asset?: String | null
+  accountIdWho: String
+  accountIdTo: String
+  assetId: String
   amount?: BigInt | null
 }
 
 export interface DirectTradeFeeUpdateInput {
-  account1?: String | null
-  account2?: String | null
-  asset?: String | null
+  accountIdWho?: String | null
+  accountIdTo?: String | null
+  assetId?: String | null
   amount?: String | null
 }
 
@@ -520,21 +520,21 @@ export interface DirectTradeFeeWhereInput {
   deletedAt_gte?: DateTime | null
   deletedById_eq?: ID_Input | null
   deletedById_in?: ID_Output[] | ID_Output | null
-  account1_eq?: String | null
-  account1_contains?: String | null
-  account1_startsWith?: String | null
-  account1_endsWith?: String | null
-  account1_in?: String[] | String | null
-  account2_eq?: String | null
-  account2_contains?: String | null
-  account2_startsWith?: String | null
-  account2_endsWith?: String | null
-  account2_in?: String[] | String | null
-  asset_eq?: String | null
-  asset_contains?: String | null
-  asset_startsWith?: String | null
-  asset_endsWith?: String | null
-  asset_in?: String[] | String | null
+  accountIdWho_eq?: String | null
+  accountIdWho_contains?: String | null
+  accountIdWho_startsWith?: String | null
+  accountIdWho_endsWith?: String | null
+  accountIdWho_in?: String[] | String | null
+  accountIdTo_eq?: String | null
+  accountIdTo_contains?: String | null
+  accountIdTo_startsWith?: String | null
+  accountIdTo_endsWith?: String | null
+  accountIdTo_in?: String[] | String | null
+  assetId_eq?: String | null
+  assetId_contains?: String | null
+  assetId_startsWith?: String | null
+  assetId_endsWith?: String | null
+  assetId_in?: String[] | String | null
   amount_eq?: BigInt | null
   amount_gt?: BigInt | null
   amount_gte?: BigInt | null
@@ -957,44 +957,44 @@ export interface SumRewardWhereUniqueInput {
 export interface SwapActionCreateInput {
   timestamp: DateTime
   block: String
+  initiatedByAccount: ID_Output
   intentionType: String
+  amount?: String | null
+  tokenZero?: ID_Input | null
+  tokenOne?: ID_Input | null
+  assetsPair?: String | null
   slippage?: String | null
   fees?: DirectTradeFeeInput | null
   totalFeeFinal?: String | null
   match?: String | null
   totalDirectTradeExchanged?: String | null
   saved?: String | null
-  initiatedByAccount: ID_Output
-  tokenZero?: ID_Input | null
-  tokenOne?: ID_Input | null
-  amount?: String | null
   amountXykTrade?: String | null
   amountOutXykTrade?: String | null
   amountSoldBought?: String | null
   totalAmountFinal?: String | null
-  assetsPair?: String | null
   xykTradePool?: ID_Input | null
 }
 
 export interface SwapActionUpdateInput {
   timestamp?: DateTime | null
   block?: String | null
+  initiatedByAccount?: ID_Input | null
   intentionType?: String | null
+  amount?: String | null
+  tokenZero?: ID_Input | null
+  tokenOne?: ID_Input | null
+  assetsPair?: String | null
   slippage?: String | null
   fees?: DirectTradeFeeInput | null
   totalFeeFinal?: String | null
   match?: String | null
   totalDirectTradeExchanged?: String | null
   saved?: String | null
-  initiatedByAccount?: ID_Input | null
-  tokenZero?: ID_Input | null
-  tokenOne?: ID_Input | null
-  amount?: String | null
   amountXykTrade?: String | null
   amountOutXykTrade?: String | null
   amountSoldBought?: String | null
   totalAmountFinal?: String | null
-  assetsPair?: String | null
   xykTradePool?: ID_Input | null
 }
 
@@ -1038,6 +1038,17 @@ export interface SwapActionWhereInput {
   intentionType_startsWith?: String | null
   intentionType_endsWith?: String | null
   intentionType_in?: String[] | String | null
+  amount_eq?: BigInt | null
+  amount_gt?: BigInt | null
+  amount_gte?: BigInt | null
+  amount_lt?: BigInt | null
+  amount_lte?: BigInt | null
+  amount_in?: BigInt[] | BigInt | null
+  assetsPair_eq?: String | null
+  assetsPair_contains?: String | null
+  assetsPair_startsWith?: String | null
+  assetsPair_endsWith?: String | null
+  assetsPair_in?: String[] | String | null
   slippage_eq?: BigInt | null
   slippage_gt?: BigInt | null
   slippage_gte?: BigInt | null
@@ -1069,12 +1080,6 @@ export interface SwapActionWhereInput {
   saved_lt?: BigInt | null
   saved_lte?: BigInt | null
   saved_in?: BigInt[] | BigInt | null
-  amount_eq?: BigInt | null
-  amount_gt?: BigInt | null
-  amount_gte?: BigInt | null
-  amount_lt?: BigInt | null
-  amount_lte?: BigInt | null
-  amount_in?: BigInt[] | BigInt | null
   amountXykTrade_eq?: BigInt | null
   amountXykTrade_gt?: BigInt | null
   amountXykTrade_gte?: BigInt | null
@@ -1099,11 +1104,6 @@ export interface SwapActionWhereInput {
   totalAmountFinal_lt?: BigInt | null
   totalAmountFinal_lte?: BigInt | null
   totalAmountFinal_in?: BigInt[] | BigInt | null
-  assetsPair_eq?: String | null
-  assetsPair_contains?: String | null
-  assetsPair_startsWith?: String | null
-  assetsPair_endsWith?: String | null
-  assetsPair_in?: String[] | String | null
   initiatedByAccount?: AccountWhereInput | null
   tokenZero?: TokenWhereInput | null
   tokenOne?: TokenWhereInput | null
@@ -1399,9 +1399,9 @@ export interface BaseModelUUID extends BaseGraphQLObject {
 }
 
 export interface DirectTradeFee {
-  account1?: String | null
-  account2?: String | null
-  asset?: String | null
+  accountIdWho: String
+  accountIdTo: String
+  assetId: String
   amount?: BigInt | null
 }
 
@@ -1598,25 +1598,25 @@ export interface SwapAction extends BaseGraphQLObject {
   version: Int
   timestamp: DateTime
   block: String
+  initiatedByAccount: Account
+  initiatedByAccountId: String
   intentionType: String
+  amount?: BigInt | null
+  tokenZero?: Token | null
+  tokenZeroId?: String | null
+  tokenOne?: Token | null
+  tokenOneId?: String | null
+  assetsPair?: String | null
   slippage?: BigInt | null
   fees?: DirectTradeFee | null
   totalFeeFinal?: BigInt | null
   match?: BigInt | null
   totalDirectTradeExchanged?: BigInt | null
   saved?: BigInt | null
-  initiatedByAccount: Account
-  initiatedByAccountId: String
-  tokenZero?: Token | null
-  tokenZeroId?: String | null
-  tokenOne?: Token | null
-  tokenOneId?: String | null
-  amount?: BigInt | null
   amountXykTrade?: BigInt | null
   amountOutXykTrade?: BigInt | null
   amountSoldBought?: BigInt | null
   totalAmountFinal?: BigInt | null
-  assetsPair?: String | null
   xykTradePool?: Pool | null
   xykTradePoolId?: String | null
   directTrades?: Array<TradeTransfer> | null

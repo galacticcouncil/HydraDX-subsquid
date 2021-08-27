@@ -1,10 +1,23 @@
-import { EventContext, StoreContext } from '@subsquid/hydra-common';
+import {
+  DatabaseManager,
+  EventContext,
+  StoreContext,
+} from '@subsquid/hydra-common';
 import { Exchange } from '../types/index';
-import { SwapAction } from '../generated/model';
+import { Pool, SwapAction, DirectTradeFee } from '../generated/model';
 import { getTokenById } from './token';
 import BN from 'bn.js';
 import { getHydraDxFormattedAddress } from '../helpers/utils';
 import { getAccountById } from './account';
+import { storeGet } from '../helpers/storeHelpers';
+import { calculateSwapActionValues } from '../helpers/exchangeHelpers';
+
+const getSwapActionByIntentionId = (
+  intentionId: string,
+  store: DatabaseManager
+): Promise<SwapAction | undefined> => {
+  return storeGet(store, SwapAction, intentionId);
+};
 
 export async function onIntentionRegistered({
   store,
@@ -71,6 +84,23 @@ export async function onIntentionResolvedAMMTrade({
     amount,
     amountSoldBought,
   ] = new Exchange.IntentionResolvedAMMTradeEvent(event).params;
+
+  const existingSwapAction = await getSwapActionByIntentionId(
+    intentionId.toString(),
+    store
+  );
+
+  if (!existingSwapAction) return;
+
+  existingSwapAction.amountXykTrade = new BN(amount);
+  existingSwapAction.amountOutXykTrade = new BN(amountSoldBought);
+
+  const calculatedSwapActionData = calculateSwapActionValues(
+    existingSwapAction,
+    'IntentionResolvedAMMTrade'
+  );
+
+  await store.save(calculatedSwapActionData);
 }
 
 export async function onIntentionResolvedDirectTrade({
@@ -119,6 +149,32 @@ export async function onIntentionResolvedDirectTradeFees({
     assetId,
     amountFee,
   ] = new Exchange.IntentionResolvedDirectTradeFeesEvent(event).params;
+
+  const existingSwapAction = await getSwapActionByIntentionId(
+    intentionId.toString(),
+    store
+  );
+
+  if (!existingSwapAction) return;
+
+  const newDirectTradeFeeDetailsItem = new DirectTradeFee();
+
+  newDirectTradeFeeDetailsItem.accountIdWho = accountIdWho.toString();
+  newDirectTradeFeeDetailsItem.accountIdTo = accountIdTo.toString();
+  newDirectTradeFeeDetailsItem.assetId = assetId.toString();
+  newDirectTradeFeeDetailsItem.amount = new BN(amountFee);
+
+  existingSwapAction.fees = [
+    ...existingSwapAction.fees,
+    newDirectTradeFeeDetailsItem,
+  ];
+
+  const calculatedSwapActionData = calculateSwapActionValues(
+    existingSwapAction,
+    'IntentionResolvedAMMTrade'
+  );
+
+  await store.save(calculatedSwapActionData);
 }
 
 export async function onIntentionResolveErrorEvent({

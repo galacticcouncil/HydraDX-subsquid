@@ -711,14 +711,14 @@ export enum DirectTradeFeeOrderByEnum {
   deletedAt_ASC = "deletedAt_ASC",
   deletedAt_DESC = "deletedAt_DESC",
 
-  account1_ASC = "account1_ASC",
-  account1_DESC = "account1_DESC",
+  accountIdWho_ASC = "accountIdWho_ASC",
+  accountIdWho_DESC = "accountIdWho_DESC",
 
-  account2_ASC = "account2_ASC",
-  account2_DESC = "account2_DESC",
+  accountIdTo_ASC = "accountIdTo_ASC",
+  accountIdTo_DESC = "accountIdTo_DESC",
 
-  asset_ASC = "asset_ASC",
-  asset_DESC = "asset_DESC",
+  assetId_ASC = "assetId_ASC",
+  assetId_DESC = "assetId_DESC",
 
   amount_ASC = "amount_ASC",
   amount_DESC = "amount_DESC",
@@ -803,49 +803,49 @@ export class DirectTradeFeeWhereInput {
   deletedById_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
-  account1_eq?: string;
+  accountIdWho_eq?: string;
 
   @TypeGraphQLField({ nullable: true })
-  account1_contains?: string;
+  accountIdWho_contains?: string;
 
   @TypeGraphQLField({ nullable: true })
-  account1_startsWith?: string;
+  accountIdWho_startsWith?: string;
 
   @TypeGraphQLField({ nullable: true })
-  account1_endsWith?: string;
+  accountIdWho_endsWith?: string;
 
   @TypeGraphQLField(() => [String], { nullable: true })
-  account1_in?: string[];
+  accountIdWho_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
-  account2_eq?: string;
+  accountIdTo_eq?: string;
 
   @TypeGraphQLField({ nullable: true })
-  account2_contains?: string;
+  accountIdTo_contains?: string;
 
   @TypeGraphQLField({ nullable: true })
-  account2_startsWith?: string;
+  accountIdTo_startsWith?: string;
 
   @TypeGraphQLField({ nullable: true })
-  account2_endsWith?: string;
+  accountIdTo_endsWith?: string;
 
   @TypeGraphQLField(() => [String], { nullable: true })
-  account2_in?: string[];
+  accountIdTo_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
-  asset_eq?: string;
+  assetId_eq?: string;
 
   @TypeGraphQLField({ nullable: true })
-  asset_contains?: string;
+  assetId_contains?: string;
 
   @TypeGraphQLField({ nullable: true })
-  asset_startsWith?: string;
+  assetId_startsWith?: string;
 
   @TypeGraphQLField({ nullable: true })
-  asset_endsWith?: string;
+  assetId_endsWith?: string;
 
   @TypeGraphQLField(() => [String], { nullable: true })
-  asset_in?: string[];
+  assetId_in?: string[];
 
   @TypeGraphQLField(() => BigInt, { nullable: true })
   amount_eq?: string;
@@ -880,14 +880,14 @@ export class DirectTradeFeeWhereUniqueInput {
 
 @TypeGraphQLInputType()
 export class DirectTradeFeeCreateInput {
-  @TypeGraphQLField({ nullable: true })
-  account1?: string;
+  @TypeGraphQLField()
+  accountIdWho!: string;
 
-  @TypeGraphQLField({ nullable: true })
-  account2?: string;
+  @TypeGraphQLField()
+  accountIdTo!: string;
 
-  @TypeGraphQLField({ nullable: true })
-  asset?: string;
+  @TypeGraphQLField()
+  assetId!: string;
 
   @TypeGraphQLField({ nullable: true })
   amount?: string;
@@ -896,13 +896,13 @@ export class DirectTradeFeeCreateInput {
 @TypeGraphQLInputType()
 export class DirectTradeFeeUpdateInput {
   @TypeGraphQLField({ nullable: true })
-  account1?: string;
+  accountIdWho?: string;
 
   @TypeGraphQLField({ nullable: true })
-  account2?: string;
+  accountIdTo?: string;
 
   @TypeGraphQLField({ nullable: true })
-  asset?: string;
+  assetId?: string;
 
   @TypeGraphQLField({ nullable: true })
   amount?: string;
@@ -945,8 +945,23 @@ export enum SwapActionOrderByEnum {
   block_ASC = "block_ASC",
   block_DESC = "block_DESC",
 
+  initiatedByAccount_ASC = "initiatedByAccount_ASC",
+  initiatedByAccount_DESC = "initiatedByAccount_DESC",
+
   intentionType_ASC = "intentionType_ASC",
   intentionType_DESC = "intentionType_DESC",
+
+  amount_ASC = "amount_ASC",
+  amount_DESC = "amount_DESC",
+
+  tokenZero_ASC = "tokenZero_ASC",
+  tokenZero_DESC = "tokenZero_DESC",
+
+  tokenOne_ASC = "tokenOne_ASC",
+  tokenOne_DESC = "tokenOne_DESC",
+
+  assetsPair_ASC = "assetsPair_ASC",
+  assetsPair_DESC = "assetsPair_DESC",
 
   slippage_ASC = "slippage_ASC",
   slippage_DESC = "slippage_DESC",
@@ -963,18 +978,6 @@ export enum SwapActionOrderByEnum {
   saved_ASC = "saved_ASC",
   saved_DESC = "saved_DESC",
 
-  initiatedByAccount_ASC = "initiatedByAccount_ASC",
-  initiatedByAccount_DESC = "initiatedByAccount_DESC",
-
-  tokenZero_ASC = "tokenZero_ASC",
-  tokenZero_DESC = "tokenZero_DESC",
-
-  tokenOne_ASC = "tokenOne_ASC",
-  tokenOne_DESC = "tokenOne_DESC",
-
-  amount_ASC = "amount_ASC",
-  amount_DESC = "amount_DESC",
-
   amountXykTrade_ASC = "amountXykTrade_ASC",
   amountXykTrade_DESC = "amountXykTrade_DESC",
 
@@ -986,9 +989,6 @@ export enum SwapActionOrderByEnum {
 
   totalAmountFinal_ASC = "totalAmountFinal_ASC",
   totalAmountFinal_DESC = "totalAmountFinal_DESC",
-
-  assetsPair_ASC = "assetsPair_ASC",
-  assetsPair_DESC = "assetsPair_DESC",
 
   xykTradePool_ASC = "xykTradePool_ASC",
   xykTradePool_DESC = "xykTradePool_DESC",
@@ -1118,6 +1118,39 @@ export class SwapActionWhereInput {
   intentionType_in?: string[];
 
   @TypeGraphQLField(() => BigInt, { nullable: true })
+  amount_eq?: string;
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amount_gt?: string;
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amount_gte?: string;
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amount_lt?: string;
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amount_lte?: string;
+
+  @TypeGraphQLField(() => [BigInt], { nullable: true })
+  amount_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  assetsPair_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  assetsPair_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  assetsPair_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  assetsPair_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  assetsPair_in?: string[];
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
   slippage_eq?: string;
 
   @TypeGraphQLField(() => BigInt, { nullable: true })
@@ -1211,24 +1244,6 @@ export class SwapActionWhereInput {
   saved_in?: string[];
 
   @TypeGraphQLField(() => BigInt, { nullable: true })
-  amount_eq?: string;
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  amount_gt?: string;
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  amount_gte?: string;
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  amount_lt?: string;
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  amount_lte?: string;
-
-  @TypeGraphQLField(() => [BigInt], { nullable: true })
-  amount_in?: string[];
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
   amountXykTrade_eq?: string;
 
   @TypeGraphQLField(() => BigInt, { nullable: true })
@@ -1300,21 +1315,6 @@ export class SwapActionWhereInput {
   @TypeGraphQLField(() => [BigInt], { nullable: true })
   totalAmountFinal_in?: string[];
 
-  @TypeGraphQLField({ nullable: true })
-  assetsPair_eq?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  assetsPair_contains?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  assetsPair_startsWith?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  assetsPair_endsWith?: string;
-
-  @TypeGraphQLField(() => [String], { nullable: true })
-  assetsPair_in?: string[];
-
   @TypeGraphQLField(() => AccountWhereInput, { nullable: true })
   initiatedByAccount?: AccountWhereInput;
 
@@ -1357,8 +1357,23 @@ export class SwapActionCreateInput {
   @TypeGraphQLField()
   block!: string;
 
+  @TypeGraphQLField(() => ID)
+  initiatedByAccount!: string;
+
   @TypeGraphQLField()
   intentionType!: string;
+
+  @TypeGraphQLField({ nullable: true })
+  amount?: string;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  tokenZero?: string;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  tokenOne?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  assetsPair?: string;
 
   @TypeGraphQLField({ nullable: true })
   slippage?: string;
@@ -1378,18 +1393,6 @@ export class SwapActionCreateInput {
   @TypeGraphQLField({ nullable: true })
   saved?: string;
 
-  @TypeGraphQLField(() => ID)
-  initiatedByAccount!: string;
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  tokenZero?: string;
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  tokenOne?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  amount?: string;
-
   @TypeGraphQLField({ nullable: true })
   amountXykTrade?: string;
 
@@ -1401,9 +1404,6 @@ export class SwapActionCreateInput {
 
   @TypeGraphQLField({ nullable: true })
   totalAmountFinal?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  assetsPair?: string;
 
   @TypeGraphQLField(() => ID, { nullable: true })
   xykTradePool?: string;
@@ -1417,8 +1417,23 @@ export class SwapActionUpdateInput {
   @TypeGraphQLField({ nullable: true })
   block?: string;
 
+  @TypeGraphQLField(() => ID, { nullable: true })
+  initiatedByAccount?: string;
+
   @TypeGraphQLField({ nullable: true })
   intentionType?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  amount?: string;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  tokenZero?: string;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  tokenOne?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  assetsPair?: string;
 
   @TypeGraphQLField({ nullable: true })
   slippage?: string;
@@ -1438,18 +1453,6 @@ export class SwapActionUpdateInput {
   @TypeGraphQLField({ nullable: true })
   saved?: string;
 
-  @TypeGraphQLField(() => ID, { nullable: true })
-  initiatedByAccount?: string;
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  tokenZero?: string;
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  tokenOne?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  amount?: string;
-
   @TypeGraphQLField({ nullable: true })
   amountXykTrade?: string;
 
@@ -1461,9 +1464,6 @@ export class SwapActionUpdateInput {
 
   @TypeGraphQLField({ nullable: true })
   totalAmountFinal?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  assetsPair?: string;
 
   @TypeGraphQLField(() => ID, { nullable: true })
   xykTradePool?: string;

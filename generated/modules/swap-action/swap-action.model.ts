@@ -26,8 +26,51 @@ export class SwapAction extends BaseModel {
   @StringField({})
   block!: string;
 
+  @ManyToOne(() => Account, (param: Account) => param.initiatedSwapActions, {
+    skipGraphQLField: true,
+
+    modelName: 'SwapAction',
+    relModelName: 'Account',
+    propertyName: 'initiatedByAccount',
+  })
+  initiatedByAccount!: Account;
+
   @StringField({})
   intentionType!: string;
+
+  @NumericField({
+    nullable: true,
+
+    transformer: {
+      to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
+      from: (dbValue: string) =>
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
+  })
+  amount?: BN;
+
+  @ManyToOne(() => Token, (param: Token) => param.swapactiontokenZero, {
+    skipGraphQLField: true,
+    nullable: true,
+    modelName: 'SwapAction',
+    relModelName: 'Token',
+    propertyName: 'tokenZero',
+  })
+  tokenZero?: Token;
+
+  @ManyToOne(() => Token, (param: Token) => param.swapactiontokenOne, {
+    skipGraphQLField: true,
+    nullable: true,
+    modelName: 'SwapAction',
+    relModelName: 'Token',
+    propertyName: 'tokenOne',
+  })
+  tokenOne?: Token;
+
+  @StringField({
+    nullable: true,
+  })
+  assetsPair?: string;
 
   @NumericField({
     nullable: true,
@@ -87,44 +130,6 @@ export class SwapAction extends BaseModel {
   })
   saved?: BN;
 
-  @ManyToOne(() => Account, (param: Account) => param.initiatedSwapActions, {
-    skipGraphQLField: true,
-
-    modelName: 'SwapAction',
-    relModelName: 'Account',
-    propertyName: 'initiatedByAccount',
-  })
-  initiatedByAccount!: Account;
-
-  @ManyToOne(() => Token, (param: Token) => param.swapactiontokenZero, {
-    skipGraphQLField: true,
-    nullable: true,
-    modelName: 'SwapAction',
-    relModelName: 'Token',
-    propertyName: 'tokenZero',
-  })
-  tokenZero?: Token;
-
-  @ManyToOne(() => Token, (param: Token) => param.swapactiontokenOne, {
-    skipGraphQLField: true,
-    nullable: true,
-    modelName: 'SwapAction',
-    relModelName: 'Token',
-    propertyName: 'tokenOne',
-  })
-  tokenOne?: Token;
-
-  @NumericField({
-    nullable: true,
-
-    transformer: {
-      to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
-      from: (dbValue: string) =>
-        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
-    },
-  })
-  amount?: BN;
-
   @NumericField({
     nullable: true,
 
@@ -168,11 +173,6 @@ export class SwapAction extends BaseModel {
     },
   })
   totalAmountFinal?: BN;
-
-  @StringField({
-    nullable: true,
-  })
-  assetsPair?: string;
 
   @ManyToOne(() => Pool, (param: Pool) => param.swapActions, {
     skipGraphQLField: true,

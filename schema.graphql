@@ -59,9 +59,9 @@ type Pool @entity {
 #  }[];
 
 type DirectTradeFee @jsonField {
-  account1: String
-  account2: String
-  asset: String
+  accountIdWho: String!
+  accountIdTo: String!
+  assetId: String!
   amount: BigInt
 }
 
@@ -69,24 +69,25 @@ type SwapAction @entity {
   id: ID!
   timestamp: DateTime!
   block: String!
+  initiatedByAccount: Account!
 
   intentionType: String!
+  amount: BigInt
+  tokenZero: Token
+  tokenOne: Token
+  assetsPair: String
+
   slippage: BigInt
   fees: [DirectTradeFee]
   totalFeeFinal: BigInt
   match: BigInt
   totalDirectTradeExchanged: BigInt
   saved: BigInt
-  initiatedByAccount: Account!
-
-  tokenZero: Token
-  tokenOne: Token
-  amount: BigInt
   amountXykTrade: BigInt
   amountOutXykTrade: BigInt
   amountSoldBought: BigInt
   totalAmountFinal: BigInt
-  assetsPair: String
+
   xykTradePool: Pool
 
   directTrades: [TradeTransfer] @derivedFrom(field: "swapAction")
