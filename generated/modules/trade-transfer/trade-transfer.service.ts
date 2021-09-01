@@ -9,6 +9,8 @@ import { TradeTransferWhereArgs, TradeTransferWhereInput } from '../../warthog';
 
 import { SwapAction } from '../swap-action/swap-action.model';
 import { SwapActionService } from '../swap-action/swap-action.service';
+import { Token } from '../token/token.model';
+import { TokenService } from '../token/token.service';
 import { Account } from '../account/account.model';
 import { AccountService } from '../account/account.service';
 import { getConnection, getRepository, In, Not } from 'typeorm';
@@ -17,11 +19,15 @@ import _ from 'lodash';
 @Service('TradeTransferService')
 export class TradeTransferService extends HydraBaseService<TradeTransfer> {
   @Inject('SwapActionService')
-  public readonly swapActionService!: SwapActionService;
-  @Inject('AccountService')
-  public readonly accountReceivedService!: AccountService;
+  public readonly parentSwapActionService!: SwapActionService;
+  @Inject('TokenService')
+  public readonly assetSentService!: TokenService;
+  @Inject('TokenService')
+  public readonly assetReceivedService!: TokenService;
   @Inject('AccountService')
   public readonly accountSentService!: AccountService;
+  @Inject('AccountService')
+  public readonly accountReceivedService!: AccountService;
 
   constructor(@InjectRepository(TradeTransfer) protected readonly repository: Repository<TradeTransfer>) {
     super(TradeTransfer, repository);
@@ -47,41 +53,62 @@ export class TradeTransferService extends HydraBaseService<TradeTransfer> {
     const where = <TradeTransferWhereInput>(_where || {});
 
     // remove relation filters to enable warthog query builders
-    const { swapAction } = where;
-    delete where.swapAction;
+    const { parentSwapAction } = where;
+    delete where.parentSwapAction;
 
     // remove relation filters to enable warthog query builders
-    const { accountReceived } = where;
-    delete where.accountReceived;
+    const { assetSent } = where;
+    delete where.assetSent;
+
+    // remove relation filters to enable warthog query builders
+    const { assetReceived } = where;
+    delete where.assetReceived;
 
     // remove relation filters to enable warthog query builders
     const { accountSent } = where;
     delete where.accountSent;
 
+    // remove relation filters to enable warthog query builders
+    const { accountReceived } = where;
+    delete where.accountReceived;
+
     let mainQuery = this.buildFindQueryWithParams(<any>where, orderBy, undefined, fields, 'main').take(undefined); // remove LIMIT
 
     let parameters = mainQuery.getParameters();
 
-    if (swapAction) {
+    if (parentSwapAction) {
       // OTO or MTO
-      const swapActionQuery = this.swapActionService
-        .buildFindQueryWithParams(<any>swapAction, undefined, undefined, ['id'], 'swapAction')
+      const parentSwapActionQuery = this.parentSwapActionService
+        .buildFindQueryWithParams(<any>parentSwapAction, undefined, undefined, ['id'], 'parentSwapAction')
         .take(undefined); // remove the default LIMIT
 
-      mainQuery = mainQuery.andWhere(`"tradetransfer"."swap_action_id" IN (${swapActionQuery.getQuery()})`);
+      mainQuery = mainQuery.andWhere(
+        `"tradetransfer"."parent_swap_action_id" IN (${parentSwapActionQuery.getQuery()})`
+      );
 
-      parameters = { ...parameters, ...swapActionQuery.getParameters() };
+      parameters = { ...parameters, ...parentSwapActionQuery.getParameters() };
     }
 
-    if (accountReceived) {
+    if (assetSent) {
       // OTO or MTO
-      const accountReceivedQuery = this.accountReceivedService
-        .buildFindQueryWithParams(<any>accountReceived, undefined, undefined, ['id'], 'accountReceived')
+      const assetSentQuery = this.assetSentService
+        .buildFindQueryWithParams(<any>assetSent, undefined, undefined, ['id'], 'assetSent')
         .take(undefined); // remove the default LIMIT
 
-      mainQuery = mainQuery.andWhere(`"tradetransfer"."account_received_id" IN (${accountReceivedQuery.getQuery()})`);
+      mainQuery = mainQuery.andWhere(`"tradetransfer"."asset_sent_id" IN (${assetSentQuery.getQuery()})`);
 
-      parameters = { ...parameters, ...accountReceivedQuery.getParameters() };
+      parameters = { ...parameters, ...assetSentQuery.getParameters() };
+    }
+
+    if (assetReceived) {
+      // OTO or MTO
+      const assetReceivedQuery = this.assetReceivedService
+        .buildFindQueryWithParams(<any>assetReceived, undefined, undefined, ['id'], 'assetReceived')
+        .take(undefined); // remove the default LIMIT
+
+      mainQuery = mainQuery.andWhere(`"tradetransfer"."asset_received_id" IN (${assetReceivedQuery.getQuery()})`);
+
+      parameters = { ...parameters, ...assetReceivedQuery.getParameters() };
     }
 
     if (accountSent) {
@@ -93,6 +120,17 @@ export class TradeTransferService extends HydraBaseService<TradeTransfer> {
       mainQuery = mainQuery.andWhere(`"tradetransfer"."account_sent_id" IN (${accountSentQuery.getQuery()})`);
 
       parameters = { ...parameters, ...accountSentQuery.getParameters() };
+    }
+
+    if (accountReceived) {
+      // OTO or MTO
+      const accountReceivedQuery = this.accountReceivedService
+        .buildFindQueryWithParams(<any>accountReceived, undefined, undefined, ['id'], 'accountReceived')
+        .take(undefined); // remove the default LIMIT
+
+      mainQuery = mainQuery.andWhere(`"tradetransfer"."account_received_id" IN (${accountReceivedQuery.getQuery()})`);
+
+      parameters = { ...parameters, ...accountReceivedQuery.getParameters() };
     }
 
     mainQuery = mainQuery.setParameters(parameters);

@@ -25,3 +25,5 @@ export { TradeTransfer };
 
 import { DirectTradeFee } from '../modules/jsonfields/jsonfields.model';
 export { DirectTradeFee };
+import { SwapActionFees } from '../modules/jsonfields/jsonfields.model';
+export { SwapActionFees };

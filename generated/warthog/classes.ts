@@ -32,6 +32,8 @@ import { TradeTransfer } from "../modules/trade-transfer/trade-transfer.model";
 // @ts-ignore
 import { DirectTradeFee } from "../modules/jsonfields/jsonfields.model";
 // @ts-ignore
+import { SwapActionFees } from "../modules/jsonfields/jsonfields.model";
+// @ts-ignore
 import { SwapAction } from "../modules/swap-action/swap-action.model";
 // @ts-ignore
 import { Token } from "../modules/token/token.model";
@@ -447,20 +449,26 @@ export enum TradeTransferOrderByEnum {
   block_ASC = "block_ASC",
   block_DESC = "block_DESC",
 
-  swapAction_ASC = "swapAction_ASC",
-  swapAction_DESC = "swapAction_DESC",
+  parentSwapAction_ASC = "parentSwapAction_ASC",
+  parentSwapAction_DESC = "parentSwapAction_DESC",
 
-  accountReceived_ASC = "accountReceived_ASC",
-  accountReceived_DESC = "accountReceived_DESC",
+  assetSent_ASC = "assetSent_ASC",
+  assetSent_DESC = "assetSent_DESC",
+
+  assetReceived_ASC = "assetReceived_ASC",
+  assetReceived_DESC = "assetReceived_DESC",
 
   accountSent_ASC = "accountSent_ASC",
   accountSent_DESC = "accountSent_DESC",
 
-  amountReceived_ASC = "amountReceived_ASC",
-  amountReceived_DESC = "amountReceived_DESC",
+  accountReceived_ASC = "accountReceived_ASC",
+  accountReceived_DESC = "accountReceived_DESC",
 
   amountSent_ASC = "amountSent_ASC",
   amountSent_DESC = "amountSent_DESC",
+
+  amountReceived_ASC = "amountReceived_ASC",
+  amountReceived_DESC = "amountReceived_DESC",
 }
 
 registerEnumType(TradeTransferOrderByEnum, {
@@ -541,23 +549,20 @@ export class TradeTransferWhereInput {
   @TypeGraphQLField(() => [ID], { nullable: true })
   deletedById_in?: string[];
 
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  timestamp_eq?: string;
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  timestamp_eq?: DateTimeString;
 
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  timestamp_gt?: string;
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  timestamp_lt?: DateTimeString;
 
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  timestamp_gte?: string;
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  timestamp_lte?: DateTimeString;
 
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  timestamp_lt?: string;
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  timestamp_gt?: DateTimeString;
 
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  timestamp_lte?: string;
-
-  @TypeGraphQLField(() => [BigInt], { nullable: true })
-  timestamp_in?: string[];
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  timestamp_gte?: DateTimeString;
 
   @TypeGraphQLField({ nullable: true })
   block_eq?: string;
@@ -573,24 +578,6 @@ export class TradeTransferWhereInput {
 
   @TypeGraphQLField(() => [String], { nullable: true })
   block_in?: string[];
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  amountReceived_eq?: string;
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  amountReceived_gt?: string;
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  amountReceived_gte?: string;
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  amountReceived_lt?: string;
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  amountReceived_lte?: string;
-
-  @TypeGraphQLField(() => [BigInt], { nullable: true })
-  amountReceived_in?: string[];
 
   @TypeGraphQLField(() => BigInt, { nullable: true })
   amountSent_eq?: string;
@@ -610,14 +597,38 @@ export class TradeTransferWhereInput {
   @TypeGraphQLField(() => [BigInt], { nullable: true })
   amountSent_in?: string[];
 
-  @TypeGraphQLField(() => SwapActionWhereInput, { nullable: true })
-  swapAction?: SwapActionWhereInput;
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amountReceived_eq?: string;
 
-  @TypeGraphQLField(() => AccountWhereInput, { nullable: true })
-  accountReceived?: AccountWhereInput;
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amountReceived_gt?: string;
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amountReceived_gte?: string;
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amountReceived_lt?: string;
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amountReceived_lte?: string;
+
+  @TypeGraphQLField(() => [BigInt], { nullable: true })
+  amountReceived_in?: string[];
+
+  @TypeGraphQLField(() => SwapActionWhereInput, { nullable: true })
+  parentSwapAction?: SwapActionWhereInput;
+
+  @TypeGraphQLField(() => TokenWhereInput, { nullable: true })
+  assetSent?: TokenWhereInput;
+
+  @TypeGraphQLField(() => TokenWhereInput, { nullable: true })
+  assetReceived?: TokenWhereInput;
 
   @TypeGraphQLField(() => AccountWhereInput, { nullable: true })
   accountSent?: AccountWhereInput;
+
+  @TypeGraphQLField(() => AccountWhereInput, { nullable: true })
+  accountReceived?: AccountWhereInput;
 
   @TypeGraphQLField(() => TradeTransferWhereInput, { nullable: true })
   AND?: [TradeTransferWhereInput];
@@ -634,50 +645,62 @@ export class TradeTransferWhereUniqueInput {
 
 @TypeGraphQLInputType()
 export class TradeTransferCreateInput {
-  @TypeGraphQLField()
-  timestamp!: string;
+  @TypeGraphQLField(() => DateTime)
+  timestamp!: DateTimeString;
 
   @TypeGraphQLField()
   block!: string;
 
   @TypeGraphQLField(() => ID)
-  swapAction!: string;
+  parentSwapAction!: string;
 
   @TypeGraphQLField(() => ID)
-  accountReceived!: string;
+  assetSent!: string;
+
+  @TypeGraphQLField(() => ID)
+  assetReceived!: string;
 
   @TypeGraphQLField(() => ID)
   accountSent!: string;
 
-  @TypeGraphQLField({ nullable: true })
-  amountReceived?: string;
+  @TypeGraphQLField(() => ID)
+  accountReceived!: string;
 
   @TypeGraphQLField({ nullable: true })
   amountSent?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  amountReceived?: string;
 }
 
 @TypeGraphQLInputType()
 export class TradeTransferUpdateInput {
-  @TypeGraphQLField({ nullable: true })
-  timestamp?: string;
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  timestamp?: DateTimeString;
 
   @TypeGraphQLField({ nullable: true })
   block?: string;
 
   @TypeGraphQLField(() => ID, { nullable: true })
-  swapAction?: string;
+  parentSwapAction?: string;
 
   @TypeGraphQLField(() => ID, { nullable: true })
-  accountReceived?: string;
+  assetSent?: string;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  assetReceived?: string;
 
   @TypeGraphQLField(() => ID, { nullable: true })
   accountSent?: string;
 
-  @TypeGraphQLField({ nullable: true })
-  amountReceived?: string;
+  @TypeGraphQLField(() => ID, { nullable: true })
+  accountReceived?: string;
 
   @TypeGraphQLField({ nullable: true })
   amountSent?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  amountReceived?: string;
 }
 
 @ArgsType()
@@ -889,8 +912,8 @@ export class DirectTradeFeeCreateInput {
   @TypeGraphQLField()
   assetId!: string;
 
-  @TypeGraphQLField({ nullable: true })
-  amount?: string;
+  @TypeGraphQLField()
+  amount!: string;
 }
 
 @TypeGraphQLInputType()
@@ -1378,8 +1401,8 @@ export class SwapActionCreateInput {
   @TypeGraphQLField({ nullable: true })
   slippage?: string;
 
-  @TypeGraphQLField(() => DirectTradeFee, { nullable: true })
-  fees?: DirectTradeFee;
+  @TypeGraphQLField(() => SwapActionFees)
+  fees!: SwapActionFees;
 
   @TypeGraphQLField({ nullable: true })
   totalFeeFinal?: string;
@@ -1438,8 +1461,8 @@ export class SwapActionUpdateInput {
   @TypeGraphQLField({ nullable: true })
   slippage?: string;
 
-  @TypeGraphQLField(() => DirectTradeFee, { nullable: true })
-  fees?: DirectTradeFee;
+  @TypeGraphQLField(() => SwapActionFees, { nullable: true })
+  fees?: SwapActionFees;
 
   @TypeGraphQLField({ nullable: true })
   totalFeeFinal?: string;
@@ -1695,6 +1718,24 @@ export class TokenWhereInput {
 
   @TypeGraphQLField(() => SwapActionWhereInput, { nullable: true })
   swapactiontokenOne_every?: SwapActionWhereInput;
+
+  @TypeGraphQLField(() => TradeTransferWhereInput, { nullable: true })
+  tradetransferassetSent_none?: TradeTransferWhereInput;
+
+  @TypeGraphQLField(() => TradeTransferWhereInput, { nullable: true })
+  tradetransferassetSent_some?: TradeTransferWhereInput;
+
+  @TypeGraphQLField(() => TradeTransferWhereInput, { nullable: true })
+  tradetransferassetSent_every?: TradeTransferWhereInput;
+
+  @TypeGraphQLField(() => TradeTransferWhereInput, { nullable: true })
+  tradetransferassetReceived_none?: TradeTransferWhereInput;
+
+  @TypeGraphQLField(() => TradeTransferWhereInput, { nullable: true })
+  tradetransferassetReceived_some?: TradeTransferWhereInput;
+
+  @TypeGraphQLField(() => TradeTransferWhereInput, { nullable: true })
+  tradetransferassetReceived_every?: TradeTransferWhereInput;
 
   @TypeGraphQLField(() => TokenWhereInput, { nullable: true })
   AND?: [TokenWhereInput];

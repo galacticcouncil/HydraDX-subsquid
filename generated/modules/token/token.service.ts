@@ -13,6 +13,8 @@ import { AssetPrice } from '../asset-price/asset-price.model';
 import { AssetPriceService } from '../asset-price/asset-price.service';
 import { SwapAction } from '../swap-action/swap-action.model';
 import { SwapActionService } from '../swap-action/swap-action.service';
+import { TradeTransfer } from '../trade-transfer/trade-transfer.model';
+import { TradeTransferService } from '../trade-transfer/trade-transfer.service';
 import { getConnection, getRepository, In, Not } from 'typeorm';
 import _ from 'lodash';
 
@@ -34,6 +36,10 @@ export class TokenService extends HydraBaseService<Token> {
   public readonly swapactiontokenZeroService!: SwapActionService;
   @Inject('SwapActionService')
   public readonly swapactiontokenOneService!: SwapActionService;
+  @Inject('TradeTransferService')
+  public readonly tradetransferassetSentService!: TradeTransferService;
+  @Inject('TradeTransferService')
+  public readonly tradetransferassetReceivedService!: TradeTransferService;
 
   constructor(@InjectRepository(Token) protected readonly repository: Repository<Token>) {
     super(Token, repository);
@@ -139,6 +145,32 @@ export class TokenService extends HydraBaseService<Token> {
     delete where.swapactiontokenOne_some;
     delete where.swapactiontokenOne_none;
     delete where.swapactiontokenOne_every;
+    // remove relation filters to enable warthog query builders
+
+    const { tradetransferassetSent_some, tradetransferassetSent_none, tradetransferassetSent_every } = where;
+
+    if (+!!tradetransferassetSent_some + +!!tradetransferassetSent_none + +!!tradetransferassetSent_every > 1) {
+      throw new Error(`A query can have at most one of none, some, every clauses on a relation field`);
+    }
+
+    delete where.tradetransferassetSent_some;
+    delete where.tradetransferassetSent_none;
+    delete where.tradetransferassetSent_every;
+    // remove relation filters to enable warthog query builders
+
+    const { tradetransferassetReceived_some, tradetransferassetReceived_none, tradetransferassetReceived_every } =
+      where;
+
+    if (
+      +!!tradetransferassetReceived_some + +!!tradetransferassetReceived_none + +!!tradetransferassetReceived_every >
+      1
+    ) {
+      throw new Error(`A query can have at most one of none, some, every clauses on a relation field`);
+    }
+
+    delete where.tradetransferassetReceived_some;
+    delete where.tradetransferassetReceived_none;
+    delete where.tradetransferassetReceived_every;
 
     let mainQuery = this.buildFindQueryWithParams(<any>where, orderBy, undefined, fields, 'main').take(undefined); // remove LIMIT
 
@@ -641,6 +673,160 @@ export class TokenService extends HydraBaseService<Token> {
                 WHERE
                     swapactiontokenOne_subq.cnt_filtered > 0
                     AND swapactiontokenOne_subq.cnt_filtered = swapactiontokenOne_subq.cnt_total
+                )`);
+      }
+    }
+
+    const tradetransferassetSentFilter =
+      tradetransferassetSent_some || tradetransferassetSent_none || tradetransferassetSent_every;
+
+    if (tradetransferassetSentFilter) {
+      const tradetransferassetSentQuery = this.tradetransferassetSentService
+        .buildFindQueryWithParams(
+          <any>tradetransferassetSentFilter,
+          undefined,
+          undefined,
+          ['id'],
+          'tradetransferassetSent'
+        )
+        .take(undefined); //remove the default LIMIT
+
+      parameters = { ...parameters, ...tradetransferassetSentQuery.getParameters() };
+
+      const subQueryFiltered = this.getQueryBuilder()
+        .select([])
+        .leftJoin(
+          'token.tradetransferassetSent',
+          'tradetransferassetSent_filtered',
+          `tradetransferassetSent_filtered.id IN (${tradetransferassetSentQuery.getQuery()})`
+        )
+        .groupBy('token_id')
+        .addSelect('count(tradetransferassetSent_filtered.id)', 'cnt_filtered')
+        .addSelect('token.id', 'token_id');
+
+      const subQueryTotal = this.getQueryBuilder()
+        .select([])
+        .leftJoin('token.tradetransferassetSent', 'tradetransferassetSent_total')
+        .groupBy('token_id')
+        .addSelect('count(tradetransferassetSent_total.id)', 'cnt_total')
+        .addSelect('token.id', 'token_id');
+
+      const subQuery = `
+                SELECT
+                    f.token_id token_id, f.cnt_filtered cnt_filtered, t.cnt_total cnt_total
+                FROM
+                    (${subQueryTotal.getQuery()}) t, (${subQueryFiltered.getQuery()}) f
+                WHERE
+                    t.token_id = f.token_id`;
+
+      if (tradetransferassetSent_none) {
+        mainQuery = mainQuery.andWhere(`token.id IN
+                (SELECT
+                    tradetransferassetSent_subq.token_id
+                FROM
+                    (${subQuery}) tradetransferassetSent_subq
+                WHERE
+                    tradetransferassetSent_subq.cnt_filtered = 0
+                )`);
+      }
+
+      if (tradetransferassetSent_some) {
+        mainQuery = mainQuery.andWhere(`token.id IN
+                (SELECT
+                    tradetransferassetSent_subq.token_id
+                FROM
+                    (${subQuery}) tradetransferassetSent_subq
+                WHERE
+                    tradetransferassetSent_subq.cnt_filtered > 0
+                )`);
+      }
+
+      if (tradetransferassetSent_every) {
+        mainQuery = mainQuery.andWhere(`token.id IN
+                (SELECT
+                    tradetransferassetSent_subq.token_id
+                FROM
+                    (${subQuery}) tradetransferassetSent_subq
+                WHERE
+                    tradetransferassetSent_subq.cnt_filtered > 0
+                    AND tradetransferassetSent_subq.cnt_filtered = tradetransferassetSent_subq.cnt_total
+                )`);
+      }
+    }
+
+    const tradetransferassetReceivedFilter =
+      tradetransferassetReceived_some || tradetransferassetReceived_none || tradetransferassetReceived_every;
+
+    if (tradetransferassetReceivedFilter) {
+      const tradetransferassetReceivedQuery = this.tradetransferassetReceivedService
+        .buildFindQueryWithParams(
+          <any>tradetransferassetReceivedFilter,
+          undefined,
+          undefined,
+          ['id'],
+          'tradetransferassetReceived'
+        )
+        .take(undefined); //remove the default LIMIT
+
+      parameters = { ...parameters, ...tradetransferassetReceivedQuery.getParameters() };
+
+      const subQueryFiltered = this.getQueryBuilder()
+        .select([])
+        .leftJoin(
+          'token.tradetransferassetReceived',
+          'tradetransferassetReceived_filtered',
+          `tradetransferassetReceived_filtered.id IN (${tradetransferassetReceivedQuery.getQuery()})`
+        )
+        .groupBy('token_id')
+        .addSelect('count(tradetransferassetReceived_filtered.id)', 'cnt_filtered')
+        .addSelect('token.id', 'token_id');
+
+      const subQueryTotal = this.getQueryBuilder()
+        .select([])
+        .leftJoin('token.tradetransferassetReceived', 'tradetransferassetReceived_total')
+        .groupBy('token_id')
+        .addSelect('count(tradetransferassetReceived_total.id)', 'cnt_total')
+        .addSelect('token.id', 'token_id');
+
+      const subQuery = `
+                SELECT
+                    f.token_id token_id, f.cnt_filtered cnt_filtered, t.cnt_total cnt_total
+                FROM
+                    (${subQueryTotal.getQuery()}) t, (${subQueryFiltered.getQuery()}) f
+                WHERE
+                    t.token_id = f.token_id`;
+
+      if (tradetransferassetReceived_none) {
+        mainQuery = mainQuery.andWhere(`token.id IN
+                (SELECT
+                    tradetransferassetReceived_subq.token_id
+                FROM
+                    (${subQuery}) tradetransferassetReceived_subq
+                WHERE
+                    tradetransferassetReceived_subq.cnt_filtered = 0
+                )`);
+      }
+
+      if (tradetransferassetReceived_some) {
+        mainQuery = mainQuery.andWhere(`token.id IN
+                (SELECT
+                    tradetransferassetReceived_subq.token_id
+                FROM
+                    (${subQuery}) tradetransferassetReceived_subq
+                WHERE
+                    tradetransferassetReceived_subq.cnt_filtered > 0
+                )`);
+      }
+
+      if (tradetransferassetReceived_every) {
+        mainQuery = mainQuery.andWhere(`token.id IN
+                (SELECT
+                    tradetransferassetReceived_subq.token_id
+                FROM
+                    (${subQuery}) tradetransferassetReceived_subq
+                WHERE
+                    tradetransferassetReceived_subq.cnt_filtered > 0
+                    AND tradetransferassetReceived_subq.cnt_filtered = tradetransferassetReceived_subq.cnt_total
                 )`);
       }
     }

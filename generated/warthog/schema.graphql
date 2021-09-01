@@ -365,21 +365,21 @@ type DirectTradeFee {
   accountIdWho: String!
   accountIdTo: String!
   assetId: String!
-  amount: BigInt
+  amount: BigInt!
 }
 
 input DirectTradeFeeCreateInput {
   accountIdWho: String!
   accountIdTo: String!
   assetId: String!
-  amount: String
+  amount: String!
 }
 
 input DirectTradeFeeInput {
   accountIdWho: String!
   accountIdTo: String!
   assetId: String!
-  amount: BigInt
+  amount: BigInt!
 }
 
 input DirectTradeFeeUpdateInput {
@@ -1201,7 +1201,7 @@ type SwapAction implements BaseGraphQLObject {
   tokenOneId: String
   assetsPair: String
   slippage: BigInt
-  fees: DirectTradeFee
+  fees: SwapActionFees!
   totalFeeFinal: BigInt
   match: BigInt
   totalDirectTradeExchanged: BigInt
@@ -1231,7 +1231,7 @@ input SwapActionCreateInput {
   tokenOne: ID
   assetsPair: String
   slippage: String
-  fees: DirectTradeFeeInput
+  fees: SwapActionFeesInput!
   totalFeeFinal: String
   match: String
   totalDirectTradeExchanged: String
@@ -1246,6 +1246,14 @@ input SwapActionCreateInput {
 type SwapActionEdge {
   node: SwapAction!
   cursor: String!
+}
+
+type SwapActionFees {
+  directTrade: [DirectTradeFee!]
+}
+
+input SwapActionFeesInput {
+  directTrade: [DirectTradeFeeInput!]
 }
 
 enum SwapActionOrderByInput {
@@ -1303,7 +1311,7 @@ input SwapActionUpdateInput {
   tokenOne: ID
   assetsPair: String
   slippage: String
-  fees: DirectTradeFeeInput
+  fees: SwapActionFeesInput
   totalFeeFinal: String
   match: String
   totalDirectTradeExchanged: String
@@ -1457,6 +1465,8 @@ type Token implements BaseGraphQLObject {
   pooltokenOne: [Pool!]
   swapactiontokenZero: [SwapAction!]
   swapactiontokenOne: [SwapAction!]
+  tradetransferassetSent: [TradeTransfer!]
+  tradetransferassetReceived: [TradeTransfer!]
 }
 
 type TokenConnection {
@@ -1561,6 +1571,12 @@ input TokenWhereInput {
   swapactiontokenOne_none: SwapActionWhereInput
   swapactiontokenOne_some: SwapActionWhereInput
   swapactiontokenOne_every: SwapActionWhereInput
+  tradetransferassetSent_none: TradeTransferWhereInput
+  tradetransferassetSent_some: TradeTransferWhereInput
+  tradetransferassetSent_every: TradeTransferWhereInput
+  tradetransferassetReceived_none: TradeTransferWhereInput
+  tradetransferassetReceived_some: TradeTransferWhereInput
+  tradetransferassetReceived_every: TradeTransferWhereInput
   AND: [TokenWhereInput!]
   OR: [TokenWhereInput!]
 }
@@ -1578,16 +1594,20 @@ type TradeTransfer implements BaseGraphQLObject {
   deletedAt: DateTime
   deletedById: String
   version: Int!
-  timestamp: BigInt!
+  timestamp: DateTime!
   block: String!
-  swapAction: SwapAction!
-  swapActionId: String!
-  accountReceived: Account!
-  accountReceivedId: String!
+  parentSwapAction: SwapAction!
+  parentSwapActionId: String!
+  assetSent: Token!
+  assetSentId: String!
+  assetReceived: Token!
+  assetReceivedId: String!
   accountSent: Account!
   accountSentId: String!
-  amountReceived: BigInt
+  accountReceived: Account!
+  accountReceivedId: String!
   amountSent: BigInt
+  amountReceived: BigInt
 }
 
 type TradeTransferConnection {
@@ -1597,13 +1617,15 @@ type TradeTransferConnection {
 }
 
 input TradeTransferCreateInput {
-  timestamp: String!
+  timestamp: DateTime!
   block: String!
-  swapAction: ID!
-  accountReceived: ID!
+  parentSwapAction: ID!
+  assetSent: ID!
+  assetReceived: ID!
   accountSent: ID!
-  amountReceived: String
+  accountReceived: ID!
   amountSent: String
+  amountReceived: String
 }
 
 type TradeTransferEdge {
@@ -1622,26 +1644,32 @@ enum TradeTransferOrderByInput {
   timestamp_DESC
   block_ASC
   block_DESC
-  swapAction_ASC
-  swapAction_DESC
-  accountReceived_ASC
-  accountReceived_DESC
+  parentSwapAction_ASC
+  parentSwapAction_DESC
+  assetSent_ASC
+  assetSent_DESC
+  assetReceived_ASC
+  assetReceived_DESC
   accountSent_ASC
   accountSent_DESC
-  amountReceived_ASC
-  amountReceived_DESC
+  accountReceived_ASC
+  accountReceived_DESC
   amountSent_ASC
   amountSent_DESC
+  amountReceived_ASC
+  amountReceived_DESC
 }
 
 input TradeTransferUpdateInput {
-  timestamp: String
+  timestamp: DateTime
   block: String
-  swapAction: ID
-  accountReceived: ID
+  parentSwapAction: ID
+  assetSent: ID
+  assetReceived: ID
   accountSent: ID
-  amountReceived: String
+  accountReceived: ID
   amountSent: String
+  amountReceived: String
 }
 
 input TradeTransferWhereInput {
@@ -1669,32 +1697,33 @@ input TradeTransferWhereInput {
   deletedAt_gte: DateTime
   deletedById_eq: ID
   deletedById_in: [ID!]
-  timestamp_eq: BigInt
-  timestamp_gt: BigInt
-  timestamp_gte: BigInt
-  timestamp_lt: BigInt
-  timestamp_lte: BigInt
-  timestamp_in: [BigInt!]
+  timestamp_eq: DateTime
+  timestamp_lt: DateTime
+  timestamp_lte: DateTime
+  timestamp_gt: DateTime
+  timestamp_gte: DateTime
   block_eq: String
   block_contains: String
   block_startsWith: String
   block_endsWith: String
   block_in: [String!]
-  amountReceived_eq: BigInt
-  amountReceived_gt: BigInt
-  amountReceived_gte: BigInt
-  amountReceived_lt: BigInt
-  amountReceived_lte: BigInt
-  amountReceived_in: [BigInt!]
   amountSent_eq: BigInt
   amountSent_gt: BigInt
   amountSent_gte: BigInt
   amountSent_lt: BigInt
   amountSent_lte: BigInt
   amountSent_in: [BigInt!]
-  swapAction: SwapActionWhereInput
-  accountReceived: AccountWhereInput
+  amountReceived_eq: BigInt
+  amountReceived_gt: BigInt
+  amountReceived_gte: BigInt
+  amountReceived_lt: BigInt
+  amountReceived_lte: BigInt
+  amountReceived_in: [BigInt!]
+  parentSwapAction: SwapActionWhereInput
+  assetSent: TokenWhereInput
+  assetReceived: TokenWhereInput
   accountSent: AccountWhereInput
+  accountReceived: AccountWhereInput
   AND: [TradeTransferWhereInput!]
   OR: [TradeTransferWhereInput!]
 }

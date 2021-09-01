@@ -41,6 +41,8 @@ import { TradeTransferService } from './trade-transfer.service';
 
 import { SwapAction } from '../swap-action/swap-action.model';
 import { SwapActionService } from '../swap-action/swap-action.service';
+import { Token } from '../token/token.model';
+import { TokenService } from '../token/token.service';
 import { Account } from '../account/account.model';
 import { AccountService } from '../account/account.service';
 import { getConnection, getRepository, In, Not } from 'typeorm';
@@ -143,17 +145,27 @@ export class TradeTransferResolver {
   }
 
   @FieldResolver(() => SwapAction)
-  async swapAction(@Root() r: TradeTransfer, @Ctx() ctx: BaseContext): Promise<SwapAction | null> {
-    return ctx.dataLoader.loaders.TradeTransfer.swapAction.load(r);
+  async parentSwapAction(@Root() r: TradeTransfer, @Ctx() ctx: BaseContext): Promise<SwapAction | null> {
+    return ctx.dataLoader.loaders.TradeTransfer.parentSwapAction.load(r);
   }
 
-  @FieldResolver(() => Account)
-  async accountReceived(@Root() r: TradeTransfer, @Ctx() ctx: BaseContext): Promise<Account | null> {
-    return ctx.dataLoader.loaders.TradeTransfer.accountReceived.load(r);
+  @FieldResolver(() => Token)
+  async assetSent(@Root() r: TradeTransfer, @Ctx() ctx: BaseContext): Promise<Token | null> {
+    return ctx.dataLoader.loaders.TradeTransfer.assetSent.load(r);
+  }
+
+  @FieldResolver(() => Token)
+  async assetReceived(@Root() r: TradeTransfer, @Ctx() ctx: BaseContext): Promise<Token | null> {
+    return ctx.dataLoader.loaders.TradeTransfer.assetReceived.load(r);
   }
 
   @FieldResolver(() => Account)
   async accountSent(@Root() r: TradeTransfer, @Ctx() ctx: BaseContext): Promise<Account | null> {
     return ctx.dataLoader.loaders.TradeTransfer.accountSent.load(r);
+  }
+
+  @FieldResolver(() => Account)
+  async accountReceived(@Root() r: TradeTransfer, @Ctx() ctx: BaseContext): Promise<Account | null> {
+    return ctx.dataLoader.loaders.TradeTransfer.accountReceived.load(r);
   }
 }

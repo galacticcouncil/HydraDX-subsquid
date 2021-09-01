@@ -45,6 +45,8 @@ import { AssetPrice } from '../asset-price/asset-price.model';
 import { AssetPriceService } from '../asset-price/asset-price.service';
 import { SwapAction } from '../swap-action/swap-action.model';
 import { SwapActionService } from '../swap-action/swap-action.service';
+import { TradeTransfer } from '../trade-transfer/trade-transfer.model';
+import { TradeTransferService } from '../trade-transfer/trade-transfer.service';
 import { getConnection, getRepository, In, Not } from 'typeorm';
 import _ from 'lodash';
 
@@ -182,5 +184,15 @@ export class TokenResolver {
   @FieldResolver(() => SwapAction)
   async swapactiontokenOne(@Root() r: Token, @Ctx() ctx: BaseContext): Promise<SwapAction[] | null> {
     return ctx.dataLoader.loaders.Token.swapactiontokenOne.load(r);
+  }
+
+  @FieldResolver(() => TradeTransfer)
+  async tradetransferassetSent(@Root() r: Token, @Ctx() ctx: BaseContext): Promise<TradeTransfer[] | null> {
+    return ctx.dataLoader.loaders.Token.tradetransferassetSent.load(r);
+  }
+
+  @FieldResolver(() => TradeTransfer)
+  async tradetransferassetReceived(@Root() r: Token, @Ctx() ctx: BaseContext): Promise<TradeTransfer[] | null> {
+    return ctx.dataLoader.loaders.Token.tradetransferassetReceived.load(r);
   }
 }

@@ -83,8 +83,8 @@ export class SwapAction extends BaseModel {
   })
   slippage?: BN;
 
-  @JSONField({ filter: true, gqlFieldType: jsonTypes.DirectTradeFee, nullable: true })
-  fees?: jsonTypes.DirectTradeFee;
+  @JSONField({ filter: true, gqlFieldType: jsonTypes.SwapActionFees })
+  fees!: jsonTypes.SwapActionFees;
 
   @NumericField({
     nullable: true,
@@ -183,7 +183,7 @@ export class SwapAction extends BaseModel {
   })
   xykTradePool?: Pool;
 
-  @OneToMany(() => TradeTransfer, (param: TradeTransfer) => param.swapAction, {
+  @OneToMany(() => TradeTransfer, (param: TradeTransfer) => param.parentSwapAction, {
     nullable: true,
     modelName: 'SwapAction',
     relModelName: 'TradeTransfer',

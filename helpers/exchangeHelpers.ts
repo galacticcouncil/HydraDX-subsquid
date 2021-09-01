@@ -1,6 +1,11 @@
 import BN from 'bn.js';
 import { SwapAction } from '../generated/model';
 
+/**
+ * Function mutates received SwapAction data and returns already updated values.
+ * @param rawData: SwapAction
+ * @param method: string
+ */
 export const calculateSwapActionValues = (
   rawData: SwapAction,
   method: string
@@ -36,6 +41,9 @@ export const calculateSwapActionValues = (
     });
     updatedData.match = totalDirectTradeMatch;
     updatedData.totalDirectTradeExchanged = totalDirectTradeExchanged;
+
+    console.log('totalDirectTradeMatch - ', totalDirectTradeMatch.toString())
+    console.log('totalDirectTradeExchanged - ', totalDirectTradeExchanged.toString())
   }
 
   /**
@@ -44,11 +52,11 @@ export const calculateSwapActionValues = (
   console.log('>>>rawData.fees - >>> ', rawData.fees);
   if (
     method === 'IntentionResolvedDirectTradeFees' &&
-    rawData.fees !== undefined
+    rawData.fees.directTrade !== undefined
   ) {
     let totalFeesAmount = new BN(0);
     // @ts-ignore
-    rawData.fees.forEach((feeItem: any) => {
+    rawData.fees.directTrade.forEach((feeItem: any) => {
       totalFeesAmount = totalFeesAmount.add(new BN(feeItem.amount));
     });
     updatedData.totalFeeFinal = totalFeesAmount;

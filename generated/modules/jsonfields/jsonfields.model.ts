@@ -26,8 +26,13 @@ export class DirectTradeFee {
   @StringField({})
   assetId!: string;
 
-  @NumericField({
-    nullable: true,
-  })
-  amount?: BN;
+  @NumericField({})
+  amount!: BN;
+}
+
+@InputType('SwapActionFeesInput')
+@ObjectType()
+export class SwapActionFees {
+  @Field(() => [DirectTradeFee], { nullable: true })
+  directTrade?: DirectTradeFee[];
 }

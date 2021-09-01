@@ -12,6 +12,7 @@ import {
 import { Pool } from '../pool/pool.model';
 import { AssetPrice } from '../asset-price/asset-price.model';
 import { SwapAction } from '../swap-action/swap-action.model';
+import { TradeTransfer } from '../trade-transfer/trade-transfer.model';
 
 import * as jsonTypes from '../jsonfields/jsonfields.model';
 
@@ -90,6 +91,22 @@ export class Token extends BaseModel {
     propertyName: 'swapactiontokenOne',
   })
   swapactiontokenOne?: SwapAction[];
+
+  @OneToMany(() => TradeTransfer, (param: TradeTransfer) => param.assetSent, {
+    nullable: true,
+    modelName: 'Token',
+    relModelName: 'TradeTransfer',
+    propertyName: 'tradetransferassetSent',
+  })
+  tradetransferassetSent?: TradeTransfer[];
+
+  @OneToMany(() => TradeTransfer, (param: TradeTransfer) => param.assetReceived, {
+    nullable: true,
+    modelName: 'Token',
+    relModelName: 'TradeTransfer',
+    propertyName: 'tradetransferassetReceived',
+  })
+  tradetransferassetReceived?: TradeTransfer[];
 
   constructor(init?: Partial<Token>) {
     super();
