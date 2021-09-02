@@ -34,6 +34,10 @@ import { DirectTradeFee } from "../modules/jsonfields/jsonfields.model";
 // @ts-ignore
 import { SwapActionFees } from "../modules/jsonfields/jsonfields.model";
 // @ts-ignore
+import { SwapActionMetadata } from "../modules/jsonfields/jsonfields.model";
+// @ts-ignore
+import { SwapEventMeta } from "../modules/jsonfields/jsonfields.model";
+// @ts-ignore
 import { SwapAction } from "../modules/swap-action/swap-action.model";
 // @ts-ignore
 import { Token } from "../modules/token/token.model";
@@ -949,6 +953,207 @@ export class DirectTradeFeeUpdateArgs {
   @TypeGraphQLField() where!: DirectTradeFeeWhereUniqueInput;
 }
 
+export enum SwapEventMetaOrderByEnum {
+  createdAt_ASC = "createdAt_ASC",
+  createdAt_DESC = "createdAt_DESC",
+
+  updatedAt_ASC = "updatedAt_ASC",
+  updatedAt_DESC = "updatedAt_DESC",
+
+  deletedAt_ASC = "deletedAt_ASC",
+  deletedAt_DESC = "deletedAt_DESC",
+
+  section_ASC = "section_ASC",
+  section_DESC = "section_DESC",
+
+  method_ASC = "method_ASC",
+  method_DESC = "method_DESC",
+
+  dispatchInfo_ASC = "dispatchInfo_ASC",
+  dispatchInfo_DESC = "dispatchInfo_DESC",
+}
+
+registerEnumType(SwapEventMetaOrderByEnum, {
+  name: "SwapEventMetaOrderByInput",
+});
+
+@TypeGraphQLInputType()
+export class SwapEventMetaWhereInput {
+  @TypeGraphQLField(() => ID, { nullable: true })
+  id_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  id_in?: string[];
+
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  createdAt_eq?: Date;
+
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  createdAt_lt?: Date;
+
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  createdAt_lte?: Date;
+
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  createdAt_gt?: Date;
+
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  createdAt_gte?: Date;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  createdById_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  createdById_in?: string[];
+
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  updatedAt_eq?: Date;
+
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  updatedAt_lt?: Date;
+
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  updatedAt_lte?: Date;
+
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  updatedAt_gt?: Date;
+
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  updatedAt_gte?: Date;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  updatedById_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  updatedById_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_all?: Boolean;
+
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  deletedAt_eq?: Date;
+
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  deletedAt_lt?: Date;
+
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  deletedAt_lte?: Date;
+
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  deletedAt_gt?: Date;
+
+  @TypeGraphQLField(() => DateTime, { nullable: true })
+  deletedAt_gte?: Date;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  deletedById_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  deletedById_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  section_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  section_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  section_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  section_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  section_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  method_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  method_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  method_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  method_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  method_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  dispatchInfo_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  dispatchInfo_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  dispatchInfo_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  dispatchInfo_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  dispatchInfo_in?: string[];
+
+  @TypeGraphQLField(() => SwapEventMetaWhereInput, { nullable: true })
+  AND?: [SwapEventMetaWhereInput];
+
+  @TypeGraphQLField(() => SwapEventMetaWhereInput, { nullable: true })
+  OR?: [SwapEventMetaWhereInput];
+}
+
+@TypeGraphQLInputType()
+export class SwapEventMetaWhereUniqueInput {
+  @TypeGraphQLField(() => ID)
+  id?: string;
+}
+
+@TypeGraphQLInputType()
+export class SwapEventMetaCreateInput {
+  @TypeGraphQLField()
+  section!: string;
+
+  @TypeGraphQLField()
+  method!: string;
+
+  @TypeGraphQLField()
+  dispatchInfo!: string;
+}
+
+@TypeGraphQLInputType()
+export class SwapEventMetaUpdateInput {
+  @TypeGraphQLField({ nullable: true })
+  section?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  method?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  dispatchInfo?: string;
+}
+
+@ArgsType()
+export class SwapEventMetaWhereArgs extends PaginationArgs {
+  @TypeGraphQLField(() => SwapEventMetaWhereInput, { nullable: true })
+  where?: SwapEventMetaWhereInput;
+
+  @TypeGraphQLField(() => SwapEventMetaOrderByEnum, { nullable: true })
+  orderBy?: SwapEventMetaOrderByEnum[];
+}
+
+@ArgsType()
+export class SwapEventMetaCreateManyArgs {
+  @TypeGraphQLField(() => [SwapEventMetaCreateInput])
+  data!: SwapEventMetaCreateInput[];
+}
+
+@ArgsType()
+export class SwapEventMetaUpdateArgs {
+  @TypeGraphQLField() data!: SwapEventMetaUpdateInput;
+  @TypeGraphQLField() where!: SwapEventMetaWhereUniqueInput;
+}
+
 export enum SwapActionOrderByEnum {
   createdAt_ASC = "createdAt_ASC",
   createdAt_DESC = "createdAt_DESC",
@@ -1335,6 +1540,9 @@ export class SwapActionWhereInput {
   @TypeGraphQLField(() => [BigInt], { nullable: true })
   totalAmountFinal_in?: string[];
 
+  @TypeGraphQLField(() => GraphQLJSONObject, { nullable: true })
+  actionMetadata_json?: JsonObject;
+
   @TypeGraphQLField(() => AccountWhereInput, { nullable: true })
   initiatedByAccount?: AccountWhereInput;
 
@@ -1427,6 +1635,9 @@ export class SwapActionCreateInput {
 
   @TypeGraphQLField(() => ID, { nullable: true })
   xykTradePool?: string;
+
+  @TypeGraphQLField(() => SwapActionMetadata, { nullable: true })
+  actionMetadata?: SwapActionMetadata;
 }
 
 @TypeGraphQLInputType()
@@ -1487,6 +1698,9 @@ export class SwapActionUpdateInput {
 
   @TypeGraphQLField(() => ID, { nullable: true })
   xykTradePool?: string;
+
+  @TypeGraphQLField(() => SwapActionMetadata, { nullable: true })
+  actionMetadata?: SwapActionMetadata;
 }
 
 @ArgsType()

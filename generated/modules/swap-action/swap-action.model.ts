@@ -183,6 +183,9 @@ export class SwapAction extends BaseModel {
   })
   xykTradePool?: Pool;
 
+  @JSONField({ filter: true, gqlFieldType: jsonTypes.SwapActionMetadata, nullable: true })
+  actionMetadata?: jsonTypes.SwapActionMetadata;
+
   @OneToMany(() => TradeTransfer, (param: TradeTransfer) => param.parentSwapAction, {
     nullable: true,
     modelName: 'SwapAction',

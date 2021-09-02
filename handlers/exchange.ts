@@ -26,7 +26,14 @@ const getSwapActionByIntentionId = (
   intentionId: string,
   store: DatabaseManager
 ): Promise<SwapAction | undefined> => {
-  return storeGet(store, SwapAction, intentionId);
+  return storeGet(store, SwapAction, intentionId, [
+    'tokenZero',
+    'tokenOne',
+    'initiatedByAccount',
+    'fees',
+    'actionMetadata',
+    'directTrades',
+  ]);
 };
 
 const createTradeTransfer = async (
@@ -189,14 +196,12 @@ export async function onIntentionResolvedDirectTrade({
   const account0Inst = await getAccountById(
     getHydraDxFormattedAddress(account0.toString()),
     store
-  );
+  ); // TODO can be removed and replaced by Account entity from existingSwapAction0
 
   const account1Inst = await getAccountById(
     getHydraDxFormattedAddress(account1.toString()),
     store
-  );
-  //@ts-ignore
-  console.log('onIntentionResolvedDirectTrade - 1', existingSwapAction0!.tokenZeroId)
+  ); // TODO can be removed and replaced by Account entity from existingSwapAction1
 
   if (
     !existingSwapAction0 ||
@@ -209,32 +214,11 @@ export async function onIntentionResolvedDirectTrade({
     !account1Inst
   )
     return;
-  console.log('onIntentionResolvedDirectTrade - 2')
-
-  const token0Sa0Inst = await getTokenById(
-    existingSwapAction0.tokenZero.id,
-    store
-  );
-  const token1Sa0Inst = await getTokenById(
-    existingSwapAction0.tokenOne.id,
-    store
-  );
-
-  const token0Sa1Inst = await getTokenById(
-    existingSwapAction1.tokenZero.id,
-    store
-  );
-  const token1Sa1Inst = await getTokenById(
-    existingSwapAction1.tokenOne.id,
-    store
-  );
-
-  console.log('existingSwapAction0 >>>> ', token0Sa0Inst);
 
   const tradeTransfer0 = await createTradeTransfer(store, event, block, {
     parentSwapAction: existingSwapAction0,
-    assetSent: token0Sa0Inst,
-    assetReceived: token1Sa0Inst,
+    assetSent: existingSwapAction0.tokenZero,
+    assetReceived: existingSwapAction0.tokenOne,
     accountSent: account0Inst,
     accountReceived: account1Inst,
     amountSent: new BN(amountAsset0),
@@ -243,8 +227,8 @@ export async function onIntentionResolvedDirectTrade({
 
   const tradeTransfer1 = await createTradeTransfer(store, event, block, {
     parentSwapAction: existingSwapAction1,
-    assetSent: token0Sa1Inst,
-    assetReceived: token1Sa1Inst,
+    assetSent: existingSwapAction1.tokenZero,
+    assetReceived: existingSwapAction1.tokenOne,
     accountSent: account1Inst,
     accountReceived: account0Inst,
     amountSent: new BN(amountAsset1),

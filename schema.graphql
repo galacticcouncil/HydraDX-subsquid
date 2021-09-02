@@ -31,7 +31,6 @@ type Pool @entity {
   assetsVolume: [PoolAssetVolume] @derivedFrom(field: "pool")
 }
 
-
 #  id: string | null;
 #+  slippage?: BigNumber;
 #+  fees?: DirectTradeFee[];
@@ -51,11 +50,11 @@ type Pool @entity {
 #  errorDetails?: string | { section: string; name: string; documentation: string };
 #+  assetsPair?: string;
 #  directTrades?: {
-  #  amountSent: BigNumber;
-  #  amountReceived: BigNumber;
-  #  account1: string;
-  #  account2: string;
-  #  pairedIntention: string;
+#  amountSent: BigNumber;
+#  amountReceived: BigNumber;
+#  account1: string;
+#  account2: string;
+#  pairedIntention: string;
 #  }[];
 
 type DirectTradeFee @jsonField {
@@ -67,6 +66,16 @@ type DirectTradeFee @jsonField {
 
 type SwapActionFees @jsonField {
   directTrade: [DirectTradeFee]
+}
+
+type SwapEventMeta @jsonField {
+  section: String!
+  method: String!
+  dispatchInfo: String!
+}
+
+type SwapActionMetadata @jsonField {
+  eventsMeta: [SwapEventMeta]
 }
 
 type SwapAction @entity {
@@ -91,8 +100,9 @@ type SwapAction @entity {
   amountOutXykTrade: BigInt
   amountSoldBought: BigInt
   totalAmountFinal: BigInt
-
   xykTradePool: Pool
+
+  actionMetadata: SwapActionMetadata
 
   directTrades: [TradeTransfer] @derivedFrom(field: "parentSwapAction")
 }
@@ -147,7 +157,6 @@ type TradeTransfer @entity {
 #  result: String!
 #}
 
-
 type PoolAssetVolume @entity {
   id: ID!
   pool: Pool!
@@ -175,10 +184,8 @@ type AssetPriceInTime @entity {
 
 # ----- Staking rewards -----
 
-type SumReward @entity{
-
+type SumReward @entity {
   id: ID! # AccountId
-
   accountReward: BigInt!
 
   accountSlash: BigInt!
@@ -189,20 +196,17 @@ type SumReward @entity{
 # in early stage of kusama, some validators didn't need to bond to start staking
 type NoBondRecordAccount @entity {
   id: ID! # AccountId
-
   firstRewardAt: Int!
 }
 
-
-type StakingReward @entity{
+type StakingReward @entity {
   id: ID!
   address: String!
   balance: BigInt!
   date: DateTime!
 }
 
-
-type StakingSlash @entity{
+type StakingSlash @entity {
   id: ID! # AccountId
   address: String!
   balance: BigInt!

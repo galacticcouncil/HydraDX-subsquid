@@ -977,10 +977,15 @@ export interface SwapActionCreateInput {
   amountSoldBought?: String | null
   totalAmountFinal?: String | null
   xykTradePool?: ID_Input | null
+  actionMetadata?: SwapActionMetadataInput | null
 }
 
 export interface SwapActionFeesInput {
   directTrade?: DirectTradeFeeInput[] | DirectTradeFeeInput | null
+}
+
+export interface SwapActionMetadataInput {
+  eventsMeta?: SwapEventMetaInput[] | SwapEventMetaInput | null
 }
 
 export interface SwapActionUpdateInput {
@@ -1003,6 +1008,7 @@ export interface SwapActionUpdateInput {
   amountSoldBought?: String | null
   totalAmountFinal?: String | null
   xykTradePool?: ID_Input | null
+  actionMetadata?: SwapActionMetadataInput | null
 }
 
 export interface SwapActionWhereInput {
@@ -1111,6 +1117,7 @@ export interface SwapActionWhereInput {
   totalAmountFinal_lt?: BigInt | null
   totalAmountFinal_lte?: BigInt | null
   totalAmountFinal_in?: BigInt[] | BigInt | null
+  actionMetadata_json?: JSONObject | null
   initiatedByAccount?: AccountWhereInput | null
   tokenZero?: TokenWhereInput | null
   tokenOne?: TokenWhereInput | null
@@ -1123,6 +1130,72 @@ export interface SwapActionWhereInput {
 }
 
 export interface SwapActionWhereUniqueInput {
+  id: ID_Output
+}
+
+export interface SwapEventMetaCreateInput {
+  section: String
+  method: String
+  dispatchInfo: String
+}
+
+export interface SwapEventMetaInput {
+  section: String
+  method: String
+  dispatchInfo: String
+}
+
+export interface SwapEventMetaUpdateInput {
+  section?: String | null
+  method?: String | null
+  dispatchInfo?: String | null
+}
+
+export interface SwapEventMetaWhereInput {
+  id_eq?: ID_Input | null
+  id_in?: ID_Output[] | ID_Output | null
+  createdAt_eq?: DateTime | null
+  createdAt_lt?: DateTime | null
+  createdAt_lte?: DateTime | null
+  createdAt_gt?: DateTime | null
+  createdAt_gte?: DateTime | null
+  createdById_eq?: ID_Input | null
+  createdById_in?: ID_Output[] | ID_Output | null
+  updatedAt_eq?: DateTime | null
+  updatedAt_lt?: DateTime | null
+  updatedAt_lte?: DateTime | null
+  updatedAt_gt?: DateTime | null
+  updatedAt_gte?: DateTime | null
+  updatedById_eq?: ID_Input | null
+  updatedById_in?: ID_Output[] | ID_Output | null
+  deletedAt_all?: Boolean | null
+  deletedAt_eq?: DateTime | null
+  deletedAt_lt?: DateTime | null
+  deletedAt_lte?: DateTime | null
+  deletedAt_gt?: DateTime | null
+  deletedAt_gte?: DateTime | null
+  deletedById_eq?: ID_Input | null
+  deletedById_in?: ID_Output[] | ID_Output | null
+  section_eq?: String | null
+  section_contains?: String | null
+  section_startsWith?: String | null
+  section_endsWith?: String | null
+  section_in?: String[] | String | null
+  method_eq?: String | null
+  method_contains?: String | null
+  method_startsWith?: String | null
+  method_endsWith?: String | null
+  method_in?: String[] | String | null
+  dispatchInfo_eq?: String | null
+  dispatchInfo_contains?: String | null
+  dispatchInfo_startsWith?: String | null
+  dispatchInfo_endsWith?: String | null
+  dispatchInfo_in?: String[] | String | null
+  AND?: SwapEventMetaWhereInput[] | SwapEventMetaWhereInput | null
+  OR?: SwapEventMetaWhereInput[] | SwapEventMetaWhereInput | null
+}
+
+export interface SwapEventMetaWhereUniqueInput {
   id: ID_Output
 }
 
@@ -1637,6 +1710,7 @@ export interface SwapAction extends BaseGraphQLObject {
   totalAmountFinal?: BigInt | null
   xykTradePool?: Pool | null
   xykTradePoolId?: String | null
+  actionMetadata?: SwapActionMetadata | null
   directTrades?: Array<TradeTransfer> | null
 }
 
@@ -1653,6 +1727,16 @@ export interface SwapActionEdge {
 
 export interface SwapActionFees {
   directTrade?: Array<DirectTradeFee> | null
+}
+
+export interface SwapActionMetadata {
+  eventsMeta?: Array<SwapEventMeta> | null
+}
+
+export interface SwapEventMeta {
+  section: String
+  method: String
+  dispatchInfo: String
 }
 
 export interface Token extends BaseGraphQLObject {

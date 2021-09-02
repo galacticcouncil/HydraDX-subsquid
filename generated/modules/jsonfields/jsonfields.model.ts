@@ -36,3 +36,23 @@ export class SwapActionFees {
   @Field(() => [DirectTradeFee], { nullable: true })
   directTrade?: DirectTradeFee[];
 }
+
+@InputType('SwapActionMetadataInput')
+@ObjectType()
+export class SwapActionMetadata {
+  @Field(() => [SwapEventMeta], { nullable: true })
+  eventsMeta?: SwapEventMeta[];
+}
+
+@InputType('SwapEventMetaInput')
+@ObjectType()
+export class SwapEventMeta {
+  @StringField({})
+  section!: string;
+
+  @StringField({})
+  method!: string;
+
+  @StringField({})
+  dispatchInfo!: string;
+}

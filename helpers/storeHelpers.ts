@@ -7,7 +7,17 @@ type EntityType<T> = {
 export function storeGet<T>(
   store: StoreContext['store'],
   entityType: EntityType<T>,
-  id: string
+  id: string,
+  relations: string[] = []
 ): Promise<T | undefined> {
-  return store.get(entityType, { where: { id } });
+  const getConfig: {
+    where: { id: string };
+    loadEagerRelations: boolean;
+    relations?: string[];
+  } = {
+    where: { id },
+    loadEagerRelations: true,
+  };
+  if (relations && relations.length > 0) getConfig.relations = relations;
+  return store.get(entityType, getConfig);
 }

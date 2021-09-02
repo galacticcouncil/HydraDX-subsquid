@@ -1211,6 +1211,7 @@ type SwapAction implements BaseGraphQLObject {
   totalAmountFinal: BigInt
   xykTradePool: Pool
   xykTradePoolId: String
+  actionMetadata: SwapActionMetadata
   directTrades: [TradeTransfer!]
 }
 
@@ -1240,6 +1241,7 @@ input SwapActionCreateInput {
   amountSoldBought: String
   totalAmountFinal: String
   xykTradePool: ID
+  actionMetadata: SwapActionMetadataInput
 }
 
 type SwapActionEdge {
@@ -1253,6 +1255,14 @@ type SwapActionFees {
 
 input SwapActionFeesInput {
   directTrade: [DirectTradeFeeInput!]
+}
+
+type SwapActionMetadata {
+  eventsMeta: [SwapEventMeta!]
+}
+
+input SwapActionMetadataInput {
+  eventsMeta: [SwapEventMetaInput!]
 }
 
 enum SwapActionOrderByInput {
@@ -1320,6 +1330,7 @@ input SwapActionUpdateInput {
   amountSoldBought: String
   totalAmountFinal: String
   xykTradePool: ID
+  actionMetadata: SwapActionMetadataInput
 }
 
 input SwapActionWhereInput {
@@ -1428,6 +1439,7 @@ input SwapActionWhereInput {
   totalAmountFinal_lt: BigInt
   totalAmountFinal_lte: BigInt
   totalAmountFinal_in: [BigInt!]
+  actionMetadata_json: JSONObject
   initiatedByAccount: AccountWhereInput
   tokenZero: TokenWhereInput
   tokenOne: TokenWhereInput
@@ -1440,6 +1452,78 @@ input SwapActionWhereInput {
 }
 
 input SwapActionWhereUniqueInput {
+  id: ID!
+}
+
+type SwapEventMeta {
+  section: String!
+  method: String!
+  dispatchInfo: String!
+}
+
+input SwapEventMetaCreateInput {
+  section: String!
+  method: String!
+  dispatchInfo: String!
+}
+
+input SwapEventMetaInput {
+  section: String!
+  method: String!
+  dispatchInfo: String!
+}
+
+input SwapEventMetaUpdateInput {
+  section: String
+  method: String
+  dispatchInfo: String
+}
+
+input SwapEventMetaWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  section_eq: String
+  section_contains: String
+  section_startsWith: String
+  section_endsWith: String
+  section_in: [String!]
+  method_eq: String
+  method_contains: String
+  method_startsWith: String
+  method_endsWith: String
+  method_in: [String!]
+  dispatchInfo_eq: String
+  dispatchInfo_contains: String
+  dispatchInfo_startsWith: String
+  dispatchInfo_endsWith: String
+  dispatchInfo_in: [String!]
+  AND: [SwapEventMetaWhereInput!]
+  OR: [SwapEventMetaWhereInput!]
+}
+
+input SwapEventMetaWhereUniqueInput {
   id: ID!
 }
 
