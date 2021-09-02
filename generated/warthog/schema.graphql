@@ -365,7 +365,7 @@ type DirectTradeFee {
   accountIdWho: String!
   accountIdTo: String!
   assetId: String!
-  amount: BigInt!
+  amount: String!
 }
 
 input DirectTradeFeeCreateInput {
@@ -379,7 +379,7 @@ input DirectTradeFeeInput {
   accountIdWho: String!
   accountIdTo: String!
   assetId: String!
-  amount: BigInt!
+  amount: String!
 }
 
 input DirectTradeFeeUpdateInput {
@@ -429,12 +429,11 @@ input DirectTradeFeeWhereInput {
   assetId_startsWith: String
   assetId_endsWith: String
   assetId_in: [String!]
-  amount_eq: BigInt
-  amount_gt: BigInt
-  amount_gte: BigInt
-  amount_lt: BigInt
-  amount_lte: BigInt
-  amount_in: [BigInt!]
+  amount_eq: String
+  amount_contains: String
+  amount_startsWith: String
+  amount_endsWith: String
+  amount_in: [String!]
   AND: [DirectTradeFeeWhereInput!]
   OR: [DirectTradeFeeWhereInput!]
 }

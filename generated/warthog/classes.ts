@@ -870,22 +870,19 @@ export class DirectTradeFeeWhereInput {
   @TypeGraphQLField(() => [String], { nullable: true })
   assetId_in?: string[];
 
-  @TypeGraphQLField(() => BigInt, { nullable: true })
+  @TypeGraphQLField({ nullable: true })
   amount_eq?: string;
 
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  amount_gt?: string;
+  @TypeGraphQLField({ nullable: true })
+  amount_contains?: string;
 
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  amount_gte?: string;
+  @TypeGraphQLField({ nullable: true })
+  amount_startsWith?: string;
 
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  amount_lt?: string;
+  @TypeGraphQLField({ nullable: true })
+  amount_endsWith?: string;
 
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  amount_lte?: string;
-
-  @TypeGraphQLField(() => [BigInt], { nullable: true })
+  @TypeGraphQLField(() => [String], { nullable: true })
   amount_in?: string[];
 
   @TypeGraphQLField(() => DirectTradeFeeWhereInput, { nullable: true })

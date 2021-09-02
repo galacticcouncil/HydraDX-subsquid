@@ -195,24 +195,41 @@ export async function onIntentionResolvedDirectTrade({
     getHydraDxFormattedAddress(account1.toString()),
     store
   );
+  //@ts-ignore
+  console.log('onIntentionResolvedDirectTrade - 1', existingSwapAction0!.tokenZeroId)
 
   if (
     !existingSwapAction0 ||
     !existingSwapAction0.tokenZero ||
+    !existingSwapAction0.tokenOne ||
     !existingSwapAction1 ||
     !existingSwapAction1.tokenZero ||
+    !existingSwapAction1.tokenOne ||
     !account0Inst ||
     !account1Inst
   )
     return;
+  console.log('onIntentionResolvedDirectTrade - 2')
 
-  const token0Sa0Inst = await getTokenById(existingSwapAction0.tokenZero.id, store);
-  const token1Sa0Inst = await getTokenById(existingSwapAction0.tokenZero.id, store);
+  const token0Sa0Inst = await getTokenById(
+    existingSwapAction0.tokenZero.id,
+    store
+  );
+  const token1Sa0Inst = await getTokenById(
+    existingSwapAction0.tokenOne.id,
+    store
+  );
 
-  const token0Sa1Inst = await getTokenById(existingSwapAction1.tokenZero.id, store);
-  const token1Sa1Inst = await getTokenById(existingSwapAction1.tokenZero.id, store);
+  const token0Sa1Inst = await getTokenById(
+    existingSwapAction1.tokenZero.id,
+    store
+  );
+  const token1Sa1Inst = await getTokenById(
+    existingSwapAction1.tokenOne.id,
+    store
+  );
 
-  console.log('existingSwapAction0 >>>> ', token0Sa0Inst)
+  console.log('existingSwapAction0 >>>> ', token0Sa0Inst);
 
   const tradeTransfer0 = await createTradeTransfer(store, event, block, {
     parentSwapAction: existingSwapAction0,
@@ -254,7 +271,6 @@ export async function onIntentionResolvedDirectTrade({
 
   await store.save(calculatedSwapAction0Data);
   await store.save(calculatedSwapAction1Data);
-
 }
 
 export async function onIntentionResolvedDirectTradeFees({
@@ -284,10 +300,14 @@ export async function onIntentionResolvedDirectTradeFees({
 
   const newDirectTradeFeeDetailsItem = new DirectTradeFee();
 
-  newDirectTradeFeeDetailsItem.accountIdWho = accountIdWho.toString();
-  newDirectTradeFeeDetailsItem.accountIdTo = accountIdTo.toString();
+  newDirectTradeFeeDetailsItem.accountIdWho = getHydraDxFormattedAddress(
+    accountIdWho.toString()
+  );
+  newDirectTradeFeeDetailsItem.accountIdTo = getHydraDxFormattedAddress(
+    accountIdTo.toString()
+  );
   newDirectTradeFeeDetailsItem.assetId = assetId.toString();
-  newDirectTradeFeeDetailsItem.amount = new BN(amountFee);
+  newDirectTradeFeeDetailsItem.amount = amountFee.toString();
 
   existingSwapAction.fees.directTrade = [
     ...(existingSwapAction.fees.directTrade || []),
@@ -299,7 +319,7 @@ export async function onIntentionResolvedDirectTradeFees({
     'IntentionResolvedAMMTrade'
   );
 
-  console.log('calculatedSwapActionData >>> ', calculatedSwapActionData)
+  console.log('calculatedSwapActionData >>> ', calculatedSwapActionData);
 
   await store.save(calculatedSwapActionData);
 }

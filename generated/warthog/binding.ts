@@ -489,7 +489,7 @@ export interface DirectTradeFeeInput {
   accountIdWho: String
   accountIdTo: String
   assetId: String
-  amount: BigInt
+  amount: String
 }
 
 export interface DirectTradeFeeUpdateInput {
@@ -539,12 +539,11 @@ export interface DirectTradeFeeWhereInput {
   assetId_startsWith?: String | null
   assetId_endsWith?: String | null
   assetId_in?: String[] | String | null
-  amount_eq?: BigInt | null
-  amount_gt?: BigInt | null
-  amount_gte?: BigInt | null
-  amount_lt?: BigInt | null
-  amount_lte?: BigInt | null
-  amount_in?: BigInt[] | BigInt | null
+  amount_eq?: String | null
+  amount_contains?: String | null
+  amount_startsWith?: String | null
+  amount_endsWith?: String | null
+  amount_in?: String[] | String | null
   AND?: DirectTradeFeeWhereInput[] | DirectTradeFeeWhereInput | null
   OR?: DirectTradeFeeWhereInput[] | DirectTradeFeeWhereInput | null
 }
@@ -1421,7 +1420,7 @@ export interface DirectTradeFee {
   accountIdWho: String
   accountIdTo: String
   assetId: String
-  amount: BigInt
+  amount: String
 }
 
 export interface NoBondRecordAccount extends BaseGraphQLObject {

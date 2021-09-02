@@ -62,7 +62,7 @@ type DirectTradeFee @jsonField {
   accountIdWho: String!
   accountIdTo: String!
   assetId: String!
-  amount: BigInt!
+  amount: String!
 }
 
 type SwapActionFees @jsonField {
