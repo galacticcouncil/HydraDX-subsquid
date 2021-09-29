@@ -74,7 +74,18 @@ type SwapEventMeta @jsonField {
   dispatchInfo: String!
 }
 
+type SwapActionErrorDetails @jsonField {
+  section: String
+  name: String
+  documantation: String
+}
+
 type SwapActionMetadata @jsonField {
+  statusReady: Boolean
+  statusInBlock: Boolean
+  statusFinalized: Boolean
+  statusError: Boolean
+  errorsDetails: [SwapActionErrorDetails]
   eventsMeta: [SwapEventMeta]
 }
 

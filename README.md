@@ -56,3 +56,5 @@ yarn query-node:start
 
 Project's configuration is driven by environment variables, defined in `.env`,
 and `manifest.yml`.
+
+"hydradx-js": "git+https://github.com/galacticcouncil/HydraDX-js",

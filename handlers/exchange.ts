@@ -10,30 +10,49 @@ import {
   SwapActionFees,
   DirectTradeFee,
   TradeTransfer,
+  SwapActionMetadata,
+  SwapEventMeta,
 } from '../generated/model';
 import { getTokenById } from './token';
 import BN from 'bn.js';
-import { getHydraDxFormattedAddress } from '../helpers/utils';
+import {
+  getHydraDxFormattedAddress,
+  getEventStatusesScope,
+} from '../helpers/utils';
 import { getAccountById } from './account';
 import { storeGet } from '../helpers/storeHelpers';
 import { calculateSwapActionValues } from '../helpers/exchangeHelpers';
+import appConstants from '../variables';
 import {
   SubstrateBlock,
   SubstrateEvent,
 } from '@subsquid/hydra-common/lib/interfaces';
+import hydraDxApi from '../helpers/hydradxApi';
 
 const getSwapActionByIntentionId = (
   intentionId: string,
   store: DatabaseManager
 ): Promise<SwapAction | undefined> => {
-  return storeGet(store, SwapAction, intentionId, [
-    'tokenZero',
-    'tokenOne',
-    'initiatedByAccount',
-    'fees',
-    'actionMetadata',
-    'directTrades',
-  ]);
+  return storeGet(
+    store,
+    SwapAction,
+    intentionId,
+    appConstants.store.storeGetRelationsSwapAction
+  );
+};
+
+const getSwapEventMetaItem = (
+  section: string = '',
+  method: string = '',
+  dispatchInfo: string = ''
+): SwapEventMeta => {
+  const newSwapEventMeta = new SwapEventMeta();
+
+  newSwapEventMeta.section = section;
+  newSwapEventMeta.method = method;
+  newSwapEventMeta.dispatchInfo = dispatchInfo;
+
+  return newSwapEventMeta;
 };
 
 const createTradeTransfer = async (
@@ -79,6 +98,8 @@ export async function onIntentionRegistered({
 
   const newSwapAction = new SwapAction();
   const newSwapActionFees = new SwapActionFees();
+  const newSwapActionMetadata = new SwapActionMetadata();
+
   const token0Inst = await getTokenById(token0.toString(), store);
   const token1Inst = await getTokenById(token1.toString(), store);
 
@@ -107,16 +128,36 @@ export async function onIntentionRegistered({
   newSwapAction.amountSoldBought = new BN(0);
   newSwapAction.totalAmountFinal = new BN(0);
 
-  await store.save(newSwapAction);
-
   /**
-   * Add new swapAction to initializer account.
+   * Create event meta data
    */
-  // initiatedByAccount.initiatedSwapActions = [
-  //   ...(initiatedByAccount.initiatedSwapActions || []),
-  //   newSwapAction,
-  // ];
-  // await store.save(initiatedByAccount);
+
+  newSwapActionMetadata.eventsMeta = [
+    getSwapEventMetaItem(
+      'exchange',
+      appConstants.chain.hydraDXEvents.intentionRegistered
+    ),
+  ];
+
+  newSwapActionMetadata.statusReady = false;
+  newSwapActionMetadata.statusInBlock = false;
+  newSwapActionMetadata.statusFinalized = false;
+  newSwapActionMetadata.statusError = false;
+  newSwapActionMetadata.errorsDetails = [];
+
+  const eventStatusesScope = getEventStatusesScope(
+    event,
+    newSwapActionMetadata
+  );
+
+  newSwapActionMetadata.statusReady = eventStatusesScope.statusReady;
+  newSwapActionMetadata.statusInBlock = eventStatusesScope.statusInBlock;
+  newSwapActionMetadata.statusFinalized = eventStatusesScope.statusFinalized;
+  newSwapActionMetadata.statusError = eventStatusesScope.statusError;
+
+  newSwapAction.actionMetadata = newSwapActionMetadata;
+
+  await store.save(newSwapAction);
 }
 
 export async function onIntentionResolvedAMMTrade({
@@ -147,9 +188,34 @@ export async function onIntentionResolvedAMMTrade({
   existingSwapAction.amountXykTrade = new BN(amount);
   existingSwapAction.amountOutXykTrade = new BN(amountSoldBought);
 
+  if (existingSwapAction.actionMetadata) {
+    /**
+     * Collect event meta data
+     */
+
+    existingSwapAction.actionMetadata.eventsMeta = [
+      ...(existingSwapAction.actionMetadata.eventsMeta || []),
+      getSwapEventMetaItem(
+        'exchange',
+        appConstants.chain.hydraDXEvents.intentionResolvedAMMTrade
+      ),
+    ];
+
+    const eventStatusesScope = getEventStatusesScope(
+      event,
+      existingSwapAction.actionMetadata
+    );
+
+    existingSwapAction.actionMetadata.statusReady =
+      eventStatusesScope.statusReady;
+    existingSwapAction.actionMetadata.statusInBlock = eventStatusesScope.statusInBlock;
+    existingSwapAction.actionMetadata.statusFinalized = eventStatusesScope.statusFinalized;
+    existingSwapAction.actionMetadata.statusError = eventStatusesScope.statusError;
+  }
+
   const calculatedSwapActionData = calculateSwapActionValues(
     existingSwapAction,
-    'IntentionResolvedAMMTrade'
+    appConstants.chain.hydraDXEvents.intentionResolvedAMMTrade
   );
 
   await store.save(calculatedSwapActionData);
@@ -244,13 +310,37 @@ export async function onIntentionResolvedDirectTrade({
     tradeTransfer1,
   ];
 
+  if (
+    existingSwapAction0.actionMetadata &&
+    existingSwapAction1.actionMetadata
+  ) {
+    /**
+     * Collect event meta data
+     */
+
+    existingSwapAction0.actionMetadata.eventsMeta = [
+      ...(existingSwapAction0.actionMetadata.eventsMeta || []),
+      getSwapEventMetaItem(
+        'exchange',
+        appConstants.chain.hydraDXEvents.intentionResolvedDirectTrade
+      ),
+    ];
+    existingSwapAction1.actionMetadata.eventsMeta = [
+      ...(existingSwapAction1.actionMetadata.eventsMeta || []),
+      getSwapEventMetaItem(
+        'exchange',
+        appConstants.chain.hydraDXEvents.intentionResolvedDirectTrade
+      ),
+    ];
+  }
+
   const calculatedSwapAction0Data = calculateSwapActionValues(
     existingSwapAction0,
-    'IntentionResolvedDirectTrade'
+    appConstants.chain.hydraDXEvents.intentionResolvedDirectTrade
   );
   const calculatedSwapAction1Data = calculateSwapActionValues(
     existingSwapAction1,
-    'IntentionResolvedDirectTrade'
+    appConstants.chain.hydraDXEvents.intentionResolvedDirectTrade
   );
 
   await store.save(calculatedSwapAction0Data);
@@ -298,9 +388,22 @@ export async function onIntentionResolvedDirectTradeFees({
     newDirectTradeFeeDetailsItem,
   ];
 
+  if (existingSwapAction.actionMetadata) {
+    /**
+     * Collect event meta data
+     */
+    existingSwapAction.actionMetadata.eventsMeta = [
+      ...(existingSwapAction.actionMetadata.eventsMeta || []),
+      getSwapEventMetaItem(
+        'exchange',
+        appConstants.chain.hydraDXEvents.intentionResolvedDirectTradeFees
+      ),
+    ];
+  }
+
   const calculatedSwapActionData = calculateSwapActionValues(
     existingSwapAction,
-    'IntentionResolvedAMMTrade'
+    appConstants.chain.hydraDXEvents.intentionResolvedDirectTradeFees
   );
 
   console.log('calculatedSwapActionData >>> ', calculatedSwapActionData);
@@ -325,4 +428,13 @@ export async function onIntentionResolveErrorEvent({
     intentionId,
     dispatch,
   ] = new Exchange.IntentionResolveErrorEventEvent(event).params;
+
+  const existingSwapAction = await getSwapActionByIntentionId(
+    intentionId.toString(),
+    store
+  );
+
+  if (!existingSwapAction) return;
+
+  const api = hydraDxApi.getApi();
 }

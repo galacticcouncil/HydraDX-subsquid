@@ -30,6 +30,25 @@ export class DirectTradeFee {
   amount!: string;
 }
 
+@InputType('SwapActionErrorDetailsInput')
+@ObjectType()
+export class SwapActionErrorDetails {
+  @StringField({
+    nullable: true,
+  })
+  section?: string;
+
+  @StringField({
+    nullable: true,
+  })
+  name?: string;
+
+  @StringField({
+    nullable: true,
+  })
+  documantation?: string;
+}
+
 @InputType('SwapActionFeesInput')
 @ObjectType()
 export class SwapActionFees {
@@ -40,6 +59,29 @@ export class SwapActionFees {
 @InputType('SwapActionMetadataInput')
 @ObjectType()
 export class SwapActionMetadata {
+  @BooleanField({
+    nullable: true,
+  })
+  statusReady?: boolean;
+
+  @BooleanField({
+    nullable: true,
+  })
+  statusInBlock?: boolean;
+
+  @BooleanField({
+    nullable: true,
+  })
+  statusFinalized?: boolean;
+
+  @BooleanField({
+    nullable: true,
+  })
+  statusError?: boolean;
+
+  @Field(() => [SwapActionErrorDetails], { nullable: true })
+  errorsDetails?: SwapActionErrorDetails[];
+
   @Field(() => [SwapEventMeta], { nullable: true })
   eventsMeta?: SwapEventMeta[];
 }

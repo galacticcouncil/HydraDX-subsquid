@@ -56,16 +56,6 @@ export async function createPool({
   newPool.createdAt = new Date(event.blockTimestamp);
 
   await store.save(newPool);
-
-  /**
-   * Add new pool to owner account.
-   */
-  const ownerAccountForUpdate = createdByAccount;
-  ownerAccountForUpdate.createdPools = [
-    ...(ownerAccountForUpdate.createdPools || []),
-    newPool,
-  ];
-  await store.save(ownerAccountForUpdate);
 }
 
 export async function getPoolById(poolId: string, store: DatabaseManager) {

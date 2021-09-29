@@ -1,5 +1,6 @@
 import BN from 'bn.js';
 import { SwapAction } from '../generated/model';
+import appConstants from '../variables';
 
 /**
  * Function mutates received SwapAction data and returns already updated values.
@@ -16,7 +17,7 @@ export const calculateSwapActionValues = (
    * Calculate "match" value - total amount, which has been matched by Direct trade
    */
   if (
-    method === 'IntentionResolvedDirectTrade' &&
+    method === appConstants.chain.hydraDXEvents.intentionResolvedDirectTrade &&
     rawData.directTrades !== undefined
   ) {
     let totalDirectTradeMatch = new BN(0);
@@ -42,8 +43,11 @@ export const calculateSwapActionValues = (
     updatedData.match = totalDirectTradeMatch;
     updatedData.totalDirectTradeExchanged = totalDirectTradeExchanged;
 
-    console.log('totalDirectTradeMatch - ', totalDirectTradeMatch.toString())
-    console.log('totalDirectTradeExchanged - ', totalDirectTradeExchanged.toString())
+    console.log('totalDirectTradeMatch - ', totalDirectTradeMatch.toString());
+    console.log(
+      'totalDirectTradeExchanged - ',
+      totalDirectTradeExchanged.toString()
+    );
   }
 
   /**
@@ -51,7 +55,8 @@ export const calculateSwapActionValues = (
    */
   console.log('>>>rawData.fees - >>> ', rawData.fees);
   if (
-    method === 'IntentionResolvedDirectTradeFees' &&
+    method ===
+      appConstants.chain.hydraDXEvents.intentionResolvedDirectTradeFees &&
     rawData.fees.directTrade !== undefined
   ) {
     let totalFeesAmount = new BN(0);
