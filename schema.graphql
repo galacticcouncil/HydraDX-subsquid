@@ -133,41 +133,6 @@ type TradeTransfer @entity {
   amountReceived: BigInt
 }
 
-#type SwapAction @entity {
-#  id: ID!
-#  isSuccess: Int!
-#  timestamp: BigInt!
-#  block: String!
-#  type: String!
-#
-#  tokenZero: Token
-#  tokenOne: Token
-#
-#  account: Account
-#
-#  directTrades: [TradeTransfer] @derivedFrom(field: "swapAction")
-#  xykTradePool: Pool
-#}
-
-#type TradeTransfer @entity {
-#  id: ID!
-#  isSuccess: Int!
-#  timestamp: BigInt!
-#  block: String!
-#  swapAction: SwapAction!
-#
-#  accountTo: Account!
-#  accountFrom: Account!
-#
-#  type: String!
-#  path: String!
-#  tokenZero: String!
-#  tokenOne: String!
-#  tokenZeroInput: String!
-#  tokenOneInput: String!
-#  result: String!
-#}
-
 type PoolAssetVolume @entity {
   id: ID!
   pool: Pool!

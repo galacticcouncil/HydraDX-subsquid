@@ -42,9 +42,9 @@ export default {
       denominator: 'u32',
     },
   },
-  alias: {
-    tokens: {
-      AccountData: 'OrmlAccountData',
-    },
-  },
+  // alias: {
+  //   tokens: {
+  //     AccountData: 'OrmlAccountData',
+  //   },
+  // },
 };

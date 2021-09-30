@@ -6,6 +6,14 @@ import { typeRegistry } from ".";
 import { AccountId, Balance } from "@polkadot/types/interfaces";
 
 export namespace Staking {
+  /**
+   *  An account has bonded this amount. \[stash, amount\]
+   *
+   *  NOTE: This event is only emitted when funds are bonded via a dispatchable. Notably,
+   *  it will not be emitted for staking rewards when they are added to stake.
+   *
+   *  Event parameters: [AccountId, Balance, ]
+   */
   export class BondedEvent {
     public readonly expectedParamTypes = ["AccountId", "Balance"];
 
@@ -36,6 +44,11 @@ export namespace Staking {
     }
   }
 
+  /**
+   *  The staker has been rewarded by this amount. \[stash, amount\]
+   *
+   *  Event parameters: [AccountId, Balance, ]
+   */
   export class RewardEvent {
     public readonly expectedParamTypes = ["AccountId", "Balance"];
 
@@ -66,6 +79,12 @@ export namespace Staking {
     }
   }
 
+  /**
+   *  One validator (and its nominators) has been slashed by the given amount.
+   *  \[validator, amount\]
+   *
+   *  Event parameters: [AccountId, Balance, ]
+   */
   export class SlashEvent {
     public readonly expectedParamTypes = ["AccountId", "Balance"];
 

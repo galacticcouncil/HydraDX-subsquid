@@ -6,6 +6,11 @@ import { typeRegistry } from ".";
 import { AccountId } from "@polkadot/types/interfaces";
 
 export namespace System {
+  /**
+   *  A new \[account\] was created.
+   *
+   *  Event parameters: [AccountId, ]
+   */
   export class NewAccountEvent {
     public readonly expectedParamTypes = ["AccountId"];
 

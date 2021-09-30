@@ -137,7 +137,7 @@ export class SwapActionResolver {
     // by warthog
     try {
       result = await this.service.findConnection<SwapActionWhereInput>(where, orderBy, pageOptions, rawFields);
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
       // TODO: should continue to return this on `Error: Items is empty` or throw the error
       if (!(err.message as string).includes('Items is empty')) throw err;

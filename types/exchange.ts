@@ -12,6 +12,12 @@ import {
 import { AssetPair, IntentionId, IntentionType } from "../chain";
 
 export namespace Exchange {
+  /**
+   *  Intention registered event
+   *  who, asset a, asset b, amount, intention type, intention id
+   *
+   *  Event parameters: [T::AccountId, AssetId, AssetId, Balance, IntentionType, IntentionId<T>, ]
+   */
   export class IntentionRegisteredEvent {
     public readonly expectedParamTypes = [
       "T::AccountId",
@@ -68,6 +74,12 @@ export namespace Exchange {
     }
   }
 
+  /**
+   *  Intention resolved as AMM Trade
+   *  who, intention type, intention id, amount, amount sold/bought
+   *
+   *  Event parameters: [T::AccountId, IntentionType, IntentionId<T>, Balance, Balance, ]
+   */
   export class IntentionResolvedAMMTradeEvent {
     public readonly expectedParamTypes = [
       "T::AccountId",
@@ -113,6 +125,14 @@ export namespace Exchange {
     }
   }
 
+  /**
+   *  Intention resolved as Direct Trade
+   *  who, who - account between which direct trade happens
+   *  intention id, intention id - intentions which are being resolved ( fully or partially )
+   *  Balance, Balance  - corresponding amounts
+   *
+   *  Event parameters: [T::AccountId, T::AccountId, IntentionId<T>, IntentionId<T>, Balance, Balance, ]
+   */
   export class IntentionResolvedDirectTradeEvent {
     public readonly expectedParamTypes = [
       "T::AccountId",
@@ -169,6 +189,14 @@ export namespace Exchange {
     }
   }
 
+  /**
+   *  Paid fees event
+   *  who - account which paid feed
+   *  intention id - intention which was resolved
+   *  account paid to, asset, amount
+   *
+   *  Event parameters: [T::AccountId, IntentionId<T>, T::AccountId, AssetId, Balance, ]
+   */
   export class IntentionResolvedDirectTradeFeesEvent {
     public readonly expectedParamTypes = [
       "T::AccountId",
@@ -214,6 +242,12 @@ export namespace Exchange {
     }
   }
 
+  /**
+   *  Intetion Error Event
+   *  who, assets, sell or buy, intention id, error detail
+   *
+   *  Event parameters: [T::AccountId, AssetPair, IntentionType, IntentionId<T>, dispatch::DispatchError, ]
+   */
   export class IntentionResolveErrorEventEvent {
     public readonly expectedParamTypes = [
       "T::AccountId",

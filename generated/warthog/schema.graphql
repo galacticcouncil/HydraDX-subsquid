@@ -1,0 +1,1953 @@
+type Account implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  specVersion: Int
+  createdPools: [Pool!]
+  tradeTransferOut: [TradeTransfer!]
+  tradeTransferIn: [TradeTransfer!]
+  initiatedSwapActions: [SwapAction!]
+}
+
+type AccountConnection {
+  totalCount: Int!
+  edges: [AccountEdge!]!
+  pageInfo: PageInfo!
+}
+
+input AccountCreateInput {
+  specVersion: Float
+}
+
+type AccountEdge {
+  node: Account!
+  cursor: String!
+}
+
+enum AccountOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  specVersion_ASC
+  specVersion_DESC
+}
+
+input AccountUpdateInput {
+  specVersion: Float
+}
+
+input AccountWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  specVersion_eq: Int
+  specVersion_gt: Int
+  specVersion_gte: Int
+  specVersion_lt: Int
+  specVersion_lte: Int
+  specVersion_in: [Int!]
+  createdPools_none: PoolWhereInput
+  createdPools_some: PoolWhereInput
+  createdPools_every: PoolWhereInput
+  tradeTransferOut_none: TradeTransferWhereInput
+  tradeTransferOut_some: TradeTransferWhereInput
+  tradeTransferOut_every: TradeTransferWhereInput
+  tradeTransferIn_none: TradeTransferWhereInput
+  tradeTransferIn_some: TradeTransferWhereInput
+  tradeTransferIn_every: TradeTransferWhereInput
+  initiatedSwapActions_none: SwapActionWhereInput
+  initiatedSwapActions_some: SwapActionWhereInput
+  initiatedSwapActions_every: SwapActionWhereInput
+  AND: [AccountWhereInput!]
+  OR: [AccountWhereInput!]
+}
+
+input AccountWhereUniqueInput {
+  id: ID!
+}
+
+type AssetPrice implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  tokenZero: Token
+  tokenZeroId: String
+  tokenOne: Token
+  tokenOneId: String
+  pairName: String!
+  prices: AssetPriceInTime
+  pricesId: String
+}
+
+type AssetPriceConnection {
+  totalCount: Int!
+  edges: [AssetPriceEdge!]!
+  pageInfo: PageInfo!
+}
+
+input AssetPriceCreateInput {
+  tokenZero: ID
+  tokenOne: ID
+  pairName: String!
+  prices: ID
+}
+
+type AssetPriceEdge {
+  node: AssetPrice!
+  cursor: String!
+}
+
+type AssetPriceInTime implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  timestamp: BigInt!
+  price: BigInt
+  assetpriceprices: [AssetPrice!]
+}
+
+type AssetPriceInTimeConnection {
+  totalCount: Int!
+  edges: [AssetPriceInTimeEdge!]!
+  pageInfo: PageInfo!
+}
+
+input AssetPriceInTimeCreateInput {
+  timestamp: String!
+  price: String
+}
+
+type AssetPriceInTimeEdge {
+  node: AssetPriceInTime!
+  cursor: String!
+}
+
+enum AssetPriceInTimeOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  timestamp_ASC
+  timestamp_DESC
+  price_ASC
+  price_DESC
+}
+
+input AssetPriceInTimeUpdateInput {
+  timestamp: String
+  price: String
+}
+
+input AssetPriceInTimeWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  timestamp_eq: BigInt
+  timestamp_gt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lt: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  price_eq: BigInt
+  price_gt: BigInt
+  price_gte: BigInt
+  price_lt: BigInt
+  price_lte: BigInt
+  price_in: [BigInt!]
+  assetpriceprices_none: AssetPriceWhereInput
+  assetpriceprices_some: AssetPriceWhereInput
+  assetpriceprices_every: AssetPriceWhereInput
+  AND: [AssetPriceInTimeWhereInput!]
+  OR: [AssetPriceInTimeWhereInput!]
+}
+
+input AssetPriceInTimeWhereUniqueInput {
+  id: ID!
+}
+
+enum AssetPriceOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  tokenZero_ASC
+  tokenZero_DESC
+  tokenOne_ASC
+  tokenOne_DESC
+  pairName_ASC
+  pairName_DESC
+  prices_ASC
+  prices_DESC
+}
+
+input AssetPriceUpdateInput {
+  tokenZero: ID
+  tokenOne: ID
+  pairName: String
+  prices: ID
+}
+
+input AssetPriceWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  pairName_eq: String
+  pairName_contains: String
+  pairName_startsWith: String
+  pairName_endsWith: String
+  pairName_in: [String!]
+  tokenZero: TokenWhereInput
+  tokenOne: TokenWhereInput
+  prices: AssetPriceInTimeWhereInput
+  AND: [AssetPriceWhereInput!]
+  OR: [AssetPriceWhereInput!]
+}
+
+input AssetPriceWhereUniqueInput {
+  id: ID!
+}
+
+interface BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+}
+
+type BaseModel implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+}
+
+type BaseModelUUID implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+}
+
+input BaseWhereInput {
+  id_eq: String
+  id_in: [String!]
+  createdAt_eq: String
+  createdAt_lt: String
+  createdAt_lte: String
+  createdAt_gt: String
+  createdAt_gte: String
+  createdById_eq: String
+  updatedAt_eq: String
+  updatedAt_lt: String
+  updatedAt_lte: String
+  updatedAt_gt: String
+  updatedAt_gte: String
+  updatedById_eq: String
+  deletedAt_all: Boolean
+  deletedAt_eq: String
+  deletedAt_lt: String
+  deletedAt_lte: String
+  deletedAt_gt: String
+  deletedAt_gte: String
+  deletedById_eq: String
+}
+
+"""GraphQL representation of BigInt"""
+scalar BigInt
+
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
+interface DeleteResponse {
+  id: ID!
+}
+
+type DirectTradeFee {
+  accountIdWho: String!
+  accountIdTo: String!
+  assetId: String!
+  amount: String!
+}
+
+input DirectTradeFeeCreateInput {
+  accountIdWho: String!
+  accountIdTo: String!
+  assetId: String!
+  amount: String!
+}
+
+input DirectTradeFeeInput {
+  accountIdWho: String!
+  accountIdTo: String!
+  assetId: String!
+  amount: String!
+}
+
+input DirectTradeFeeUpdateInput {
+  accountIdWho: String
+  accountIdTo: String
+  assetId: String
+  amount: String
+}
+
+input DirectTradeFeeWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  accountIdWho_eq: String
+  accountIdWho_contains: String
+  accountIdWho_startsWith: String
+  accountIdWho_endsWith: String
+  accountIdWho_in: [String!]
+  accountIdTo_eq: String
+  accountIdTo_contains: String
+  accountIdTo_startsWith: String
+  accountIdTo_endsWith: String
+  accountIdTo_in: [String!]
+  assetId_eq: String
+  assetId_contains: String
+  assetId_startsWith: String
+  assetId_endsWith: String
+  assetId_in: [String!]
+  amount_eq: String
+  amount_contains: String
+  amount_startsWith: String
+  amount_endsWith: String
+  amount_in: [String!]
+  AND: [DirectTradeFeeWhereInput!]
+  OR: [DirectTradeFeeWhereInput!]
+}
+
+input DirectTradeFeeWhereUniqueInput {
+  id: ID!
+}
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+
+type NoBondRecordAccount implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  firstRewardAt: Int!
+}
+
+type NoBondRecordAccountConnection {
+  totalCount: Int!
+  edges: [NoBondRecordAccountEdge!]!
+  pageInfo: PageInfo!
+}
+
+input NoBondRecordAccountCreateInput {
+  firstRewardAt: Float!
+}
+
+type NoBondRecordAccountEdge {
+  node: NoBondRecordAccount!
+  cursor: String!
+}
+
+enum NoBondRecordAccountOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  firstRewardAt_ASC
+  firstRewardAt_DESC
+}
+
+input NoBondRecordAccountUpdateInput {
+  firstRewardAt: Float
+}
+
+input NoBondRecordAccountWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  firstRewardAt_eq: Int
+  firstRewardAt_gt: Int
+  firstRewardAt_gte: Int
+  firstRewardAt_lt: Int
+  firstRewardAt_lte: Int
+  firstRewardAt_in: [Int!]
+  AND: [NoBondRecordAccountWhereInput!]
+  OR: [NoBondRecordAccountWhereInput!]
+}
+
+input NoBondRecordAccountWhereUniqueInput {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Pool implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime!
+  deletedById: String
+  version: Int!
+  specVersion: String
+  isActive: Boolean!
+  sharedToken: Token
+  sharedTokenId: String
+  sharedAssetInitialBalance: BigInt
+  ownerAccount: Account
+  ownerAccountId: String
+  tokenZero: Token!
+  tokenZeroId: String!
+  tokenOne: Token!
+  tokenOneId: String!
+  swapActions: [SwapAction!]
+  assetsVolume: [PoolAssetVolume!]
+  tokenparentPool: [Token!]
+}
+
+type PoolAssetVolume implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  pool: Pool!
+  poolId: String!
+  timestamp: BigInt!
+  tokenZeroAmount: BigInt
+  tokenOneAmount: BigInt
+  sharedAssetAmount: BigInt
+  marketCap: BigInt
+  tradeAmount: BigInt
+}
+
+type PoolAssetVolumeConnection {
+  totalCount: Int!
+  edges: [PoolAssetVolumeEdge!]!
+  pageInfo: PageInfo!
+}
+
+input PoolAssetVolumeCreateInput {
+  pool: ID!
+  timestamp: String!
+  tokenZeroAmount: String
+  tokenOneAmount: String
+  sharedAssetAmount: String
+  marketCap: String
+  tradeAmount: String
+}
+
+type PoolAssetVolumeEdge {
+  node: PoolAssetVolume!
+  cursor: String!
+}
+
+enum PoolAssetVolumeOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  pool_ASC
+  pool_DESC
+  timestamp_ASC
+  timestamp_DESC
+  tokenZeroAmount_ASC
+  tokenZeroAmount_DESC
+  tokenOneAmount_ASC
+  tokenOneAmount_DESC
+  sharedAssetAmount_ASC
+  sharedAssetAmount_DESC
+  marketCap_ASC
+  marketCap_DESC
+  tradeAmount_ASC
+  tradeAmount_DESC
+}
+
+input PoolAssetVolumeUpdateInput {
+  pool: ID
+  timestamp: String
+  tokenZeroAmount: String
+  tokenOneAmount: String
+  sharedAssetAmount: String
+  marketCap: String
+  tradeAmount: String
+}
+
+input PoolAssetVolumeWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  timestamp_eq: BigInt
+  timestamp_gt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lt: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  tokenZeroAmount_eq: BigInt
+  tokenZeroAmount_gt: BigInt
+  tokenZeroAmount_gte: BigInt
+  tokenZeroAmount_lt: BigInt
+  tokenZeroAmount_lte: BigInt
+  tokenZeroAmount_in: [BigInt!]
+  tokenOneAmount_eq: BigInt
+  tokenOneAmount_gt: BigInt
+  tokenOneAmount_gte: BigInt
+  tokenOneAmount_lt: BigInt
+  tokenOneAmount_lte: BigInt
+  tokenOneAmount_in: [BigInt!]
+  sharedAssetAmount_eq: BigInt
+  sharedAssetAmount_gt: BigInt
+  sharedAssetAmount_gte: BigInt
+  sharedAssetAmount_lt: BigInt
+  sharedAssetAmount_lte: BigInt
+  sharedAssetAmount_in: [BigInt!]
+  marketCap_eq: BigInt
+  marketCap_gt: BigInt
+  marketCap_gte: BigInt
+  marketCap_lt: BigInt
+  marketCap_lte: BigInt
+  marketCap_in: [BigInt!]
+  tradeAmount_eq: BigInt
+  tradeAmount_gt: BigInt
+  tradeAmount_gte: BigInt
+  tradeAmount_lt: BigInt
+  tradeAmount_lte: BigInt
+  tradeAmount_in: [BigInt!]
+  pool: PoolWhereInput
+  AND: [PoolAssetVolumeWhereInput!]
+  OR: [PoolAssetVolumeWhereInput!]
+}
+
+input PoolAssetVolumeWhereUniqueInput {
+  id: ID!
+}
+
+type PoolConnection {
+  totalCount: Int!
+  edges: [PoolEdge!]!
+  pageInfo: PageInfo!
+}
+
+input PoolCreateInput {
+  createdAt: DateTime!
+  deletedAt: DateTime!
+  specVersion: String
+  isActive: Boolean!
+  sharedToken: ID
+  sharedAssetInitialBalance: String
+  ownerAccount: ID
+  tokenZero: ID!
+  tokenOne: ID!
+}
+
+type PoolEdge {
+  node: Pool!
+  cursor: String!
+}
+
+enum PoolOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  specVersion_ASC
+  specVersion_DESC
+  isActive_ASC
+  isActive_DESC
+  sharedToken_ASC
+  sharedToken_DESC
+  sharedAssetInitialBalance_ASC
+  sharedAssetInitialBalance_DESC
+  ownerAccount_ASC
+  ownerAccount_DESC
+  tokenZero_ASC
+  tokenZero_DESC
+  tokenOne_ASC
+  tokenOne_DESC
+}
+
+input PoolUpdateInput {
+  createdAt: DateTime
+  deletedAt: DateTime
+  specVersion: String
+  isActive: Boolean
+  sharedToken: ID
+  sharedAssetInitialBalance: String
+  ownerAccount: ID
+  tokenZero: ID
+  tokenOne: ID
+}
+
+input PoolWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  specVersion_eq: String
+  specVersion_contains: String
+  specVersion_startsWith: String
+  specVersion_endsWith: String
+  specVersion_in: [String!]
+  isActive_eq: Boolean
+  isActive_in: [Boolean!]
+  sharedAssetInitialBalance_eq: BigInt
+  sharedAssetInitialBalance_gt: BigInt
+  sharedAssetInitialBalance_gte: BigInt
+  sharedAssetInitialBalance_lt: BigInt
+  sharedAssetInitialBalance_lte: BigInt
+  sharedAssetInitialBalance_in: [BigInt!]
+  sharedToken: TokenWhereInput
+  ownerAccount: AccountWhereInput
+  tokenZero: TokenWhereInput
+  tokenOne: TokenWhereInput
+  swapActions_none: SwapActionWhereInput
+  swapActions_some: SwapActionWhereInput
+  swapActions_every: SwapActionWhereInput
+  assetsVolume_none: PoolAssetVolumeWhereInput
+  assetsVolume_some: PoolAssetVolumeWhereInput
+  assetsVolume_every: PoolAssetVolumeWhereInput
+  tokenparentPool_none: TokenWhereInput
+  tokenparentPool_some: TokenWhereInput
+  tokenparentPool_every: TokenWhereInput
+  AND: [PoolWhereInput!]
+  OR: [PoolWhereInput!]
+}
+
+input PoolWhereUniqueInput {
+  id: ID!
+}
+
+type ProcessorState {
+  lastCompleteBlock: Float!
+  lastProcessedEvent: String!
+  indexerHead: Float!
+  chainHead: Float!
+}
+
+type Query {
+  accounts(offset: Int, limit: Int = 50, where: AccountWhereInput, orderBy: [AccountOrderByInput!]): [Account!]!
+  accountByUniqueInput(where: AccountWhereUniqueInput!): Account
+  accountsConnection(first: Int, after: String, last: Int, before: String, where: AccountWhereInput, orderBy: [AccountOrderByInput!]): AccountConnection!
+  assetPriceInTimes(offset: Int, limit: Int = 50, where: AssetPriceInTimeWhereInput, orderBy: [AssetPriceInTimeOrderByInput!]): [AssetPriceInTime!]!
+  assetPriceInTimeByUniqueInput(where: AssetPriceInTimeWhereUniqueInput!): AssetPriceInTime
+  assetPriceInTimesConnection(first: Int, after: String, last: Int, before: String, where: AssetPriceInTimeWhereInput, orderBy: [AssetPriceInTimeOrderByInput!]): AssetPriceInTimeConnection!
+  assetPrices(offset: Int, limit: Int = 50, where: AssetPriceWhereInput, orderBy: [AssetPriceOrderByInput!]): [AssetPrice!]!
+  assetPriceByUniqueInput(where: AssetPriceWhereUniqueInput!): AssetPrice
+  assetPricesConnection(first: Int, after: String, last: Int, before: String, where: AssetPriceWhereInput, orderBy: [AssetPriceOrderByInput!]): AssetPriceConnection!
+  noBondRecordAccounts(offset: Int, limit: Int = 50, where: NoBondRecordAccountWhereInput, orderBy: [NoBondRecordAccountOrderByInput!]): [NoBondRecordAccount!]!
+  noBondRecordAccountByUniqueInput(where: NoBondRecordAccountWhereUniqueInput!): NoBondRecordAccount
+  noBondRecordAccountsConnection(first: Int, after: String, last: Int, before: String, where: NoBondRecordAccountWhereInput, orderBy: [NoBondRecordAccountOrderByInput!]): NoBondRecordAccountConnection!
+  poolAssetVolumes(offset: Int, limit: Int = 50, where: PoolAssetVolumeWhereInput, orderBy: [PoolAssetVolumeOrderByInput!]): [PoolAssetVolume!]!
+  poolAssetVolumeByUniqueInput(where: PoolAssetVolumeWhereUniqueInput!): PoolAssetVolume
+  poolAssetVolumesConnection(first: Int, after: String, last: Int, before: String, where: PoolAssetVolumeWhereInput, orderBy: [PoolAssetVolumeOrderByInput!]): PoolAssetVolumeConnection!
+  pools(offset: Int, limit: Int = 50, where: PoolWhereInput, orderBy: [PoolOrderByInput!]): [Pool!]!
+  poolByUniqueInput(where: PoolWhereUniqueInput!): Pool
+  poolsConnection(first: Int, after: String, last: Int, before: String, where: PoolWhereInput, orderBy: [PoolOrderByInput!]): PoolConnection!
+  stakingRewards(offset: Int, limit: Int = 50, where: StakingRewardWhereInput, orderBy: [StakingRewardOrderByInput!]): [StakingReward!]!
+  stakingRewardByUniqueInput(where: StakingRewardWhereUniqueInput!): StakingReward
+  stakingRewardsConnection(first: Int, after: String, last: Int, before: String, where: StakingRewardWhereInput, orderBy: [StakingRewardOrderByInput!]): StakingRewardConnection!
+  stakingSlashes(offset: Int, limit: Int = 50, where: StakingSlashWhereInput, orderBy: [StakingSlashOrderByInput!]): [StakingSlash!]!
+  stakingSlashByUniqueInput(where: StakingSlashWhereUniqueInput!): StakingSlash
+  stakingSlashesConnection(first: Int, after: String, last: Int, before: String, where: StakingSlashWhereInput, orderBy: [StakingSlashOrderByInput!]): StakingSlashConnection!
+  sumRewards(offset: Int, limit: Int = 50, where: SumRewardWhereInput, orderBy: [SumRewardOrderByInput!]): [SumReward!]!
+  sumRewardByUniqueInput(where: SumRewardWhereUniqueInput!): SumReward
+  sumRewardsConnection(first: Int, after: String, last: Int, before: String, where: SumRewardWhereInput, orderBy: [SumRewardOrderByInput!]): SumRewardConnection!
+  swapActions(offset: Int, limit: Int = 50, where: SwapActionWhereInput, orderBy: [SwapActionOrderByInput!]): [SwapAction!]!
+  swapActionByUniqueInput(where: SwapActionWhereUniqueInput!): SwapAction
+  swapActionsConnection(first: Int, after: String, last: Int, before: String, where: SwapActionWhereInput, orderBy: [SwapActionOrderByInput!]): SwapActionConnection!
+  tokens(offset: Int, limit: Int = 50, where: TokenWhereInput, orderBy: [TokenOrderByInput!]): [Token!]!
+  tokenByUniqueInput(where: TokenWhereUniqueInput!): Token
+  tokensConnection(first: Int, after: String, last: Int, before: String, where: TokenWhereInput, orderBy: [TokenOrderByInput!]): TokenConnection!
+  tradeTransfers(offset: Int, limit: Int = 50, where: TradeTransferWhereInput, orderBy: [TradeTransferOrderByInput!]): [TradeTransfer!]!
+  tradeTransferByUniqueInput(where: TradeTransferWhereUniqueInput!): TradeTransfer
+  tradeTransfersConnection(first: Int, after: String, last: Int, before: String, where: TradeTransferWhereInput, orderBy: [TradeTransferOrderByInput!]): TradeTransferConnection!
+}
+
+type StakingReward implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  address: String!
+  balance: BigInt!
+  date: DateTime!
+}
+
+type StakingRewardConnection {
+  totalCount: Int!
+  edges: [StakingRewardEdge!]!
+  pageInfo: PageInfo!
+}
+
+input StakingRewardCreateInput {
+  address: String!
+  balance: String!
+  date: DateTime!
+}
+
+type StakingRewardEdge {
+  node: StakingReward!
+  cursor: String!
+}
+
+enum StakingRewardOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  address_ASC
+  address_DESC
+  balance_ASC
+  balance_DESC
+  date_ASC
+  date_DESC
+}
+
+input StakingRewardUpdateInput {
+  address: String
+  balance: String
+  date: DateTime
+}
+
+input StakingRewardWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  address_eq: String
+  address_contains: String
+  address_startsWith: String
+  address_endsWith: String
+  address_in: [String!]
+  balance_eq: BigInt
+  balance_gt: BigInt
+  balance_gte: BigInt
+  balance_lt: BigInt
+  balance_lte: BigInt
+  balance_in: [BigInt!]
+  date_eq: DateTime
+  date_lt: DateTime
+  date_lte: DateTime
+  date_gt: DateTime
+  date_gte: DateTime
+  AND: [StakingRewardWhereInput!]
+  OR: [StakingRewardWhereInput!]
+}
+
+input StakingRewardWhereUniqueInput {
+  id: ID!
+}
+
+type StakingSlash implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  address: String!
+  balance: BigInt!
+  date: DateTime!
+}
+
+type StakingSlashConnection {
+  totalCount: Int!
+  edges: [StakingSlashEdge!]!
+  pageInfo: PageInfo!
+}
+
+input StakingSlashCreateInput {
+  address: String!
+  balance: String!
+  date: DateTime!
+}
+
+type StakingSlashEdge {
+  node: StakingSlash!
+  cursor: String!
+}
+
+enum StakingSlashOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  address_ASC
+  address_DESC
+  balance_ASC
+  balance_DESC
+  date_ASC
+  date_DESC
+}
+
+input StakingSlashUpdateInput {
+  address: String
+  balance: String
+  date: DateTime
+}
+
+input StakingSlashWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  address_eq: String
+  address_contains: String
+  address_startsWith: String
+  address_endsWith: String
+  address_in: [String!]
+  balance_eq: BigInt
+  balance_gt: BigInt
+  balance_gte: BigInt
+  balance_lt: BigInt
+  balance_lte: BigInt
+  balance_in: [BigInt!]
+  date_eq: DateTime
+  date_lt: DateTime
+  date_lte: DateTime
+  date_gt: DateTime
+  date_gte: DateTime
+  AND: [StakingSlashWhereInput!]
+  OR: [StakingSlashWhereInput!]
+}
+
+input StakingSlashWhereUniqueInput {
+  id: ID!
+}
+
+type StandardDeleteResponse {
+  id: ID!
+}
+
+type Subscription {
+  stateSubscription: ProcessorState!
+}
+
+type SumReward implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  accountReward: BigInt!
+  accountSlash: BigInt!
+  accountTotal: BigInt!
+}
+
+type SumRewardConnection {
+  totalCount: Int!
+  edges: [SumRewardEdge!]!
+  pageInfo: PageInfo!
+}
+
+input SumRewardCreateInput {
+  accountReward: String!
+  accountSlash: String!
+  accountTotal: String!
+}
+
+type SumRewardEdge {
+  node: SumReward!
+  cursor: String!
+}
+
+enum SumRewardOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  accountReward_ASC
+  accountReward_DESC
+  accountSlash_ASC
+  accountSlash_DESC
+  accountTotal_ASC
+  accountTotal_DESC
+}
+
+input SumRewardUpdateInput {
+  accountReward: String
+  accountSlash: String
+  accountTotal: String
+}
+
+input SumRewardWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  accountReward_eq: BigInt
+  accountReward_gt: BigInt
+  accountReward_gte: BigInt
+  accountReward_lt: BigInt
+  accountReward_lte: BigInt
+  accountReward_in: [BigInt!]
+  accountSlash_eq: BigInt
+  accountSlash_gt: BigInt
+  accountSlash_gte: BigInt
+  accountSlash_lt: BigInt
+  accountSlash_lte: BigInt
+  accountSlash_in: [BigInt!]
+  accountTotal_eq: BigInt
+  accountTotal_gt: BigInt
+  accountTotal_gte: BigInt
+  accountTotal_lt: BigInt
+  accountTotal_lte: BigInt
+  accountTotal_in: [BigInt!]
+  AND: [SumRewardWhereInput!]
+  OR: [SumRewardWhereInput!]
+}
+
+input SumRewardWhereUniqueInput {
+  id: ID!
+}
+
+type SwapAction implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  timestamp: DateTime!
+  block: String!
+  initiatedByAccount: Account!
+  initiatedByAccountId: String!
+  intentionType: String!
+  amount: BigInt
+  tokenZero: Token
+  tokenZeroId: String
+  tokenOne: Token
+  tokenOneId: String
+  assetsPair: String
+  slippage: BigInt
+  fees: SwapActionFees!
+  totalFeeFinal: BigInt
+  match: BigInt
+  totalDirectTradeExchanged: BigInt
+  saved: BigInt
+  amountXykTrade: BigInt
+  amountOutXykTrade: BigInt
+  amountSoldBought: BigInt
+  totalAmountFinal: BigInt
+  xykTradePool: Pool
+  xykTradePoolId: String
+  actionMetadata: SwapActionMetadata
+  directTrades: [TradeTransfer!]
+}
+
+type SwapActionConnection {
+  totalCount: Int!
+  edges: [SwapActionEdge!]!
+  pageInfo: PageInfo!
+}
+
+input SwapActionCreateInput {
+  timestamp: DateTime!
+  block: String!
+  initiatedByAccount: ID!
+  intentionType: String!
+  amount: String
+  tokenZero: ID
+  tokenOne: ID
+  assetsPair: String
+  slippage: String
+  fees: SwapActionFeesInput!
+  totalFeeFinal: String
+  match: String
+  totalDirectTradeExchanged: String
+  saved: String
+  amountXykTrade: String
+  amountOutXykTrade: String
+  amountSoldBought: String
+  totalAmountFinal: String
+  xykTradePool: ID
+  actionMetadata: SwapActionMetadataInput
+}
+
+type SwapActionEdge {
+  node: SwapAction!
+  cursor: String!
+}
+
+type SwapActionErrorDetails {
+  section: String
+  name: String
+  documantation: String
+}
+
+input SwapActionErrorDetailsCreateInput {
+  section: String
+  name: String
+  documantation: String
+}
+
+input SwapActionErrorDetailsInput {
+  section: String
+  name: String
+  documantation: String
+}
+
+input SwapActionErrorDetailsUpdateInput {
+  section: String
+  name: String
+  documantation: String
+}
+
+input SwapActionErrorDetailsWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  section_eq: String
+  section_contains: String
+  section_startsWith: String
+  section_endsWith: String
+  section_in: [String!]
+  name_eq: String
+  name_contains: String
+  name_startsWith: String
+  name_endsWith: String
+  name_in: [String!]
+  documantation_eq: String
+  documantation_contains: String
+  documantation_startsWith: String
+  documantation_endsWith: String
+  documantation_in: [String!]
+  AND: [SwapActionErrorDetailsWhereInput!]
+  OR: [SwapActionErrorDetailsWhereInput!]
+}
+
+input SwapActionErrorDetailsWhereUniqueInput {
+  id: ID!
+}
+
+type SwapActionFees {
+  directTrade: [DirectTradeFee!]
+}
+
+input SwapActionFeesInput {
+  directTrade: [DirectTradeFeeInput!]
+}
+
+type SwapActionMetadata {
+  statusReady: Boolean
+  statusInBlock: Boolean
+  statusFinalized: Boolean
+  statusError: Boolean
+  errorsDetails: [SwapActionErrorDetails!]
+  eventsMeta: [SwapEventMeta!]
+}
+
+input SwapActionMetadataCreateInput {
+  statusReady: Boolean
+  statusInBlock: Boolean
+  statusFinalized: Boolean
+  statusError: Boolean
+}
+
+input SwapActionMetadataInput {
+  statusReady: Boolean
+  statusInBlock: Boolean
+  statusFinalized: Boolean
+  statusError: Boolean
+  errorsDetails: [SwapActionErrorDetailsInput!]
+  eventsMeta: [SwapEventMetaInput!]
+}
+
+input SwapActionMetadataUpdateInput {
+  statusReady: Boolean
+  statusInBlock: Boolean
+  statusFinalized: Boolean
+  statusError: Boolean
+}
+
+input SwapActionMetadataWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  statusReady_eq: Boolean
+  statusReady_in: [Boolean!]
+  statusInBlock_eq: Boolean
+  statusInBlock_in: [Boolean!]
+  statusFinalized_eq: Boolean
+  statusFinalized_in: [Boolean!]
+  statusError_eq: Boolean
+  statusError_in: [Boolean!]
+  AND: [SwapActionMetadataWhereInput!]
+  OR: [SwapActionMetadataWhereInput!]
+}
+
+input SwapActionMetadataWhereUniqueInput {
+  id: ID!
+}
+
+enum SwapActionOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  timestamp_ASC
+  timestamp_DESC
+  block_ASC
+  block_DESC
+  initiatedByAccount_ASC
+  initiatedByAccount_DESC
+  intentionType_ASC
+  intentionType_DESC
+  amount_ASC
+  amount_DESC
+  tokenZero_ASC
+  tokenZero_DESC
+  tokenOne_ASC
+  tokenOne_DESC
+  assetsPair_ASC
+  assetsPair_DESC
+  slippage_ASC
+  slippage_DESC
+  totalFeeFinal_ASC
+  totalFeeFinal_DESC
+  match_ASC
+  match_DESC
+  totalDirectTradeExchanged_ASC
+  totalDirectTradeExchanged_DESC
+  saved_ASC
+  saved_DESC
+  amountXykTrade_ASC
+  amountXykTrade_DESC
+  amountOutXykTrade_ASC
+  amountOutXykTrade_DESC
+  amountSoldBought_ASC
+  amountSoldBought_DESC
+  totalAmountFinal_ASC
+  totalAmountFinal_DESC
+  xykTradePool_ASC
+  xykTradePool_DESC
+}
+
+input SwapActionUpdateInput {
+  timestamp: DateTime
+  block: String
+  initiatedByAccount: ID
+  intentionType: String
+  amount: String
+  tokenZero: ID
+  tokenOne: ID
+  assetsPair: String
+  slippage: String
+  fees: SwapActionFeesInput
+  totalFeeFinal: String
+  match: String
+  totalDirectTradeExchanged: String
+  saved: String
+  amountXykTrade: String
+  amountOutXykTrade: String
+  amountSoldBought: String
+  totalAmountFinal: String
+  xykTradePool: ID
+  actionMetadata: SwapActionMetadataInput
+}
+
+input SwapActionWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  timestamp_eq: DateTime
+  timestamp_lt: DateTime
+  timestamp_lte: DateTime
+  timestamp_gt: DateTime
+  timestamp_gte: DateTime
+  block_eq: String
+  block_contains: String
+  block_startsWith: String
+  block_endsWith: String
+  block_in: [String!]
+  intentionType_eq: String
+  intentionType_contains: String
+  intentionType_startsWith: String
+  intentionType_endsWith: String
+  intentionType_in: [String!]
+  amount_eq: BigInt
+  amount_gt: BigInt
+  amount_gte: BigInt
+  amount_lt: BigInt
+  amount_lte: BigInt
+  amount_in: [BigInt!]
+  assetsPair_eq: String
+  assetsPair_contains: String
+  assetsPair_startsWith: String
+  assetsPair_endsWith: String
+  assetsPair_in: [String!]
+  slippage_eq: BigInt
+  slippage_gt: BigInt
+  slippage_gte: BigInt
+  slippage_lt: BigInt
+  slippage_lte: BigInt
+  slippage_in: [BigInt!]
+  fees_json: JSONObject
+  totalFeeFinal_eq: BigInt
+  totalFeeFinal_gt: BigInt
+  totalFeeFinal_gte: BigInt
+  totalFeeFinal_lt: BigInt
+  totalFeeFinal_lte: BigInt
+  totalFeeFinal_in: [BigInt!]
+  match_eq: BigInt
+  match_gt: BigInt
+  match_gte: BigInt
+  match_lt: BigInt
+  match_lte: BigInt
+  match_in: [BigInt!]
+  totalDirectTradeExchanged_eq: BigInt
+  totalDirectTradeExchanged_gt: BigInt
+  totalDirectTradeExchanged_gte: BigInt
+  totalDirectTradeExchanged_lt: BigInt
+  totalDirectTradeExchanged_lte: BigInt
+  totalDirectTradeExchanged_in: [BigInt!]
+  saved_eq: BigInt
+  saved_gt: BigInt
+  saved_gte: BigInt
+  saved_lt: BigInt
+  saved_lte: BigInt
+  saved_in: [BigInt!]
+  amountXykTrade_eq: BigInt
+  amountXykTrade_gt: BigInt
+  amountXykTrade_gte: BigInt
+  amountXykTrade_lt: BigInt
+  amountXykTrade_lte: BigInt
+  amountXykTrade_in: [BigInt!]
+  amountOutXykTrade_eq: BigInt
+  amountOutXykTrade_gt: BigInt
+  amountOutXykTrade_gte: BigInt
+  amountOutXykTrade_lt: BigInt
+  amountOutXykTrade_lte: BigInt
+  amountOutXykTrade_in: [BigInt!]
+  amountSoldBought_eq: BigInt
+  amountSoldBought_gt: BigInt
+  amountSoldBought_gte: BigInt
+  amountSoldBought_lt: BigInt
+  amountSoldBought_lte: BigInt
+  amountSoldBought_in: [BigInt!]
+  totalAmountFinal_eq: BigInt
+  totalAmountFinal_gt: BigInt
+  totalAmountFinal_gte: BigInt
+  totalAmountFinal_lt: BigInt
+  totalAmountFinal_lte: BigInt
+  totalAmountFinal_in: [BigInt!]
+  actionMetadata_json: JSONObject
+  initiatedByAccount: AccountWhereInput
+  tokenZero: TokenWhereInput
+  tokenOne: TokenWhereInput
+  xykTradePool: PoolWhereInput
+  directTrades_none: TradeTransferWhereInput
+  directTrades_some: TradeTransferWhereInput
+  directTrades_every: TradeTransferWhereInput
+  AND: [SwapActionWhereInput!]
+  OR: [SwapActionWhereInput!]
+}
+
+input SwapActionWhereUniqueInput {
+  id: ID!
+}
+
+type SwapEventMeta {
+  section: String!
+  method: String!
+  dispatchInfo: String!
+}
+
+input SwapEventMetaCreateInput {
+  section: String!
+  method: String!
+  dispatchInfo: String!
+}
+
+input SwapEventMetaInput {
+  section: String!
+  method: String!
+  dispatchInfo: String!
+}
+
+input SwapEventMetaUpdateInput {
+  section: String
+  method: String
+  dispatchInfo: String
+}
+
+input SwapEventMetaWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  section_eq: String
+  section_contains: String
+  section_startsWith: String
+  section_endsWith: String
+  section_in: [String!]
+  method_eq: String
+  method_contains: String
+  method_startsWith: String
+  method_endsWith: String
+  method_in: [String!]
+  dispatchInfo_eq: String
+  dispatchInfo_contains: String
+  dispatchInfo_startsWith: String
+  dispatchInfo_endsWith: String
+  dispatchInfo_in: [String!]
+  AND: [SwapEventMetaWhereInput!]
+  OR: [SwapEventMetaWhereInput!]
+}
+
+input SwapEventMetaWhereUniqueInput {
+  id: ID!
+}
+
+type Token implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  decimal: Int!
+  name: String!
+  shared: Boolean!
+  parentPool: Pool
+  parentPoolId: String
+  assetpricetokenZero: [AssetPrice!]
+  assetpricetokenOne: [AssetPrice!]
+  poolsharedToken: [Pool!]
+  pooltokenZero: [Pool!]
+  pooltokenOne: [Pool!]
+  swapactiontokenZero: [SwapAction!]
+  swapactiontokenOne: [SwapAction!]
+  tradetransferassetSent: [TradeTransfer!]
+  tradetransferassetReceived: [TradeTransfer!]
+}
+
+type TokenConnection {
+  totalCount: Int!
+  edges: [TokenEdge!]!
+  pageInfo: PageInfo!
+}
+
+input TokenCreateInput {
+  decimal: Float!
+  name: String!
+  shared: Boolean!
+  parentPool: ID
+}
+
+type TokenEdge {
+  node: Token!
+  cursor: String!
+}
+
+enum TokenOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  decimal_ASC
+  decimal_DESC
+  name_ASC
+  name_DESC
+  shared_ASC
+  shared_DESC
+  parentPool_ASC
+  parentPool_DESC
+}
+
+input TokenUpdateInput {
+  decimal: Float
+  name: String
+  shared: Boolean
+  parentPool: ID
+}
+
+input TokenWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  decimal_eq: Int
+  decimal_gt: Int
+  decimal_gte: Int
+  decimal_lt: Int
+  decimal_lte: Int
+  decimal_in: [Int!]
+  name_eq: String
+  name_contains: String
+  name_startsWith: String
+  name_endsWith: String
+  name_in: [String!]
+  shared_eq: Boolean
+  shared_in: [Boolean!]
+  parentPool: PoolWhereInput
+  assetpricetokenZero_none: AssetPriceWhereInput
+  assetpricetokenZero_some: AssetPriceWhereInput
+  assetpricetokenZero_every: AssetPriceWhereInput
+  assetpricetokenOne_none: AssetPriceWhereInput
+  assetpricetokenOne_some: AssetPriceWhereInput
+  assetpricetokenOne_every: AssetPriceWhereInput
+  poolsharedToken_none: PoolWhereInput
+  poolsharedToken_some: PoolWhereInput
+  poolsharedToken_every: PoolWhereInput
+  pooltokenZero_none: PoolWhereInput
+  pooltokenZero_some: PoolWhereInput
+  pooltokenZero_every: PoolWhereInput
+  pooltokenOne_none: PoolWhereInput
+  pooltokenOne_some: PoolWhereInput
+  pooltokenOne_every: PoolWhereInput
+  swapactiontokenZero_none: SwapActionWhereInput
+  swapactiontokenZero_some: SwapActionWhereInput
+  swapactiontokenZero_every: SwapActionWhereInput
+  swapactiontokenOne_none: SwapActionWhereInput
+  swapactiontokenOne_some: SwapActionWhereInput
+  swapactiontokenOne_every: SwapActionWhereInput
+  tradetransferassetSent_none: TradeTransferWhereInput
+  tradetransferassetSent_some: TradeTransferWhereInput
+  tradetransferassetSent_every: TradeTransferWhereInput
+  tradetransferassetReceived_none: TradeTransferWhereInput
+  tradetransferassetReceived_some: TradeTransferWhereInput
+  tradetransferassetReceived_every: TradeTransferWhereInput
+  AND: [TokenWhereInput!]
+  OR: [TokenWhereInput!]
+}
+
+input TokenWhereUniqueInput {
+  id: ID!
+}
+
+type TradeTransfer implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  timestamp: DateTime!
+  block: String!
+  parentSwapAction: SwapAction!
+  parentSwapActionId: String!
+  assetSent: Token!
+  assetSentId: String!
+  assetReceived: Token!
+  assetReceivedId: String!
+  accountSent: Account!
+  accountSentId: String!
+  accountReceived: Account!
+  accountReceivedId: String!
+  amountSent: BigInt
+  amountReceived: BigInt
+}
+
+type TradeTransferConnection {
+  totalCount: Int!
+  edges: [TradeTransferEdge!]!
+  pageInfo: PageInfo!
+}
+
+input TradeTransferCreateInput {
+  timestamp: DateTime!
+  block: String!
+  parentSwapAction: ID!
+  assetSent: ID!
+  assetReceived: ID!
+  accountSent: ID!
+  accountReceived: ID!
+  amountSent: String
+  amountReceived: String
+}
+
+type TradeTransferEdge {
+  node: TradeTransfer!
+  cursor: String!
+}
+
+enum TradeTransferOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  timestamp_ASC
+  timestamp_DESC
+  block_ASC
+  block_DESC
+  parentSwapAction_ASC
+  parentSwapAction_DESC
+  assetSent_ASC
+  assetSent_DESC
+  assetReceived_ASC
+  assetReceived_DESC
+  accountSent_ASC
+  accountSent_DESC
+  accountReceived_ASC
+  accountReceived_DESC
+  amountSent_ASC
+  amountSent_DESC
+  amountReceived_ASC
+  amountReceived_DESC
+}
+
+input TradeTransferUpdateInput {
+  timestamp: DateTime
+  block: String
+  parentSwapAction: ID
+  assetSent: ID
+  assetReceived: ID
+  accountSent: ID
+  accountReceived: ID
+  amountSent: String
+  amountReceived: String
+}
+
+input TradeTransferWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  timestamp_eq: DateTime
+  timestamp_lt: DateTime
+  timestamp_lte: DateTime
+  timestamp_gt: DateTime
+  timestamp_gte: DateTime
+  block_eq: String
+  block_contains: String
+  block_startsWith: String
+  block_endsWith: String
+  block_in: [String!]
+  amountSent_eq: BigInt
+  amountSent_gt: BigInt
+  amountSent_gte: BigInt
+  amountSent_lt: BigInt
+  amountSent_lte: BigInt
+  amountSent_in: [BigInt!]
+  amountReceived_eq: BigInt
+  amountReceived_gt: BigInt
+  amountReceived_gte: BigInt
+  amountReceived_lt: BigInt
+  amountReceived_lte: BigInt
+  amountReceived_in: [BigInt!]
+  parentSwapAction: SwapActionWhereInput
+  assetSent: TokenWhereInput
+  assetReceived: TokenWhereInput
+  accountSent: AccountWhereInput
+  accountReceived: AccountWhereInput
+  AND: [TradeTransferWhereInput!]
+  OR: [TradeTransferWhereInput!]
+}
+
+input TradeTransferWhereUniqueInput {
+  id: ID!
+}

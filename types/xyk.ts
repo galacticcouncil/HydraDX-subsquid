@@ -6,6 +6,11 @@ import { typeRegistry } from ".";
 import { AccountId, AssetId, Balance } from "@polkadot/types/interfaces";
 
 export namespace XYK {
+  /**
+   *  Pool was created. [who, asset a, asset b, initial shares amount, share token, pool account id]
+   *
+   *  Event parameters: [T::AccountId, AssetId, AssetId, Balance, AssetId, T::AccountId, ]
+   */
   export class PoolCreatedEvent {
     public readonly expectedParamTypes = [
       "T::AccountId",

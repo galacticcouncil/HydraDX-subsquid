@@ -1,5 +1,5 @@
 import { Service, Inject } from 'typedi';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { WhereInput, HydraBaseService } from '@subsquid/warthog';
 
@@ -41,13 +41,23 @@ export class AccountService extends HydraBaseService<Account> {
     return this.findWithRelations<W>(where, orderBy, limit, offset, fields);
   }
 
-  async findWithRelations<W extends WhereInput>(
+  findWithRelations<W extends WhereInput>(
     _where?: any,
     orderBy?: string | string[],
     limit?: number,
     offset?: number,
     fields?: string[]
   ): Promise<Account[]> {
+    return this.buildFindWithRelationsQuery(_where, orderBy, limit, offset, fields).getMany();
+  }
+
+  buildFindWithRelationsQuery<W extends WhereInput>(
+    _where?: any,
+    orderBy?: string | string[],
+    limit?: number,
+    offset?: number,
+    fields?: string[]
+  ): SelectQueryBuilder<Account> {
     const where = <AccountWhereInput>(_where || {});
 
     // remove relation filters to enable warthog query builders
@@ -382,9 +392,6 @@ export class AccountService extends HydraBaseService<Account> {
 
     mainQuery = mainQuery.setParameters(parameters);
 
-    return mainQuery
-      .take(limit || 50)
-      .skip(offset || 0)
-      .getMany();
+    return mainQuery.take(limit || 50).skip(offset || 0);
   }
 }
