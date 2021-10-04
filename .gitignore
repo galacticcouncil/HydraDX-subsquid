@@ -1,4 +1,11 @@
 /.idea
 /node_modules
-yarn.lock
 yarn-error.log
+
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*

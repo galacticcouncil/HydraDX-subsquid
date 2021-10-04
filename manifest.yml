@@ -15,9 +15,9 @@ typegen:
 #    source: wss://archive.snakenet.hydradx.io
     source: ws://hydradx-test.ngrok.io
   events:
-    - staking.Bonded
-    - staking.Reward
-    - staking.Slash
+#    - staking.Bonded
+#    - staking.Reward
+#    - staking.Slash
     - system.NewAccount
     - exchange.IntentionRegistered
     - exchange.IntentionResolvedAMMTrade
@@ -35,12 +35,12 @@ mappings:
   imports:
     - generated/server/config # configure the processor environment (for now this is required)
   eventHandlers:
-    - event: staking.Bonded
-      handler: handleBond
-    - event: staking.Reward
-      handler: handleReward
-    - event: staking.Slash
-      handler: handleSlash
+#    - event: staking.Bonded
+#      handler: handleBond
+#    - event: staking.Reward
+#      handler: handleReward
+#    - event: staking.Slash
+#      handler: handleSlash
 
     - event: xyk.PoolCreated
       handler: handleNewPool
