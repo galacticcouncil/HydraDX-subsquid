@@ -1,5 +1,5 @@
 import { Pool, Token } from '../generated/model';
-import { XYK } from '../types/index'; // import via index.ts, this is a workaround related to ts-node
+import { XYK } from '../chain-interfaces'; // import via index.ts, this is a workaround related to ts-node
 import BN from 'bn.js';
 import {
   EventContext,

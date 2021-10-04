@@ -26,9 +26,9 @@ typegen:
     - exchange.IntentionResolveErrorEvent
     - xyk.PoolCreated
   customTypes:
-    lib: ../chain
+    lib: ./chain-interfaces
     typedefsLoc: types.json
-  outDir: types
+  outDir: chain-interfaces
 
 mappings:
   mappingsModule: mappings

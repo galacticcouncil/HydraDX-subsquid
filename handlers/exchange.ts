@@ -3,7 +3,7 @@ import {
   EventContext,
   StoreContext,
 } from '@subsquid/hydra-common';
-import { Exchange } from '../types/index';
+import { Exchange } from '../chain-interfaces';
 import {
   Pool,
   SwapAction,

@@ -1,7 +1,7 @@
 import { SwapAction } from '../generated/model';
 import BN from 'bn.js';
 
-import { Exchange } from '../types/index'; // import via index.ts, this is a workaround related to ts-node
+import { Exchange } from '../chain-interfaces'; // import via index.ts, this is a workaround related to ts-node
 import {
   ExtrinsicContext,
   EventContext,
